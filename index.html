@@ -6,50 +6,43 @@
     <title>BLack World | Community & Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #1b4332; --accent: #2d6a4f; --soft: #f0f7f4; --white: #ffffff; }
+        :root { --primary: #1b4332; --accent: #2d6a4f; --soft: #f0f7f4; --white: #ffffff; --text: #333; }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { margin: 0; background: var(--soft); color: #333; overflow-x: hidden; }
+        body { margin: 0; background: var(--soft); color: var(--text); overflow-x: hidden; }
 
         header { background: var(--primary); color: white; padding: 25px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        header h1 { margin: 0; letter-spacing: 2px; }
-
         nav { background: white; border-bottom: 1px solid #ddd; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; }
-        .nav-links { display: flex; align-items: center; gap: 25px; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; }
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; }
 
-        /* SIDEBAR */
-        .sidebar { position: fixed; left: -100%; top: 0; width: 380px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 25px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; }
+        /* SIDEBAR & AUTH */
+        .sidebar { position: fixed; left: -100%; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 25px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); }
         .sidebar.open { left: 0; }
-        .tab-container { display: flex; margin-bottom: 20px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
-        .tab-btn { flex: 1; padding: 12px; border: none; cursor: pointer; background: #f8f9fa; font-weight: bold; transition: 0.3s; }
-        .tab-btn.active { background: var(--primary); color: white; }
-        
         .auth-form { display: none; }
         .auth-form.active { display: block; }
-
-        .field { margin-bottom: 15px; }
-        .field label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; }
-        .field input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
-
-        .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .btn-social { background: white; border: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 10px; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 600; color: #555; }
-        .btn-social img { width: 20px; }
+        .tab-btn { padding: 10px; border: none; cursor: pointer; background: #eee; flex: 1; font-weight: bold; }
+        .tab-btn.active { background: var(--primary); color: white; }
 
         /* CONTENT */
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-        .card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .page { display: none; }
         .page.active { display: block; }
+        .locked-content { text-align: center; padding: 40px; color: #777; }
 
         /* CHAT */
-        #chatBox { height: 350px; overflow-y: auto; border: 1px solid #eee; padding: 15px; background: #fafafa; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .msg { padding: 10px 15px; border-radius: 12px; background: #eee; max-width: 80%; font-size: 0.9rem; }
+        #chatBox { height: 300px; overflow-y: auto; border: 1px solid #eee; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .msg { padding: 8px 12px; border-radius: 12px; background: #f1f1f1; max-width: 85%; font-size: 0.85rem; }
         .msg.me { align-self: flex-end; background: var(--accent); color: white; }
+        .msg-time { font-size: 0.65rem; display: block; margin-top: 4px; opacity: 0.7; }
 
-        /* QUIZ */
-        #quiz-options button { width: 100%; margin-top: 8px; }
-        .match-notify { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 15px; display: none; border: 1px solid #c3e6cb; font-weight: bold; }
+        /* BUTTONS */
+        .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-social { background: white; border: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 8px; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; }
+        
+        /* TABLES */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
     </style>
 </head>
 <body>
@@ -57,7 +50,7 @@
 <header><h1>BLACK WORLD 🌈</h1></header>
 
 <nav>
-    <div style="position: absolute; left: 20px; top: 18px; cursor: pointer; font-weight: bold;" onclick="toggleSidebar()">☰ ACCOUNT</div>
+    <div style="position: absolute; left: 15px; top: 18px; cursor: pointer; font-weight: bold;" onclick="toggleSidebar()" id="userLabel">☰ ACCEDI</div>
     <div class="nav-links">
         <a onclick="showPage('home')">Home</a>
         <a onclick="showPage('amicizia')">Amicizia</a>
@@ -67,78 +60,81 @@
 </nav>
 
 <div class="sidebar" id="sidebar">
-    <div style="text-align:right; cursor:pointer; font-size: 1.2rem;" onclick="toggleSidebar()">✕</div>
-    
-    <div class="tab-container">
-        <button class="tab-btn active" id="tabL" onclick="switchAuth('login')">ACCEDI</button>
-        <button class="tab-btn" id="tabR" onclick="switchAuth('reg')">REGISTRATI</button>
+    <div style="text-align:right; cursor:pointer;" onclick="toggleSidebar()">✕ CHIUDI</div>
+    <div id="authArea">
+        <div style="display:flex; margin-top:20px; border:1px solid #ddd;">
+            <button class="tab-btn active" id="tabL" onclick="switchAuth('login')">ACCEDI</button>
+            <button class="tab-btn" id="tabR" onclick="switchAuth('reg')">REGISTRATI</button>
+        </div>
+        <div id="loginForm" class="auth-form active">
+            <input type="email" id="lEmail" placeholder="Email" style="width:100%; margin-top:15px; padding:10px;">
+            <input type="password" id="lPass" placeholder="Password" style="width:100%; margin-top:10px; padding:10px;">
+            <button class="btn-main" onclick="loginEmail()">ACCEDI</button>
+            <p style="font-size:0.7rem; text-align:center; cursor:pointer;" onclick="forgotPass()">Password dimenticata?</p>
+        </div>
+        <div id="regForm" class="auth-form">
+            <input type="text" id="rNome" placeholder="Nickname" style="width:100%; margin-top:15px; padding:10px;">
+            <input type="email" id="rEmail" placeholder="Email" style="width:100%; margin-top:10px; padding:10px;">
+            <input type="password" id="rPass" placeholder="Password" style="width:100%; margin-top:10px; padding:10px;">
+            <button class="btn-main" onclick="registerEmail()">CREA ACCOUNT</button>
+        </div>
+        <hr style="margin:20px 0;">
+        <button class="btn-social" onclick="socialLogin('google')"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="18"> Google</button>
+        <button class="btn-social" onclick="socialLogin('microsoft')"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" width="18"> Microsoft</button>
     </div>
-
-    <div id="loginForm" class="auth-form active">
-        <div class="field"><label>Email</label><input type="email" id="lEmail"></div>
-        <div class="field"><label>Password</label><input type="password" id="lPass"></div>
-        <button class="btn-main" onclick="loginEmail()">ACCEDI</button>
+    <div id="profileArea" style="display:none; text-align:center; margin-top:30px;">
+        <h3 id="welcomeUser">Ciao!</h3>
+        <button class="btn-main" style="background:#c0392b;" onclick="logout()">LOGOUT</button>
     </div>
-
-    <div id="regForm" class="auth-form">
-        <div class="field"><label>Nome o Nickname *</label><input type="text" id="rNome"></div>
-        <div class="field"><label>Email *</label><input type="email" id="rEmail"></div>
-        <div class="field"><label>Password *</label><input type="password" id="rPass"></div>
-        <button class="btn-main" onclick="registerEmail()">CREA ACCOUNT</button>
-    </div>
-
-    <hr style="margin:25px 0; border: 0; border-top: 1px solid #eee;">
-    
-    <button class="btn-social" onclick="socialLogin('google')">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"> Continua con Google
-    </button>
-    <button class="btn-social" onclick="socialLogin('microsoft')">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"> Continua con Microsoft
-    </button>
 </div>
 
 <div class="container">
     <section id="home" class="page active">
-        <div class="card">
-            <h2>Benvenuta nella Community BL 🌿</h2>
-            <p>Esplora i progetti, partecipa ai quiz e trova nuove amiche con cui sclerare per le tue ship preferite!</p>
-        </div>
+        <div class="card"><h2>Benvenuta! 🌿</h2><p>Esplora l'universo BLack World.</p></div>
     </section>
 
-    <section id="amicizia" class="page">
-        <div id="matchAlert" class="match-notify"></div>
-        <div class="card">
-            <h3>Trova il tuo Match BL 💘</h3>
-            <p style="font-size: 0.85rem; color: #666;">Inserisci la tua ship e scopri chi altro la ama!</p>
-            <input type="text" id="pNick" placeholder="Tuo Nickname">
-            <input type="text" id="pShip" placeholder="La tua Ship del cuore (es: JoongDunk)">
-            <textarea id="pBio" placeholder="Parlaci dei tuoi gusti BL..." rows="3" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ddd; margin-bottom:10px;"></textarea>
-            <button class="btn-main" onclick="handleMatch()">CERCA MATCH</button>
-        </div>
-        <div id="profilesFeed"></div>
-    </section>
-
-    <section id="chat" class="page">
-        <div class="card">
-            <h3>Global Chat 💬</h3>
-            <div id="chatBox"></div>
-            <div style="display:flex; gap:10px;">
-                <input type="text" id="chatInput" placeholder="Scrivi un messaggio..." style="flex:1; padding:10px; border-radius:6px; border:1px solid #ddd;">
-                <button class="btn-main" style="width:100px; margin:0;" onclick="sendMsg()">Invia</button>
+    <div id="protectedContent" style="display:none;">
+        <section id="amicizia" class="page">
+            <div id="mAlert" style="display:none; background:#d4edda; padding:10px; margin-bottom:10px; border-radius:8px;"></div>
+            <div class="card">
+                <h3>Trova Match 💘</h3>
+                <input type="text" id="pShip" placeholder="La tua Ship (es: JoongDunk)" style="width:100%; padding:10px; margin-bottom:10px;">
+                <button class="btn-main" onclick="handleMatch()">CERCA AMICIZIE</button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="giochi" class="page">
-        <div class="card">
-            <h3>Quiz GMMTV: Sei una vera esperta? 🎮</h3>
-            <div id="quiz-area">
-                <p id="q-text" style="font-weight:600;">Pronta a metterti alla prova?</p>
-                <div id="quiz-options"></div>
-                <button class="btn-main" id="quiz-start" onclick="startQuiz()">INIZIA QUIZ</button>
+        <section id="chat" class="page">
+            <div class="card">
+                <h3>Global Chat 💬</h3>
+                <div id="chatBox"></div>
+                <div style="display:flex; gap:5px;">
+                    <input type="text" id="chatInput" style="flex:1; padding:10px;">
+                    <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section id="giochi" class="page">
+            <div class="card">
+                <h3>Quiz GMMTV 🎮</h3>
+                <div id="quizBox">
+                    <p id="qText">Pronta?</p>
+                    <div id="qOpts" style="display:flex; flex-direction:column; gap:8px;"></div>
+                    <button class="btn-main" id="qStart" onclick="startQuiz()">INIZIA</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Classifica Globale 🏆</h3>
+                <table id="leaderboard"><thead><tr><th>User</th><th>Punti</th></tr></thead><tbody></tbody></table>
+            </div>
+        </section>
+    </div>
+
+    <div id="loginReminder" class="locked-content card">
+        <h3>Contenuto Bloccato 🔒</h3>
+        <p>Devi accedere per usare questa funzione.</p>
+        <button class="btn-main" onclick="toggleSidebar()">ACCEDI ORA</button>
+    </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -156,17 +152,10 @@
       appId: "1:1075556185722:web:a18a5f3d7ef3b4862aedc3",
       measurementId: "G-L1TH722CGE"
     };
-
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.database();
+    const auth = firebase.auth(); const db = firebase.database();
 
-    // UI LOGIC
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-    function showPage(id) { 
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
     function switchAuth(t) {
         document.getElementById('loginForm').classList.toggle('active', t === 'login');
         document.getElementById('regForm').classList.toggle('active', t === 'reg');
@@ -174,98 +163,71 @@
         document.getElementById('tabR').classList.toggle('active', t === 'reg');
     }
 
-    // AUTHENTICATION
-    function registerEmail() {
-        const e = document.getElementById('rEmail').value;
-        const p = document.getElementById('rPass').value;
-        auth.createUserWithEmailAndPassword(e, p).then(() => { alert("Benvenuta!"); toggleSidebar(); }).catch(err => alert(err.message));
-    }
-    function loginEmail() {
-        const e = document.getElementById('lEmail').value;
-        const p = document.getElementById('lPass').value;
-        auth.signInWithEmailAndPassword(e, p).then(() => { toggleSidebar(); }).catch(err => alert(err.message));
-    }
-    function socialLogin(type) {
-        const provider = type === 'google' ? new firebase.auth.GoogleAuthProvider() : new firebase.auth.OAuthProvider('microsoft.com');
-        auth.signInWithPopup(provider).then(() => toggleSidebar()).catch(err => alert("Errore: " + err.message));
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        const isProtected = id !== 'home';
+        document.getElementById('protectedContent').style.display = (isProtected && auth.currentUser) ? 'block' : 'none';
+        document.getElementById('loginReminder').style.display = (isProtected && !auth.currentUser) ? 'block' : 'none';
     }
 
-    // CHAT & PROFILES
-    let allProfiles = [];
+    // AUTH ACTIONS
+    function loginEmail() { auth.signInWithEmailAndPassword(document.getElementById('lEmail').value, document.getElementById('lPass').value).catch(e => alert(e.message)); }
+    function registerEmail() { auth.createUserWithEmailAndPassword(document.getElementById('rEmail').value, document.getElementById('rPass').value).catch(e => alert(e.message)); }
+    function socialLogin(p) { auth.signInWithPopup(p==='google'?new firebase.auth.GoogleAuthProvider():new firebase.auth.OAuthProvider('microsoft.com')).catch(e => alert(e.message)); }
+    function logout() { auth.signOut(); location.reload(); }
+    function forgotPass() { const email = prompt("Inserisci la tua email:"); if(email) auth.sendPasswordResetEmail(email).then(()=>alert("Email inviata!")); }
+
+    // STATE MONITORING
     auth.onAuthStateChanged(user => {
         if(user) {
-            // Chat listener
-            db.ref("messages/public").limitToLast(25).on("value", s => {
-                const box = document.getElementById('chatBox'); box.innerHTML = "";
-                s.forEach(m => {
-                    const isMe = m.val().user === user.email;
-                    box.innerHTML += `<div class="msg ${isMe ? 'me' : ''}"><b>${m.val().user.split('@')[0]}</b>: ${m.val().text}</div>`;
-                });
-                box.scrollTop = box.scrollHeight;
-            });
-            // Profile listener for match
-            db.ref("profiles").on("value", s => { allProfiles = []; s.forEach(p => allProfiles.push(p.val())); });
+            document.getElementById('authArea').style.display = 'none';
+            document.getElementById('profileArea').style.display = 'block';
+            document.getElementById('welcomeUser').innerText = "Ciao, " + user.email.split('@')[0];
+            document.getElementById('userLabel').innerText = "👤 PROFILO";
+            loadChat(); loadLeaderboard();
         }
     });
 
-    function sendMsg() {
-        const txt = document.getElementById('chatInput').value;
-        if(txt && auth.currentUser) {
-            db.ref("messages/public").push({ user: auth.currentUser.email, text: txt });
-            document.getElementById('chatInput').value = "";
-        } else if(!auth.currentUser) { alert("Accedi per chattare!"); }
-    }
-
-    function handleMatch() {
-        const nick = document.getElementById('pNick').value;
-        const ship = document.getElementById('pShip').value.trim().toLowerCase();
-        if(!ship || !auth.currentUser) return alert("Accedi e inserisci la tua ship!");
-        
-        const match = allProfiles.find(p => p.ship.toLowerCase() === ship && p.nick !== nick);
-        const alertBox = document.getElementById('matchAlert');
-        alertBox.style.display = "block";
-        alertBox.innerHTML = match ? `✨ MATCH! Anche <b>${match.nick}</b> adora questa ship!` : "Profilo salvato! Vediamo chi altro ama questa ship...";
-        
-        db.ref("profiles/" + auth.currentUser.uid).set({ nick, ship, bio: document.getElementById('pBio').value });
-    }
-
-    // QUIZ LOGIC
-    const questions = [
-        { q: "Chi è il partner di Nanon Korapat in 'Bad Buddy'?", a: ["Ohm Pawat", "Chimon", "Drake", "Jimmy"], correct: 0 },
-        { q: "Quale ship è protagonista di 'Hidden Agenda'?", a: ["JoongDunk", "PondPhuwin", "ForceBook", "FirstKhaotung"], correct: 0 },
-        { q: "Chi interpreta Gun in 'My School President'?", a: ["Fourth Nattawat", "Gemini Norawit", "Winny", "Satang"], correct: 0 }
-    ];
-    let curQ = 0; let quizScore = 0;
-
-    function startQuiz() {
-        curQ = 0; quizScore = 0;
-        document.getElementById('quiz-start').style.display = 'none';
-        renderQuestion();
-    }
-
-    function renderQuestion() {
-        const data = questions[curQ];
-        document.getElementById('q-text').innerText = data.q;
-        const optDiv = document.getElementById('quiz-options');
-        optDiv.innerHTML = "";
-        data.a.forEach((opt, i) => {
-            const b = document.createElement('button');
-            b.className = "btn-social"; b.innerText = opt;
-            b.onclick = () => {
-                if(i === data.correct) quizScore++;
-                curQ++;
-                if(curQ < questions.length) renderQuestion();
-                else finishQuiz();
-            };
-            optDiv.appendChild(b);
+    // CHAT WITH TIME
+    function loadChat() {
+        db.ref("messages/public").limitToLast(15).on("value", s => {
+            const b = document.getElementById('chatBox'); b.innerHTML = "";
+            s.forEach(m => {
+                const time = new Date(m.val().t).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                b.innerHTML += `<div class="msg ${m.val().u === auth.currentUser.email ? 'me' : ''}">
+                    <b>${m.val().u.split('@')[0]}</b>: ${m.val().txt}
+                    <span class="msg-time">${time}</span></div>`;
+            });
+            b.scrollTop = b.scrollHeight;
         });
     }
+    function sendMsg() {
+        const txt = document.getElementById('chatInput').value;
+        if(txt) { db.ref("messages/public").push({ u: auth.currentUser.email, txt: txt, t: Date.now() }); document.getElementById('chatInput').value = ""; }
+    }
 
-    function finishQuiz() {
-        document.getElementById('q-text').innerText = `Hai totalizzato ${quizScore} su ${questions.length}!`;
-        document.getElementById('quiz-options').innerHTML = "";
-        const b = document.getElementById('quiz-start');
-        b.style.display = 'block'; b.innerText = "Riprova";
+    // QUIZ & LEADERBOARD
+    const quiz = [{q:"Partner di Nanon in Bad Buddy?", a:["Ohm","Chimon","Jimmy"], c:0}];
+    function startQuiz() {
+        document.getElementById('qStart').style.display='none';
+        const d = quiz[0]; document.getElementById('qText').innerText = d.q;
+        const o = document.getElementById('qOpts'); o.innerHTML = "";
+        d.a.forEach((opt, i) => {
+            const btn = document.createElement('button'); btn.className="btn-social"; btn.innerText=opt;
+            btn.onclick = () => {
+                const pts = i === d.c ? 10 : 0;
+                db.ref("leaderboard/" + auth.currentUser.uid).set({ n: auth.currentUser.email.split('@')[0], s: pts });
+                document.getElementById('qText').innerText = "Punteggio salvato!"; o.innerHTML = "";
+            };
+            o.appendChild(btn);
+        });
+    }
+    function loadLeaderboard() {
+        db.ref("leaderboard").orderByChild("s").limitToLast(5).on("value", s => {
+            const t = document.querySelector("#leaderboard tbody"); t.innerHTML = "";
+            s.forEach(p => { t.innerHTML = `<tr><td>${p.val().n}</td><td>${p.val().s}</td></tr>` + t.innerHTML; });
+        });
     }
 </script>
 </body>
