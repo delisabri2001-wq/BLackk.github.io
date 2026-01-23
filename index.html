@@ -3,59 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLack World | Community & Quiz</title>
+    <title>BLack World | Community</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         /* --- STILE ORIGINALE (VERDE FORESTA) --- */
         :root { --primary: #1b4332; --accent: #2d6a4f; --soft: #f0f7f4; --white: #ffffff; --text: #333; }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { margin: 0; background: var(--soft); color: var(--text); overflow-x: hidden; }
+        body { margin: 0; background: var(--soft); color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
 
-        /* HEADER & NAVIGAZIONE CLASSICA */
-        header { background: var(--primary); color: white; padding: 25px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        /* HEADER */
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
+        /* NAVIGAZIONE */
         nav { background: white; border-bottom: 1px solid #ddd; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; }
-        .nav-links { display: flex; align-items: center; gap: 20px; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; padding: 5px 10px; }
-        .nav-links a.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+        .nav-links { display: flex; align-items: center; gap: 15px; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; padding: 10px; }
+        .nav-links a.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
 
-        /* SIDEBAR (ACCOUNT) */
-        .sidebar { position: fixed; left: -100%; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 25px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; }
+        /* SIDEBAR (PROFILO & ACCOUNT) */
+        .sidebar { position: fixed; left: -100%; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 20px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; }
         .sidebar.open { left: 0; }
-        .auth-form { display: none; margin-top: 15px; }
-        .auth-form.active { display: block; }
-
-        /* CONTENT */
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
-        .card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        
+        /* CONTENUTO PAGINE */
+        .container { max-width: 900px; margin: 20px auto; padding: 0 20px; flex: 1; width: 100%; }
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .page { display: none; }
         .page.active { display: block; }
         
         /* INPUT & BUTTONS */
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; outline: none; }
-        input:focus { border-color: var(--accent); }
-        .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; outline: none; }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 5px; }
         .btn-main:hover { background: var(--accent); }
-        .btn-social { background: white; border: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 8px; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; color: #555; }
+        .btn-social { background: white; border: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 5px; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; color: #555; }
         
-        /* CHAT */
-        #chatBox { height: 350px; overflow-y: auto; border: 1px solid #eee; padding: 15px; background: #fafafa; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .msg { padding: 8px 12px; border-radius: 12px; background: #eee; max-width: 80%; font-size: 0.9rem; }
-        .msg.me { align-self: flex-end; background: var(--accent); color: white; }
-        .msg-user { font-size: 0.7rem; font-weight: bold; display: block; opacity: 0.7; margin-bottom: 2px; }
-
-        /* AMICIZIA */
-        .friend-card { border-left: 4px solid var(--accent); padding: 15px; margin-bottom: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; gap: 15px; }
+        /* ELEMENTI PROFILO */
+        .my-card-preview { border: 2px dashed var(--accent); padding: 15px; border-radius: 8px; background: #f9f9f9; text-align: left; margin-bottom: 15px; }
+        .profile-pic { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); display: block; margin: 0 auto 10px; }
+        .edit-form { display: none; background: #f0f7f4; padding: 15px; border-radius: 8px; margin-top: 10px; }
+        
+        /* AMICIZIA CARDS */
+        .friend-card { border-left: 5px solid var(--accent); padding: 15px; margin-bottom: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; gap: 15px; align-items: center; }
         .friend-card.match { border-color: #e63946; background: #fff5f5; }
 
-        /* PARTE LEGALE (Banner & Privacy) */
-        #cookieBanner { position: fixed; bottom: 0; left: 0; width: 100%; background: #222; color: white; padding: 15px; text-align: center; z-index: 5000; font-size: 0.85rem; display: none; }
-        #privacyModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 6000; }
-        .modal-content { background: white; width: 90%; max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 10px; max-height: 80vh; overflow-y: auto; }
-        
-        /* QUIZ */
-        .quiz-btn { width: 100%; padding: 15px; border: 1px solid #ddd; background: #f9f9f9; text-align: left; margin-bottom: 5px; cursor: pointer; border-radius: 6px; }
-        .quiz-btn.correct { background: #d4edda; border-color: #c3e6cb; color: #155724; }
-        .quiz-btn.wrong { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        /* CHAT & QUIZ */
+        #chatBox { height: 350px; overflow-y: auto; border: 1px solid #eee; padding: 10px; background: #fafafa; border-radius: 8px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .msg { padding: 8px 12px; border-radius: 12px; background: #eee; max-width: 85%; font-size: 0.9rem; }
+        .msg.me { align-self: flex-end; background: var(--accent); color: white; }
+        .quiz-btn { width: 100%; padding: 12px; border: 1px solid #ddd; background: #f9f9f9; text-align: left; margin-bottom: 5px; cursor: pointer; border-radius: 6px; }
+        .quiz-btn.correct { background: #d4edda; color: #155724; }
+        .quiz-btn.wrong { background: #f8d7da; color: #721c24; }
+
+        /* FOOTER */
+        footer { background: #222; color: #ccc; padding: 20px; text-align: center; font-size: 0.8rem; margin-top: auto; }
+        footer a { color: white; text-decoration: underline; cursor: pointer; margin: 0 10px; }
     </style>
 </head>
 <body>
@@ -63,69 +63,65 @@
 <header><h1>BLACK WORLD 🌈</h1></header>
 
 <nav>
-    <div style="position: absolute; left: 20px; top: 18px; cursor: pointer; font-weight: bold;" onclick="toggleSidebar()">☰ ACCOUNT</div>
+    <div style="position: absolute; left: 20px; top: 18px; cursor: pointer; font-weight: bold;" onclick="toggleSidebar()">
+        👤 IL TUO PROFILO
+    </div>
     <div class="nav-links">
         <a onclick="navTo('home', this)" class="active">Home</a>
         <a onclick="navTo('amicizia', this)">Amicizia</a>
         <a onclick="navTo('chat', this)">Chat</a>
         <a onclick="navTo('giochi', this)">Giochi</a>
-        <a onclick="navTo('profilo', this)">Profilo</a>
     </div>
 </nav>
-
-<div id="cookieBanner">
-    <span>🍪 Usiamo cookie tecnici per far funzionare il login. Continuando accetti la policy.</span>
-    <button onclick="acceptCookies()" style="margin-left:15px; padding:5px 10px; cursor:pointer;">OK, Accetto</button>
-    <u onclick="openPrivacy()" style="cursor:pointer; margin-left:10px;">Leggi Policy</u>
-</div>
 
 <div class="sidebar" id="sidebar">
     <div style="text-align:right; cursor:pointer; font-size: 1.2rem;" onclick="toggleSidebar()">✕ CHIUDI</div>
     
     <div id="authArea">
-        <h3>Accedi</h3>
-        <p style="font-size:0.9rem;">Entra per salvare il profilo e chattare!</p>
+        <h3>Accedi o Registrati</h3>
+        <p>Entra per creare il tuo profilo, caricare la tua foto e salvare la tua Ship!</p>
         <button class="btn-social" onclick="socialLogin()">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="18"> Google
         </button>
-        <hr>
+        <hr style="margin: 15px 0;">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="pass" placeholder="Password">
         <div style="display:flex; gap:5px;">
-            <button class="btn-main" style="margin-top:0;" onclick="showAuth('login')">Login Email</button>
-            <button class="btn-main" style="margin-top:0; background:#ccc; color:#333;" onclick="showAuth('reg')">Registrati</button>
-        </div>
-
-        <div id="loginForm" class="auth-form active">
-            <input type="email" id="lEmail" placeholder="Email">
-            <input type="password" id="lPass" placeholder="Password">
-            <button class="btn-main" onclick="authAction('login')">ENTRA</button>
-        </div>
-        <div id="regForm" class="auth-form">
-            <input type="email" id="rEmail" placeholder="Email">
-            <input type="password" id="rPass" placeholder="Password">
-            <button class="btn-main" onclick="authAction('reg')">CREA ACCOUNT</button>
+            <button class="btn-main" onclick="emailAuth('login')">ENTRA</button>
+            <button class="btn-main" style="background:#888;" onclick="emailAuth('reg')">REGISTRATI</button>
         </div>
     </div>
 
     <div id="userArea" style="display:none;">
-        <h3 id="sideUser">Ciao!</h3>
-        <p>Benvenuta nella community.</p>
+        <h3 style="text-align:center;">Il tuo Profilo 👤</h3>
+        
+        <div class="my-card-preview">
+            <img id="myAvatarDisplay" src="https://ui-avatars.com/api/?name=User" class="profile-pic">
+            <div style="text-align:center;">
+                <h4 id="myNickDisplay" style="margin:0;">Utente</h4>
+                <small id="myShipDisplay" style="color:var(--accent); font-weight:bold;">Nessuna Ship</small>
+                <p id="myBioDisplay" style="font-size:0.85rem; font-style:italic; margin-top:5px;">"La tua bio apparirà qui..."</p>
+            </div>
+        </div>
+
+        <button class="btn-main" onclick="toggleEdit()">✏️ MODIFICA PROFILO</button>
+
+        <div id="editForm" class="edit-form">
+            <label>Carica Foto (Max 1MB)</label>
+            <input type="file" id="fileInput" accept="image/*">
+            
+            <input type="text" id="pNick" placeholder="Nickname">
+            <input type="number" id="pAge" placeholder="Età">
+            <input type="text" id="pShip" placeholder="Ship del Cuore (es. OhmNanon)">
+            <input type="text" id="pSocial" placeholder="Social (es. IG @nome)">
+            <textarea id="pStory" rows="3" placeholder="La tua Bio..."></textarea>
+            
+            <button class="btn-main" style="background:#2d3436;" onclick="saveProfile()">SALVA MODIFICHE</button>
+        </div>
+
+        <hr style="margin:20px 0;">
         <button class="btn-main" style="background:#c0392b;" onclick="logout()">LOGOUT</button>
-        <p style="margin-top:20px; font-size:0.8rem; color:red; cursor:pointer; text-decoration:underline;" onclick="deleteAccount()">Elimina Account</p>
-    </div>
-
-    <div style="margin-top:30px; border-top:1px solid #eee; padding-top:10px;">
-        <span onclick="openPrivacy()" style="cursor:pointer; font-size:0.8rem; color:#666;">📜 Privacy Policy & Termini</span>
-    </div>
-</div>
-
-<div id="privacyModal">
-    <div class="modal-content">
-        <span onclick="closePrivacy()" style="float:right; cursor:pointer; font-size:1.5rem;">✕</span>
-        <h2>Privacy Policy</h2>
-        <p><b>Dati raccolti:</b> Email (per login), Nickname, Età, Ship, Bio (per il profilo pubblico).</p>
-        <p><b>Scopo:</b> Permettere il funzionamento della chat e della ricerca amicizie.</p>
-        <p><b>Cancellazione:</b> Puoi cancellare il tuo account e tutti i dati in qualsiasi momento dal menu laterale.</p>
-        <p><b>Cookie:</b> Usiamo solo cookie tecnici di Firebase.</p>
+        <p style="text-align:center; font-size:0.8rem; color:red; cursor:pointer; margin-top:10px;" onclick="deleteAccount()">Elimina Account</p>
     </div>
 </div>
 
@@ -133,21 +129,21 @@
     
     <section id="home" class="page active">
         <div class="card">
-            <h2>Benvenuta nella Community BL 🌿</h2>
-            <p>Esplora i progetti, partecipa ai quiz e trova nuove amiche con cui sclerare per le tue ship preferite!</p>
+            <h2>Benvenuta in BLack World 🌿</h2>
+            <p>Esplora la community, trova match e gioca!</p>
+            <p><b>👉 Clicca su "IL TUO PROFILO" in alto a sinistra per accedere e creare la tua scheda.</b></p>
         </div>
         <div class="card">
-            <h3>🏆 Classifica Globale</h3>
-            <table style="width:100%; border-collapse:collapse;">
-                <tbody id="leaderboardBody"></tbody>
-            </table>
+            <h3>🏆 Classifica Quiz</h3>
+            <table style="width:100%; border-collapse:collapse;" id="leaderboard"></table>
         </div>
     </section>
 
     <section id="amicizia" class="page">
         <div class="card">
-            <h3>Cerca Amiche 👯‍♀️</h3>
-            <input type="text" id="searchShip" placeholder="🔍 Filtra per Ship (es: OhmNanon)..." onkeyup="loadFriends()">
+            <h3>Cerca Match 👯‍♀️</h3>
+            <p>Qui trovi persone con la tua stessa Ship.</p>
+            <input type="text" id="searchShip" placeholder="🔍 Scrivi una ship per filtrare..." onkeyup="loadFriends()">
         </div>
         <div id="friendsFeed"></div>
     </section>
@@ -157,8 +153,8 @@
             <h3>Global Chat 💬</h3>
             <div id="chatBox"></div>
             <div style="display:flex; gap:10px;">
-                <input type="text" id="chatInput" placeholder="Scrivi messaggio..." style="margin-bottom:0;">
-                <button class="btn-main" style="width:80px; margin-top:0;" onclick="sendMsg()">Invia</button>
+                <input type="text" id="chatInput" placeholder="Scrivi..." style="margin:0;">
+                <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
             </div>
         </div>
     </section>
@@ -166,57 +162,29 @@
     <section id="giochi" class="page">
         <div id="quizMenu" class="card">
             <h3>Quiz Time! 🎮</h3>
-            <p>Scegli la categoria. Attenzione: domande difficili!</p>
             <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV</button>
             <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI</button>
-            <p style="margin-top:15px;">I tuoi punti totali: <b id="scoreDisplay">0</b></p>
+            <p style="margin-top:10px;">Punti Totali: <b id="scoreDisplay">0</b></p>
         </div>
         <div id="quizActive" class="card" style="display:none;">
-            <button onclick="stopQuiz()" style="float:right; cursor:pointer; border:none; background:none;">✕ Esci</button>
+            <button onclick="stopQuiz()" style="float:right; border:none; background:none; cursor:pointer;">✕ Esci</button>
             <h3 id="qTitle">Domanda 1</h3>
-            <p id="qText" style="font-size:1.1rem; font-weight:bold;">...</p>
+            <p id="qText" style="font-size:1.1rem; font-weight:600;">...</p>
             <div id="qOpts"></div>
-            <p id="qFeed" style="min-height:20px; font-weight:bold;"></p>
-        </div>
-    </section>
-
-    <section id="profilo" class="page">
-        <div id="noAuthProfile" class="card" style="text-align:center;">
-            <h3>Accesso Richiesto 🔒</h3>
-            <p>Accedi dal menu laterale per modificare il tuo profilo.</p>
-        </div>
-
-        <div id="authProfile" class="card" style="display:none;">
-            <h3>Il tuo Profilo 👤</h3>
-            <p style="color:#666; font-size:0.9rem;">Questi dati saranno visibili alle altre utenti.</p>
-            
-            <div style="text-align:center; margin-bottom:15px;">
-                <img id="prevImg" src="" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:2px solid var(--accent);">
-            </div>
-
-            <label>Link Foto Profilo (URL)</label>
-            <input type="text" id="pAvatar" placeholder="Incolla link immagine..." onchange="updatePreview()">
-            
-            <label>Nickname *</label>
-            <input type="text" id="pNick" placeholder="Come vuoi essere chiamata" onkeyup="updatePreview()">
-            
-            <label>Età</label>
-            <input type="number" id="pAge" placeholder="Anni">
-            
-            <label>Ship del Cuore *</label>
-            <input type="text" id="pShip" placeholder="Es: OhmNanon, FirstKhao">
-            
-            <label>Social Link (Instagram/Twitter)</label>
-            <input type="text" id="pSocial" placeholder="Es: @tuonome">
-            
-            <label>Bio / Come hai conosciuto il BL?</label>
-            <textarea id="pStory" rows="3"></textarea>
-
-            <button class="btn-main" onclick="saveProfile()">SALVA MODIFICHE 💾</button>
+            <p id="qFeed" style="font-weight:bold; min-height:20px;"></p>
         </div>
     </section>
 
 </div>
+
+<footer>
+    <p>© 2024 Black World Community</p>
+    <div>
+        <a onclick="alert('Privacy Policy:\nI dati raccolti (Email, Nick, Ship, Foto) servono solo per il funzionamento dell\'app.\nPuoi cancellare tutto dal menu profilo.')">Privacy Policy</a>
+        <a onclick="alert('Termini:\nSii rispettosa in chat.\nNiente spam.\nDivertiti!')">Termini & Condizioni</a>
+        <a onclick="document.cookie='bw_consent=; Max-Age=0'; location.reload();">Reset Cookie</a>
+    </div>
+</footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
@@ -236,123 +204,142 @@
     const auth = firebase.auth();
     const db = firebase.database();
 
-    // --- UI BASE ---
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    // --- UI E NAVIGAZIONE ---
+    function toggleSidebar(forceClose = false) { 
+        const sb = document.getElementById('sidebar');
+        if(forceClose) sb.classList.remove('open');
+        else sb.classList.toggle('open');
+    }
+    
     function navTo(page, el) {
+        // Chiudi sidebar quando cambi pagina
+        toggleSidebar(true);
+        
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(page).classList.add('active');
         document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
         if(el) el.classList.add('active');
+        
         if(page === 'amicizia') loadFriends();
         if(page === 'home') loadLeaderboard();
     }
-    
-    // --- LEGAL ---
-    if(!localStorage.getItem('bw_consent')) document.getElementById('cookieBanner').style.display = 'block';
-    function acceptCookies() { localStorage.setItem('bw_consent', 'true'); document.getElementById('cookieBanner').style.display = 'none'; }
-    function openPrivacy() { document.getElementById('privacyModal').style.display = 'block'; }
-    function closePrivacy() { document.getElementById('privacyModal').style.display = 'none'; }
+
+    function toggleEdit() {
+        const f = document.getElementById('editForm');
+        f.style.display = f.style.display === 'block' ? 'none' : 'block';
+    }
 
     // --- AUTH ---
-    function showAuth(t) {
-        document.getElementById('loginForm').classList.toggle('active', t==='login');
-        document.getElementById('regForm').classList.toggle('active', t==='reg');
+    function emailAuth(type) {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('pass').value;
+        const func = type === 'login' ? auth.signInWithEmailAndPassword(e,p) : auth.createUserWithEmailAndPassword(e,p);
+        func.then(() => alert("Successo!")).catch(err => alert(err.message));
     }
-    function authAction(type) {
-        const e = document.getElementById(type==='login'?'lEmail':'rEmail').value;
-        const p = document.getElementById(type==='login'?'lPass':'rPass').value;
-        const func = type==='login' ? auth.signInWithEmailAndPassword(e,p) : auth.createUserWithEmailAndPassword(e,p);
-        func.then(() => toggleSidebar()).catch(er => alert(er.message));
-    }
-    function socialLogin() {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(()=>toggleSidebar()).catch(e=>alert("Dominio non autorizzato! Vai su Firebase Console."));
-    }
-    function logout() { auth.signOut().then(()=>location.reload()); }
+    function socialLogin() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e => alert(e.message)); }
+    function logout() { auth.signOut().then(() => location.reload()); }
     function deleteAccount() {
-        if(confirm("ATTENZIONE: Cancellare l'account è irreversibile. Procedere?")) {
+        if(confirm("Sei sicura? Cancellerai tutto.")) {
             db.ref('users/'+auth.currentUser.uid).remove();
             auth.currentUser.delete().then(()=>location.reload());
         }
     }
 
-    // --- STATE ---
+    // --- LOGICA PROFILO & IMMAGINI ---
     auth.onAuthStateChanged(u => {
         if(u) {
             document.getElementById('authArea').style.display = 'none';
             document.getElementById('userArea').style.display = 'block';
-            document.getElementById('sideUser').innerText = "Ciao, " + u.email.split('@')[0];
             
-            // Gestione Profilo Page
-            document.getElementById('noAuthProfile').style.display = 'none';
-            document.getElementById('authProfile').style.display = 'block';
-            
-            // Carica dati utente
-            db.ref('users/'+u.uid).once('value').then(s => {
-                if(s.exists()) {
-                    const d = s.val();
-                    document.getElementById('pNick').value = d.nick || "";
-                    document.getElementById('pAge').value = d.age || "";
-                    document.getElementById('pShip').value = d.ship || "";
-                    document.getElementById('pStory').value = d.story || "";
-                    document.getElementById('pAvatar').value = d.avatar || "";
-                    document.getElementById('pSocial').value = d.social || "";
-                    document.getElementById('scoreDisplay').innerText = d.score || 0;
-                    updatePreview();
-                }
+            // Carica dati
+            db.ref('users/'+u.uid).on('value', s => {
+                const d = s.val() || {};
+                // Aggiorna Form
+                document.getElementById('pNick').value = d.nick || "";
+                document.getElementById('pAge').value = d.age || "";
+                document.getElementById('pShip').value = d.ship || "";
+                document.getElementById('pSocial').value = d.social || "";
+                document.getElementById('pStory').value = d.story || "";
+                document.getElementById('scoreDisplay').innerText = d.score || 0;
+
+                // Aggiorna Anteprima Sidebar
+                document.getElementById('myNickDisplay').innerText = d.nick || u.email.split('@')[0];
+                document.getElementById('myShipDisplay').innerText = d.ship || "Nessuna Ship";
+                document.getElementById('myBioDisplay').innerText = d.story || "Scrivi la tua bio...";
+                document.getElementById('myAvatarDisplay').src = d.avatar || "https://ui-avatars.com/api/?name="+u.email;
             });
             loadChat(); loadLeaderboard();
         } else {
             document.getElementById('authArea').style.display = 'block';
             document.getElementById('userArea').style.display = 'none';
-            document.getElementById('noAuthProfile').style.display = 'block';
-            document.getElementById('authProfile').style.display = 'none';
-            loadChat(); loadLeaderboard(); // Funzionano in lettura anche offline
+            loadChat(); loadLeaderboard();
         }
     });
 
-    // --- PROFILO ---
-    function updatePreview() {
-        const url = document.getElementById('pAvatar').value;
-        const nick = document.getElementById('pNick').value;
-        document.getElementById('prevImg').src = url || `https://ui-avatars.com/api/?name=${nick || 'User'}`;
-    }
+    // Funzione salvataggio con FOTO (Base64)
     function saveProfile() {
-        if(!auth.currentUser) return;
+        const u = auth.currentUser;
+        if(!u) return;
+
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        // Raccogli dati testuali
         const data = {
             nick: document.getElementById('pNick').value,
             age: document.getElementById('pAge').value,
             ship: document.getElementById('pShip').value,
-            story: document.getElementById('pStory').value,
-            avatar: document.getElementById('pAvatar').value,
             social: document.getElementById('pSocial').value,
-            uid: auth.currentUser.uid
+            story: document.getElementById('pStory').value,
+            uid: u.uid
         };
-        db.ref('users/'+auth.currentUser.uid).update(data).then(() => alert("Profilo Aggiornato!"));
+
+        // Se c'è un file, convertilo
+        if(file) {
+            if(file.size > 1000000) return alert("La foto è troppo grande! Max 1MB.");
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                data.avatar = e.target.result; // Stringa Base64
+                db.ref('users/'+u.uid).update(data).then(() => {
+                    alert("Profilo e Foto salvati!");
+                    toggleEdit(); // Chiudi form
+                });
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // Salva solo testo (mantieni vecchia foto)
+            db.ref('users/'+u.uid).update(data).then(() => {
+                alert("Profilo aggiornato!");
+                toggleEdit();
+            });
+        }
     }
 
-    // --- FRIENDS ---
+    // --- AMICIZIA ---
     function loadFriends() {
         const filter = document.getElementById('searchShip').value.toLowerCase();
         db.ref('users').on('value', s => {
-            const feed = document.getElementById('friendsFeed'); feed.innerHTML = "";
-            let myShip = auth.currentUser ? document.getElementById('pShip').value.toLowerCase() : "";
-            
+            const f = document.getElementById('friendsFeed'); f.innerHTML = "";
+            let myShip = "";
+            // Leggi la mia ship dal campo input nascosto/sidebar
+            if(auth.currentUser) myShip = document.getElementById('pShip').value.toLowerCase();
+
             s.forEach(c => {
                 const u = c.val();
-                if(auth.currentUser && u.uid === auth.currentUser.uid) return;
+                if(auth.currentUser && c.key === auth.currentUser.uid) return; // Salta me stesso
                 if(filter && !u.ship.toLowerCase().includes(filter)) return;
-                
+
                 const isMatch = myShip && u.ship && u.ship.toLowerCase().includes(myShip);
                 const pic = u.avatar || `https://ui-avatars.com/api/?name=${u.nick}`;
 
-                feed.innerHTML += `
+                f.innerHTML += `
                     <div class="friend-card ${isMatch ? 'match' : ''}">
                         <img src="${pic}" style="width:60px; height:60px; border-radius:50%; object-fit:cover;">
                         <div>
-                            <div style="font-weight:bold; font-size:1.1rem;">${u.nick} ${isMatch?'💖':''}</div>
-                            <div style="font-size:0.85rem; color:#666;">Età: ${u.age||'?'} • Ship: <b>${u.ship}</b></div>
-                            <div style="font-size:0.8rem; margin-top:5px; font-style:italic;">"${u.story||''}"</div>
-                            ${u.social ? `<a href="https://instagram.com/${u.social.replace('@','')}" target="_blank" style="font-size:0.8rem; color:#2d6a4f; font-weight:bold; display:block; margin-top:5px;">📸 ${u.social}</a>` : ''}
+                            <h4 style="margin:0;">${u.nick} ${isMatch ? '💖' : ''}</h4>
+                            <small>Ship: <b>${u.ship}</b> • ${u.age || '?'} anni</small>
+                            <p style="font-size:0.85rem; font-style:italic;">"${u.story || ''}"</p>
+                            ${u.social ? `<b style="font-size:0.8rem; color:#2d6a4f;">Social: ${u.social}</b>` : ''}
                         </div>
                     </div>
                 `;
@@ -366,83 +353,69 @@
             const b = document.getElementById('chatBox'); b.innerHTML = "";
             s.forEach(c => {
                 const m = c.val();
-                const isMe = auth.currentUser && m.uid === auth.currentUser.uid;
-                b.innerHTML += `<div class="msg ${isMe?'me':''}"><span class="msg-user">${m.nick}</span>${m.text}</div>`;
+                const me = auth.currentUser && m.uid === auth.currentUser.uid;
+                b.innerHTML += `<div class="msg ${me?'me':''}"><b>${m.nick}:</b> ${m.text}</div>`;
             });
             b.scrollTop = b.scrollHeight;
         });
     }
     function sendMsg() {
-        if(!auth.currentUser) return alert("Accedi per scrivere!");
+        if(!auth.currentUser) return alert("Accedi!");
         const txt = document.getElementById('chatInput').value;
-        if(txt) {
-            const nick = document.getElementById('pNick').value || "Anonimo";
-            db.ref('chat').push({text:txt, uid:auth.currentUser.uid, nick:nick});
-            document.getElementById('chatInput').value = "";
-        }
+        const nick = document.getElementById('pNick').value || "Anonimo";
+        if(txt) db.ref('chat').push({text:txt, uid:auth.currentUser.uid, nick:nick});
+        document.getElementById('chatInput').value = "";
     }
 
-    // --- QUIZ ---
+    // --- QUIZ E CLASSIFICA ---
     const DB_QUIZ = {
         gmmtv: [
-            {q: "Chi ha tradito chi in Bad Buddy?", a:["Pran ha tradito", "Famiglie si odiano", "Pat ha baciato Ink"], c:1},
-            {q: "Perché Ohm e Nanon non interagiscono?", a:["Scelta personale non chiarita", "Nanon ha lasciato GMMTV", "Litigio pubblico"], c:0},
-            {q: "Chi è Enchante?", a:["Theo", "Akk", "Uno dei 4 ragazzi"], c:2},
-            {q: "In Not Me, chi è Black?", a:["Il fratello violento", "Il fratello gentile", "Il poliziotto"], c:0}
+            {q:"Chi ha tradito chi in Bad Buddy?", a:["Nessuno","Pran","Pat"], c:1},
+            {q:"Chi è Black in Not Me?", a:["Poliziotto","Fratello violento","Studente"], c:1}
         ],
         domundi: [
-            {q: "Perché Net e James separati?", a:["James carriera solista", "Litigio", "Net cambiato agenzia"], c:0},
-            {q: "Nickname Uea per King?", a:["P'Pervert / Gatto", "Daddy", "Cucciolo"], c:0},
-            {q: "Partner di Tutor?", a:["Yim", "NuNew", "Max"], c:0},
-            {q: "Chi ha lasciato Domundi 2024?", a:["Tommy", "Zee", "Nessuno"], c:0} // Attenzione: controlla le news reali!
+            {q:"Partner di Net?", a:["James","Zee","Max"], c:0},
+            {q:"Chi canta la OST di Cutie Pie?", a:["NuNew","Zee","Tutti"], c:0}
         ]
     };
-    let qState = { idx:0, pts:0, type:null };
-
+    let curQ=0, pts=0, type=null;
     function startQuiz(t) {
-        if(!auth.currentUser) return alert("Accedi per i punti!");
-        qState = { idx:0, pts:0, type:t };
+        if(!auth.currentUser) return alert("Accedi prima!");
+        type=t; curQ=0; pts=0;
         document.getElementById('quizMenu').style.display='none';
         document.getElementById('quizActive').style.display='block';
         showQ();
     }
     function showQ() {
-        const list = DB_QUIZ[qState.type];
-        if(qState.idx >= list.length) {
-            alert(`Finito! Punti: ${qState.pts}`);
-            db.ref('users/'+auth.currentUser.uid+'/score').transaction(s => (s||0)+qState.pts);
+        if(curQ >= DB_QUIZ[type].length) {
+            alert("Finito! Punti: "+pts);
+            db.ref('users/'+auth.currentUser.uid+'/score').transaction(s=>(s||0)+pts);
             stopQuiz(); return;
         }
-        const d = list[qState.idx];
-        document.getElementById('qTitle').innerText = `Domanda ${qState.idx+1}`;
+        const d = DB_QUIZ[type][curQ];
+        document.getElementById('qTitle').innerText = `Domanda ${curQ+1}`;
         document.getElementById('qText').innerText = d.q;
         document.getElementById('qFeed').innerText = "";
-        const div = document.getElementById('qOpts'); div.innerHTML = "";
-        d.a.forEach((opt, i) => {
-            div.innerHTML += `<div class="quiz-btn" onclick="checkQ(${i}, ${d.c}, this)">${opt}</div>`;
+        const o = document.getElementById('qOpts'); o.innerHTML="";
+        d.a.forEach((a,i) => {
+            o.innerHTML += `<div class="quiz-btn" onclick="check(${i},${d.c},this)">${a}</div>`;
         });
     }
-    function checkQ(sel, corr, el) {
-        if(sel === corr) { el.classList.add('correct'); qState.pts++; document.getElementById('qFeed').innerText="✅ GIUSTO!"; }
-        else { el.classList.add('wrong'); document.getElementById('qFeed').innerText="❌ SBAGLIATO!"; }
-        setTimeout(()=>{ qState.idx++; showQ(); }, 1500);
+    function check(s,c,el) {
+        if(s===c) { el.classList.add('correct'); pts++; document.getElementById('qFeed').innerText="SI!"; }
+        else { el.classList.add('wrong'); document.getElementById('qFeed').innerText="NO!"; }
+        setTimeout(()=>{ curQ++; showQ(); }, 1000);
     }
     function stopQuiz() {
         document.getElementById('quizMenu').style.display='block';
         document.getElementById('quizActive').style.display='none';
     }
-
-    // --- LEADERBOARD ---
     function loadLeaderboard() {
-        db.ref("users").orderByChild("score").limitToLast(5).on("value", s => {
-            const t = document.getElementById("leaderboardBody"); t.innerHTML = "";
-            let arr = [];
-            s.forEach(c => arr.push({n: c.val().nick, s: c.val().score || 0}));
-            arr.sort((a,b) => b.s - a.s).forEach((p,i) => {
-                t.innerHTML += `<tr style="border-bottom:1px solid #eee;">
-                    <td style="padding:10px;"><b>#${i+1}</b> ${p.n}</td>
-                    <td style="text-align:right;">${p.s} pts</td>
-                </tr>`;
+        db.ref('users').orderByChild('score').limitToLast(5).on('value', s => {
+            const t = document.getElementById('leaderboard'); t.innerHTML="";
+            let a = []; s.forEach(c => a.push({n:c.val().nick, s:c.val().score||0}));
+            a.sort((x,y)=>y.s - x.s).forEach((p,i) => {
+                t.innerHTML += `<tr><td style="padding:10px;">#${i+1} <b>${p.n}</b></td><td style="text-align:right;">${p.s} pts</td></tr>`;
             });
         });
     }
