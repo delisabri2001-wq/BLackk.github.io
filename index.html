@@ -295,14 +295,18 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
 <script>
+    // --- CONFIGURAZIONE FIREBASE REALE ---
     const firebaseConfig = {
       apiKey: "AIzaSyAr4cM8wb7kSHpaFDGjlDZcm15t1LyL4Do",
       authDomain: "black-world-91efc.firebaseapp.com",
       databaseURL: "https://black-world-91efc-default-rtdb.europe-west1.firebasedatabase.app",
       projectId: "black-world-91efc",
+      storageBucket: "black-world-91efc.firebasestorage.app",
       messagingSenderId: "1075556185722",
-      appId: "1:1075556185722:web:a18a5f3d7ef3b4862aedc3"
+      appId: "1:1075556185722:web:a18a5f3d7ef3b4862aedc3",
+      measurementId: "G-L1TH722CGE"
     };
+
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
@@ -315,7 +319,7 @@
         setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000);
     }
     
-    // GESTIONE TASTI (INVIO E ESC) E NAVIGAZIONE INDIETRO
+    // GESTIONE TASTI E NAVIGAZIONE
     function handleChatKey(e) { if(e.key === 'Enter') sendMsg(); }
     function handlePrivateChatKey(e) { if(e.key === 'Enter') sendPrivateMsg(); }
     
@@ -326,7 +330,6 @@
         }
     });
 
-    // GESTIONE TASTO INDIETRO BROWSER
     window.onpopstate = function(event) {
         if(event.state && event.state.page) navTo(event.state.page, null, false);
         else navTo('home', null, false);
@@ -359,7 +362,7 @@
         else { sb.classList.add('open'); ov.style.display='block'; }
     }
 
-    // --- DATI FINTI & BOT REPLIES (LE TUE SCELTE) ---
+    // --- DATI FINTI & BOT REPLIES ---
     const FAKE_USERS = [
         { uid:'bot1', nick:'TutorYim_Vamp', age:23, ship:'TutorYim', story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', otherShips: 'NetJJ', avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' },
         { uid:'bot2', nick:'ZeeNuNew_Prince', age:25, ship:'ZeeNuNew', story:'Aspettando The Next Prince con ansia. 👑', otherShips: 'MaxNat', avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' },
@@ -376,7 +379,7 @@
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
         
-        currentDeck = [...FAKE_USERS]; // Bot subito
+        currentDeck = [...FAKE_USERS];
         if(f) currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
         currentDeck.sort(() => Math.random() - 0.5);
         deckIndex = 0;
@@ -498,7 +501,7 @@
         document.getElementById('privateChatInput').value = "";
     }
 
-    // --- GAMES: SLOT MACHINE MASSIVA (50 FRASI) ---
+    // --- GAMES ---
     const SLOT_DATA = [
         { s: "ZeeNuNew", m: "Mood Principe: The Next Prince ti aspetta." },
         { s: "TutorYim", m: "Vampire vibes! Attenta al collo." },
@@ -561,7 +564,6 @@
         }, 800);
     }
 
-    // EMOJI CHALLENGE: SERIE TV (OLD & NEW)
     const EMOJI_LEVELS = [
         { q: "Indovina la Serie (Classica):", e: "⚽🏃‍♂️🍤", a: ["Love by Chance", "TharnType", "2Moons"], c: 0 },
         { q: "Indovina la Serie (Classica):", e: "🦷🥼🐟", a: ["Bad Buddy", "Fish Upon the Sky", "Star In My Mind"], c: 1 },
@@ -577,7 +579,6 @@
     
     function startEmojiGame() { startQuizInternal(EMOJI_LEVELS, "Emoji Challenge"); }
     
-    // --- QUIZ STANDARD ---
     const DB_QUIZ = {
         gmmtv: [
             {q: "Partner di Ohm in Kidnap?", a: ["Nanon", "Leng", "Perth"], c: 1},
@@ -627,12 +628,11 @@
             if(wrongAnswers.length > 0) {
                 msg += "\n\n❌ Errori:\n" + wrongAnswers.join("\n");
             }
-            alert(msg); // Mostra alert con errori
+            alert(msg);
             if(type) db.ref('users/'+auth.currentUser.uid+'/score').transaction(s=>(s||0)+pts); 
             stopQuiz(); return; 
         }
         const d = currentQuizData[qI]; 
-        const questionText = d.q ? d.q : "Indovina:";
         const displayText = d.e ? `<span style="font-size:2rem;">${d.e}</span>` : d.q;
         
         document.getElementById('qTitle').innerText=`Domanda ${qI+1}`; 
@@ -661,7 +661,7 @@
     function toggleProfileEdit() {
         const card = document.getElementById('profileCardContent');
         if(card.classList.contains('editing')) {
-            card.classList.remove('editing'); // Chiudi senza salvare
+            card.classList.remove('editing'); 
         } else {
             document.getElementById('editNick').value = document.getElementById('pubNick').innerText;
             document.getElementById('editAge').value = document.getElementById('pubAge').innerText !== '-' ? document.getElementById('pubAge').innerText : '';
@@ -692,7 +692,7 @@
         }
     }
 
-    // AUTH (MODIFICATO PER MOSTRARE EDIT BUTTON)
+    // AUTH (MODIFICATO PER NICKNAME E EDIT BUTTON)
     auth.onAuthStateChanged(u=>{
         if(u){
             document.getElementById('authArea').style.display='none';
@@ -700,9 +700,9 @@
             document.getElementById('guestNick').style.display='none'; 
             if(ADMIN_EMAILS.includes(u.email)) document.getElementById('adminBadge').style.display='inline';
             
-            // Fix per il sidebar nickname
             db.ref('users/'+u.uid).on('value', s=>{
                 const d=s.val()||{};
+                // AGGIORNAMENTO AUTOMATICO NOME SIDEBAR
                 document.getElementById('sidebarNick').innerText = d.nick || u.email.split('@')[0];
             });
 
@@ -717,17 +717,53 @@
     // Modifica openUserProfile per mostrare tasti edit SE è il mio profilo
     const originalOpenUserProfile = openUserProfile;
     openUserProfile = function(uid) {
-        originalOpenUserProfile(uid);
-        if(auth.currentUser && auth.currentUser.uid === uid) {
-            document.getElementById('btnEditProfile').style.display = 'block';
-            document.getElementById('btnSaveProfile').style.display = 'block';
-        } else {
+        // Chiama la funzione originale per popolare i dati
+        navTo('userProfilePage');
+        if(uid.startsWith('bot')) {
+            const b = FAKE_USERS.find(x=>x.uid===uid);
+            if(b) {
+                document.getElementById('pubNick').innerText=b.nick; 
+                document.getElementById('pubShip').innerText=b.ship;
+                document.getElementById('pubOtherShipsContainer').innerHTML = b.otherShips ? `<span class="other-ship-tag">${b.otherShips}</span>` : "";
+                document.getElementById('pubAge').innerText=b.age; 
+                document.getElementById('pubStory').innerText=b.story;
+                document.getElementById('pubAvatar').src=b.avatar;
+            }
+            // Nascondi tasti edit per i bot
             document.getElementById('btnEditProfile').style.display = 'none';
             document.getElementById('btnSaveProfile').style.display = 'none';
+            return;
         }
+        db.ref('users/'+uid).once('value',s=>{
+            const u=s.val();
+            document.getElementById('pubNick').innerText=u.nick; 
+            document.getElementById('pubShip').innerText=u.ship;
+            
+            const otherContainer = document.getElementById('pubOtherShipsContainer');
+            otherContainer.innerHTML = "";
+            if(u.otherShips) {
+                u.otherShips.split(',').forEach(ship => {
+                    if(ship.trim()) otherContainer.innerHTML += `<span class="other-ship-tag">${ship.trim()}</span>`;
+                });
+            }
+
+            document.getElementById('pubAge').innerText=u.age; 
+            document.getElementById('pubStory').innerText=u.story;
+            document.getElementById('pubSocial').innerText=u.social || "Privato";
+            document.getElementById('pubAvatar').src=u.avatar;
+
+            // CHECK: È IL MIO PROFILO?
+            if(auth.currentUser && auth.currentUser.uid === uid) {
+                document.getElementById('btnEditProfile').style.display = 'block';
+                document.getElementById('btnSaveProfile').style.display = 'block';
+            } else {
+                document.getElementById('btnEditProfile').style.display = 'none';
+                document.getElementById('btnSaveProfile').style.display = 'none';
+            }
+        });
     }
 
-    // --- CHAT GLOBALE (CON ADMIN DELETE) ---
+    // --- CHAT GLOBALE ---
     function loadChat() {
         db.ref('chat').limitToLast(20).on('value', s=>{
             const b = document.getElementById('chatBox'); b.innerHTML="";
