@@ -9,17 +9,16 @@
     <style>
         /* --- TEMA FOREST & NATURE (100% VERDE) --- */
         :root { 
-            --primary: #1b4332; /* Verde Foresta Scuro */
+            --primary: #1b4332; /* Verde Foresta */
             --accent: #2d6a4f;  /* Verde Smeraldo */
             --light: #d8f3dc;   /* Verde Menta Chiaro */
             --bg: #f0fff4;      /* Sfondo quasi bianco/verde */
             --white: #ffffff; 
-            --text: #1e272e;    /* Testo base scuro */
-            --admin: #c0392b; 
+            --text: #1b4332;    /* Testo Verde scurissimo */
+            --delete: #e74c3c; 
         }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         
-        /* SFONDO A POIS VERDI */
         body { 
             margin: 0; 
             color: var(--text); 
@@ -91,33 +90,27 @@
         .match-avatar-circle { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); cursor: pointer; }
         .match-name { font-size: 0.8rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; margin-top: 5px; cursor: pointer; color: var(--primary); text-decoration: underline; }
 
-        /* --- CHAT CSS FIXED (LEGGIBILITÀ) --- */
+        /* CHAT STYLES (CORRETTO COLORE TESTO) */
         .chat-container { height: 350px; overflow-y: auto; border: 1px solid #b7e4c7; padding: 15px; background: #f0fff4; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        
         .msg { 
             padding: 10px 14px; 
             border-radius: 15px; 
             background: white; 
-            border: 1px solid #b7e4c7; 
+            border: 1px solid #d8f3dc; 
             max-width: 80%; 
-            font-size: 0.95rem; 
+            font-size: 0.9rem; 
             word-wrap: break-word; 
             position: relative; 
-            color: #222; /* TESTO SCURO PER MESSAGGI ALTRUI */
+            color: #000000; /* TESTO NERO PER LEGGIBILITÀ */
         }
-        
         .msg.me { 
             align-self: flex-end; 
-            background: var(--primary); /* Sfondo verde scuro */
+            background: var(--primary); 
             color: white; /* TESTO BIANCO PER I MIEI MESSAGGI */
             border: none; 
         }
-        
-        .msg b { color: #2d6a4f; } /* Nome utente verde */
-        .msg.me b { color: #d8f3dc; } /* Mio nome verde chiaro */
-        
-        .msg.guest { background: #e8f5e9; border: 1px solid #74c69d; }
-        .msg.admin { border: 2px solid #e74c3c; background: #fff5f5; }
+        .msg.guest { background: #e8f5e9; border: 1px solid #95d5b2; color: #000; }
+        .msg.admin { border: 2px solid #e74c3c; background: #fff5f5; color: #000; }
         .delete-btn { color: #c0392b; font-weight: bold; cursor: pointer; margin-left: 10px; font-size: 0.8rem; }
 
         /* PROFILO FULL */
@@ -134,7 +127,7 @@
         .editing .view-data { display: none; }
 
         /* INPUT & BUTTONS */
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #b7e4c7; border-radius: 12px; margin-bottom: 10px; outline: none; transition: 0.3s; background: #fff; color: #333; }
+        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #b7e4c7; border-radius: 12px; margin-bottom: 10px; outline: none; transition: 0.3s; background: #fff; }
         input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1); }
         .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 5px; transition: 0.2s; box-shadow: 0 4px 6px rgba(45, 106, 79, 0.2); }
         .btn-main:hover { background: #1b4332; transform: translateY(-2px); }
@@ -377,12 +370,14 @@
     
     function loadBoard() {
         const board = document.getElementById('scleroBoard');
-        db.ref('bacheca').limitToLast(30).on('value', s => {
+        // MODIFICA QUI: Limite a 6 post-it
+        db.ref('bacheca').limitToLast(6).on('value', s => {
             board.innerHTML = "";
             if(!s.exists()) { board.innerHTML = "<p>Nessun post-it ancora!</p>"; return; }
             s.forEach(c => {
                 const note = c.val();
                 const rotate = (Math.random() * 6) - 3; 
+                // PREPEND per mostrare i più recenti in alto/prima
                 board.innerHTML = `
                     <div class="post-it" style="background:${note.color}; transform:rotate(${rotate}deg);">
                         <div class="pin"></div>
