@@ -7,13 +7,14 @@
     <link rel="icon" href="https://emojicdn.elk.sh/🌿">
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- STILE BASE (TEMA VERDE) --- */
+        /* --- TEMA FOREST & NATURE (100% VERDE) --- */
         :root { 
-            --primary: #1b4332; /* Verde Scuro Foresta */
+            --primary: #1b4332; /* Verde Foresta Scuro */
             --accent: #2d6a4f;  /* Verde Smeraldo */
-            --soft: #e8f5e9;    /* Verde Menta Chiarissimo */
+            --light: #d8f3dc;   /* Verde Menta Chiaro */
+            --bg: #f0fff4;      /* Sfondo quasi bianco/verde */
             --white: #ffffff; 
-            --text: #1e272e; 
+            --text: #1e272e;    /* Testo base scuro */
             --admin: #c0392b; 
         }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -26,27 +27,27 @@
             display: flex; 
             flex-direction: column; 
             min-height: 100vh;
-            background-color: var(--soft);
-            background-image: radial-gradient(#a8e6cf 1px, transparent 1px), radial-gradient(#a8e6cf 1px, var(--soft) 1px);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
+            background-color: var(--bg);
+            background-image: radial-gradient(#95d5b2 1.5px, transparent 1.5px), radial-gradient(#95d5b2 1.5px, var(--bg) 1.5px);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
         }
 
         /* HEADER & NAV */
-        header { background: linear-gradient(135deg, #1b4332, #40916c); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(27, 67, 50, 0.3); position: relative; z-index: 1001; }
-        nav { background: rgba(255,255,255,0.95); border-bottom: 1px solid #daeec9; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; backdrop-filter: blur(5px); }
+        header { background: linear-gradient(135deg, #1b4332, #2d6a4f); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(27, 67, 50, 0.4); position: relative; z-index: 1001; border-bottom: 4px solid #52b788; }
+        nav { background: rgba(255,255,255,0.95); border-bottom: 1px solid #b7e4c7; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; backdrop-filter: blur(5px); }
         .nav-links { display: flex; align-items: center; gap: 10px; overflow-x: auto; padding: 0 10px; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; padding: 8px 12px; transition: 0.3s; white-space: nowrap; border-radius: 20px; }
-        .nav-links a.active { background: var(--accent); color: white; }
+        .nav-links a { text-decoration: none; color: #2d6a4f; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; padding: 8px 12px; transition: 0.3s; white-space: nowrap; border-radius: 20px; }
+        .nav-links a.active { background: var(--primary); color: white; box-shadow: 0 2px 10px rgba(45, 106, 79, 0.3); }
 
         /* SIDEBAR */
-        .sidebar { position: fixed; left: -100%; top: 0; width: 300px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 20px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; }
+        .sidebar { position: fixed; left: -100%; top: 0; width: 300px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 20px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; border-right: 3px solid var(--light); }
         .sidebar.open { left: 0; }
-        #sidebarOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1500; cursor:pointer; }
+        #sidebarOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(27, 67, 50, 0.6); z-index:1500; cursor:pointer; }
         
         /* CONTENUTO */
         .container { max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; position: relative; z-index: 1; }
-        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #f0f0f0; }
+        .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 8px 20px rgba(45, 106, 79, 0.08); margin-bottom: 25px; border: 1px solid #e8f5e9; }
         .page { display: none; animation: fadeIn 0.5s; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -55,32 +56,32 @@
         .board-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px 0; }
         .post-it { 
             width: 160px; height: 160px; padding: 15px; 
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.2); 
-            font-family: 'Indie Flower', cursive; font-size: 1.1rem; color: #333;
+            box-shadow: 3px 3px 12px rgba(27, 67, 50, 0.15); 
+            font-family: 'Indie Flower', cursive; font-size: 1.1rem; color: #1b4332;
             display: flex; flex-direction: column; justify-content: space-between;
-            transition: transform 0.2s; cursor: default; position: relative;
+            transition: transform 0.2s; cursor: default; position: relative; border-radius: 2px;
         }
         .post-it:hover { transform: scale(1.1) !important; z-index: 10; }
-        .post-it b { display: block; font-size: 0.8rem; text-align: right; color: #555; margin-top: 5px; }
-        .pin { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 15px; height: 15px; background: #e74c3c; border-radius: 50%; box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .post-it b { display: block; font-size: 0.8rem; text-align: right; color: #40916c; margin-top: 5px; }
+        .pin { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 14px; height: 14px; background: #2d6a4f; border-radius: 50%; border: 2px solid white; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); }
 
         /* HOME: FOUNDER CORNER */
-        .founder-box { display: flex; gap: 20px; align-items: center; background: #f0f9f4; border: 2px dashed #55efc4; padding: 20px; border-radius: 20px; margin-bottom: 30px; }
+        .founder-box { display: flex; gap: 20px; align-items: center; background: #e8f5e9; border: 2px dashed #74c69d; padding: 20px; border-radius: 20px; margin-bottom: 30px; }
         .founder-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .founder-text h3 { margin: 0 0 5px 0; color: var(--primary); }
-        .founder-text p { margin: 0; font-size: 0.9rem; color: #555; font-style: italic; }
+        .founder-text p { margin: 0; font-size: 0.9rem; color: #2d6a4f; font-style: italic; }
 
         /* TINDER STYLE */
         .tinder-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; position: relative; }
-        .swipe-card { width: 100%; max-width: 350px; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; transition: transform 0.4s ease-out, opacity 0.4s ease-out; display: flex; flex-direction: column; border: 1px solid #eee; }
+        .swipe-card { width: 100%; max-width: 350px; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(45, 106, 79, 0.15); position: relative; transition: transform 0.4s ease-out, opacity 0.4s ease-out; display: flex; flex-direction: column; border: 1px solid #eee; }
         .swipe-img-container { width: 100%; height: 400px; position: relative; background: #eee; }
         .swipe-img { width: 100%; height: 100%; object-fit: cover; }
         .swipe-info { padding: 20px; text-align: left; }
-        .swipe-name { font-size: 1.6rem; font-weight: bold; margin: 0; color: #222; }
+        .swipe-name { font-size: 1.6rem; font-weight: bold; margin: 0; color: var(--primary); }
         .swipe-controls { display: flex; gap: 30px; justify-content: center; margin-top: 25px; }
-        .btn-swipe { width: 70px; height: 70px; border-radius: 50%; border: none; font-size: 2rem; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; }
-        .btn-swipe.nope { background: white; color: #ff4757; border: 2px solid #ff4757; }
-        .btn-swipe.love { background: var(--accent); color: white; border: 2px solid var(--accent); }
+        .btn-swipe { width: 70px; height: 70px; border-radius: 50%; border: none; font-size: 2rem; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; }
+        .btn-swipe.nope { background: white; color: #e74c3c; border: 2px solid #e74c3c; }
+        .btn-swipe.love { background: var(--primary); color: white; border: 2px solid var(--primary); }
         .btn-swipe:hover { transform: scale(1.15); }
 
         /* MATCH LIST */
@@ -90,58 +91,79 @@
         .match-avatar-circle { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); cursor: pointer; }
         .match-name { font-size: 0.8rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; margin-top: 5px; cursor: pointer; color: var(--primary); text-decoration: underline; }
 
-        /* CHAT */
-        .chat-container { height: 350px; overflow-y: auto; border: 1px solid #eee; padding: 15px; background: #fafafa; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .msg { padding: 10px 14px; border-radius: 15px; background: #eee; max-width: 80%; font-size: 0.9rem; word-wrap: break-word; position: relative; }
-        .msg.me { align-self: flex-end; background: var(--accent); color: white; }
-        .msg.guest { background: #e0f7fa; border: 1px solid #b2ebf2; }
-        .msg.admin { border: 2px solid var(--admin); background: #fff5f5; }
-        .delete-btn { color: red; font-weight: bold; cursor: pointer; margin-left: 10px; font-size: 0.8rem; }
+        /* --- CHAT CSS FIXED (LEGGIBILITÀ) --- */
+        .chat-container { height: 350px; overflow-y: auto; border: 1px solid #b7e4c7; padding: 15px; background: #f0fff4; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        
+        .msg { 
+            padding: 10px 14px; 
+            border-radius: 15px; 
+            background: white; 
+            border: 1px solid #b7e4c7; 
+            max-width: 80%; 
+            font-size: 0.95rem; 
+            word-wrap: break-word; 
+            position: relative; 
+            color: #222; /* TESTO SCURO PER MESSAGGI ALTRUI */
+        }
+        
+        .msg.me { 
+            align-self: flex-end; 
+            background: var(--primary); /* Sfondo verde scuro */
+            color: white; /* TESTO BIANCO PER I MIEI MESSAGGI */
+            border: none; 
+        }
+        
+        .msg b { color: #2d6a4f; } /* Nome utente verde */
+        .msg.me b { color: #d8f3dc; } /* Mio nome verde chiaro */
+        
+        .msg.guest { background: #e8f5e9; border: 1px solid #74c69d; }
+        .msg.admin { border: 2px solid #e74c3c; background: #fff5f5; }
+        .delete-btn { color: #c0392b; font-weight: bold; cursor: pointer; margin-left: 10px; font-size: 0.8rem; }
 
         /* PROFILO FULL */
         .profile-card { text-align: center; padding: 0; overflow: hidden; }
-        .profile-cover { height: 150px; background: linear-gradient(45deg, var(--primary), var(--accent)); }
+        .profile-cover { height: 150px; background: linear-gradient(45deg, #1b4332, #52b788); }
         .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; margin-top: -75px; position: relative; z-index: 2; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .profile-content { padding: 15px 20px 30px; }
-        .ship-tag { background: #dff9fb; color: var(--primary); padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin: 5px; }
-        .other-ship-tag { background: #f3f3f3; color: #555; padding: 4px 8px; border-radius: 15px; font-size: 0.8rem; display: inline-block; margin: 3px; }
+        .ship-tag { background: #d8f3dc; color: #1b4332; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin: 5px; border:1px solid #95d5b2; }
+        .other-ship-tag { background: #f0f0f0; color: #555; padding: 4px 8px; border-radius: 15px; font-size: 0.8rem; display: inline-block; margin: 3px; }
         
-        /* EDIT PROFILE IN PLACE */
-        .edit-input { width: 100%; border: 2px solid var(--accent); padding: 8px; border-radius: 5px; margin-bottom: 5px; display: none; }
+        /* EDIT PROFILE */
+        .edit-input { width: 100%; border: 2px solid var(--accent); padding: 8px; border-radius: 8px; margin-bottom: 5px; display: none; }
         .editing .edit-input { display: block; }
         .editing .view-data { display: none; }
 
         /* INPUT & BUTTONS */
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; margin-bottom: 10px; outline: none; transition: 0.3s; background: #fcfcfc; }
-        input:focus, textarea:focus { border-color: var(--accent); background: white; }
-        .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 5px; transition: 0.2s; }
-        .btn-main:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .btn-social { background: white; border: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 5px; cursor: pointer; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; color: #555; }
+        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #b7e4c7; border-radius: 12px; margin-bottom: 10px; outline: none; transition: 0.3s; background: #fff; color: #333; }
+        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1); }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 5px; transition: 0.2s; box-shadow: 0 4px 6px rgba(45, 106, 79, 0.2); }
+        .btn-main:hover { background: #1b4332; transform: translateY(-2px); }
+        .btn-social { background: white; border: 1px solid #b7e4c7; padding: 10px; width: 100%; margin-top: 5px; cursor: pointer; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; color: var(--primary); }
 
         /* GAMES & SLOT */
-        .quiz-btn { width: 100%; padding: 15px; border: 1px solid #ddd; background: #fff; text-align: left; margin-bottom: 8px; cursor: pointer; border-radius: 12px; transition:0.2s; }
-        .quiz-btn:hover { background: #f0f0f0; }
-        .quiz-btn.correct { background: #d4edda; color: #155724; border-color:#c3e6cb; }
+        .quiz-btn { width: 100%; padding: 15px; border: 1px solid #b7e4c7; background: #fff; text-align: left; margin-bottom: 8px; cursor: pointer; border-radius: 12px; transition:0.2s; }
+        .quiz-btn:hover { background: #d8f3dc; }
+        .quiz-btn.correct { background: #d8f3dc; color: #1b4332; border-color:#2d6a4f; }
         .quiz-btn.wrong { background: #f8d7da; color: #721c24; border-color:#f5c6cb; }
         
-        .slot-box { background: #f0fff4; color: #333; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #55efc4; margin-top: 20px; box-shadow: 0 5px 15px rgba(85, 239, 196, 0.2); }
+        .slot-box { background: #f0fff4; color: #333; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #52b788; margin-top: 20px; box-shadow: 0 5px 15px rgba(82, 183, 136, 0.2); }
         .slot-result { font-size: 1.1rem; margin: 15px 0; min-height: 50px; font-weight: bold; color: var(--primary); }
 
         /* FOOTER & TOAST & MODAL */
-        footer { background: #1e272e; color: #ccc; padding: 30px 20px; text-align: center; font-size: 0.85rem; margin-top: auto; }
+        footer { background: #1b4332; color: #95d5b2; padding: 30px 20px; text-align: center; font-size: 0.85rem; margin-top: auto; }
         footer a { color: white; text-decoration: underline; cursor: pointer; margin: 0 10px; }
-        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 4000; left: 50%; bottom: 30px; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-size: 0.9rem; }
+        #toast { visibility: hidden; min-width: 250px; background-color: #2d6a4f; color: #fff; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 4000; left: 50%; bottom: 30px; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-size: 0.9rem; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        #toast.success { background-color: var(--accent); }
+        #toast.success { background-color: #2d6a4f; }
         #toast.error { background-color: #c0392b; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        #legalModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:5000; align-items:center; justify-content:center; backdrop-filter: blur(3px); }
+        #legalModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(27, 67, 50, 0.7); z-index:5000; align-items:center; justify-content:center; backdrop-filter: blur(3px); }
         .modal-content { background:white; padding:30px; border-radius: 15px; max-width:500px; width:90%; max-height:80vh; overflow-y:auto; position:relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .close-modal { position:absolute; top:15px; right:20px; font-size:1.5rem; cursor:pointer; color:#777; }
 
-        /* FLOATING DECORATION (Foglia/Natura) */
+        /* FLOATING DECORATION */
         .cat-sticker { position: fixed; bottom: 20px; right: 20px; width: 80px; z-index: 3000; pointer-events: none; opacity: 0.9; }
     </style>
 </head>
@@ -181,7 +203,7 @@
         <h3 style="text-align:center;">Ciao, <span id="sidebarNick">User</span>! <span id="adminBadge" style="display:none;">👑</span></h3>
         <button class="btn-main" onclick="openMyProfile()">👤 VAI AL MIO PROFILO</button>
         <hr style="margin:20px 0;">
-        <button class="btn-main" style="background:#c0392b;" onclick="logout()">LOGOUT</button>
+        <button class="btn-main" style="background:#e74c3c;" onclick="logout()">LOGOUT</button>
     </div>
 </div>
 
@@ -204,14 +226,14 @@
     </section>
 
     <section id="bacheca" class="page">
-        <div class="card" style="text-align:center; background:#f0fff4; border: 2px dashed #2ecc71;">
-            <h3 style="color:#27ae60;">📢 Bacheca degli Scleri</h3>
+        <div class="card" style="text-align:center; background:#e8f5e9; border: 2px dashed #52b788;">
+            <h3 style="color:var(--primary);">📢 Bacheca degli Scleri</h3>
             <p>Lascia un pensiero anonimo (o firmato) sulla tua serie preferita!</p>
             <textarea id="scleroInput" rows="3" placeholder="Scrivi qui il tuo sclero..." style="background:white;"></textarea>
-            <button class="btn-main" style="background:#27ae60;" onclick="postSclero()">📌 APPENDI POST-IT</button>
+            <button class="btn-main" style="background:#40916c;" onclick="postSclero()">📌 APPENDI POST-IT</button>
         </div>
         <div id="scleroBoard" class="board-container">
-            <div style="color:#888;">Caricamento scleri...</div>
+            <div style="color:#555;">Caricamento scleri...</div>
         </div>
     </section>
 
@@ -221,11 +243,11 @@
             <img id="pubAvatar" src="" class="profile-avatar-big">
             <div class="profile-content">
                 <div class="view-data">
-                    <h2 id="pubNick" style="margin:0;">Nome</h2>
+                    <h2 id="pubNick" style="margin:0; color:var(--primary);">Nome</h2>
                     <div style="margin-top:10px;"><span class="ship-tag">🏆 Main: <span id="pubShip">...</span></span></div>
                     <div style="margin-top:5px;" id="pubOtherShipsContainer"></div>
-                    <div style="margin: 20px 0; font-size:1.1rem; color:#666;">Età: <b id="pubAge">-</b></div>
-                    <div style="font-style:italic; color:#555; margin:20px 0; padding:10px; background:#f9f9f9; border-radius:8px;">"<span id="pubStory">...</span>"</div>
+                    <div style="margin: 20px 0; font-size:1.1rem; color:#555;">Età: <b id="pubAge">-</b></div>
+                    <div style="font-style:italic; color:#2d6a4f; margin:20px 0; padding:10px; background:#f0fff4; border-radius:8px;">"<span id="pubStory">...</span>"</div>
                     <div style="margin-top:10px;">📱 Social: <b id="pubSocial">-</b></div>
                 </div>
                 <div class="edit-input">
@@ -234,8 +256,8 @@
                     <input type="text" id="editShip" placeholder="Ship Main"><input type="text" id="editOther" placeholder="Altre Ship">
                     <input type="text" id="editSocial" placeholder="Social"><textarea id="editStory" rows="3" placeholder="Bio"></textarea>
                 </div>
-                <button id="btnEditProfile" class="btn-main" style="background:#2d3436; margin-top:20px; display:none;" onclick="toggleProfileEdit()">✏️ MODIFICA PROFILO</button>
-                <button id="btnSaveProfile" class="btn-main" style="background:#2d3436; margin-top:20px; display:none;" onclick="saveProfileFromPage()">💾 SALVA</button>
+                <button id="btnEditProfile" class="btn-main" style="background:#40916c; margin-top:20px; display:none;" onclick="toggleProfileEdit()">✏️ MODIFICA PROFILO</button>
+                <button id="btnSaveProfile" class="btn-main" style="background:#40916c; margin-top:20px; display:none;" onclick="saveProfileFromPage()">💾 SALVA</button>
                 <button class="btn-social" style="margin-top:20px;" onclick="navTo('home')">🔙 Torna alla Home</button>
             </div>
         </div>
@@ -243,24 +265,24 @@
 
     <section id="match" class="page">
         <div class="card" style="text-align:center; padding:15px;">
-            <h3 style="margin:0 0 10px 0;">💘 Swipe & Match</h3>
+            <h3 style="margin:0 0 10px 0; color:var(--primary);">💘 Swipe & Match</h3>
             <p style="font-size:0.9rem; color:#666;">Filtra per ship (es. PerthSanta...)</p>
             <input type="text" id="shipFilter" placeholder="🔍 Scrivi ship..." onkeyup="reloadDeck()" style="text-align:center; font-weight:bold; color:var(--primary);">
         </div>
         <div id="deckContainer" class="tinder-container"><div id="loadingDeck" style="text-align:center; color:#888;">Caricamento profili...</div></div>
         <div id="myMatchesContainer" class="card" style="display:none;">
-            <h3>I Miei Match 💚</h3>
+            <h3 style="color:var(--primary);">I Miei Match 💚</h3>
             <p style="font-size:0.8rem; color:#666;">Clicca FOTO per Profilo | Clicca NOME per Chat</p>
             <div id="matchList" class="match-scroller"></div>
         </div>
-        <div id="guestWarning" class="card" style="text-align:center; background:#e0f7fa; display:none;"><small>💡 Accedi per salvare i Match e chattare!</small></div>
+        <div id="guestWarning" class="card" style="text-align:center; background:#e8f5e9; display:none;"><small>💡 Accedi per salvare i Match e chattare!</small></div>
     </section>
 
     <section id="privateChat" class="page">
-        <div class="card" style="border: 2px solid var(--primary);">
+        <div class="card" style="border: 2px solid #52b788;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <h3 style="color:var(--primary); margin:0;">💬 Chat con <span id="privateChatName">Utente</span></h3>
-                <button onclick="navTo('match')" style="background:none; border:none; cursor:pointer;">❌ Chiudi</button>
+                <button onclick="navTo('match')" style="background:none; border:none; cursor:pointer; color:#e74c3c;">❌ Chiudi</button>
             </div>
             <div id="privateChatBox" class="chat-container"></div>
             <div style="display:flex; gap:10px;">
@@ -277,7 +299,7 @@
             </div>
             <div id="chatBox" class="chat-container"></div>
             <div id="chatControls" style="display:flex; flex-direction:column; gap:10px;">
-                <input type="text" id="guestNick" placeholder="Il tuo nome (Obbligatorio per Ospiti)" style="display:none; border:2px solid #00bcd4;">
+                <input type="text" id="guestNick" placeholder="Il tuo nome (Obbligatorio per Ospiti)" style="display:none; border:2px solid #52b788;">
                 <div style="display:flex; gap:10px;">
                     <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
                     <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
@@ -288,13 +310,13 @@
 
     <section id="giochi" class="page">
         <div id="quizMenu" class="card">
-            <h3>🎮 Sala Giochi</h3>
+            <h3 style="color:var(--primary);">🎮 Sala Giochi</h3>
             <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV (2025)</button>
-            <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI (2025)</button>
-            <button class="btn-main" style="background:#e67e22;" onclick="startEmojiGame()">🧩 Emoji Challenge: Serie TV</button>
-            <div class="slot-box"><h3 style="color:#e91e63; margin:0;">🎰 La Ruota dell'Amore</h3><p>Quale ship 2025 ti protegge?</p><div id="slotResult" class="slot-result">❓</div><button class="btn-main" style="background:#81ecec; color:#000; border:none;" onclick="spinSlot()">GIRA ORA</button></div>
+            <button class="btn-main" style="background:#40916c;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI (2025)</button>
+            <button class="btn-main" style="background:#52b788;" onclick="startEmojiGame()">🧩 Emoji Challenge: Serie TV</button>
+            <div class="slot-box"><h3 style="color:var(--primary); margin:0;">🎰 La Ruota dell'Amore</h3><p>Quale ship 2025 ti protegge?</p><div id="slotResult" class="slot-result">❓</div><button class="btn-main" style="background:#b7e4c7; color:#1b4332; border:none;" onclick="spinSlot()">GIRA ORA</button></div>
         </div>
-        <div id="quizActive" class="card" style="display:none;"><button onclick="stopQuiz()" style="float:right; border:none; background:none;">✕</button><h3 id="qTitle">Domanda</h3><p id="qText" style="font-size:1.2rem; font-weight:600;">...</p><div id="qOpts"></div><p id="qFeed" style="font-weight:bold; text-align:center; margin-top:10px;"></p></div>
+        <div id="quizActive" class="card" style="display:none;"><button onclick="stopQuiz()" style="float:right; border:none; background:none; color:#e74c3c;">✕</button><h3 id="qTitle">Domanda</h3><p id="qText" style="font-size:1.2rem; font-weight:600;">...</p><div id="qOpts"></div><p id="qFeed" style="font-weight:bold; text-align:center; margin-top:10px;"></p></div>
     </section>
 
 </div>
@@ -302,7 +324,7 @@
 <footer><p>© 2024 Black World Community</p><div><a onclick="openLegal('privacy')">Privacy</a> <a onclick="openLegal('terms')">Termini</a> <a onclick="document.cookie='bw_consent=; Max-Age=0'; location.reload();">Reset</a></div></footer>
 <div id="legalModal"><div class="modal-content"><span class="close-modal" onclick="document.getElementById('legalModal').style.display='none'">&times;</span><h3 id="legalTitle">Titolo</h3><div id="legalContent"></div></div></div>
 <div id="toast">Notifica</div>
-<div id="cookieBanner" style="position:fixed; bottom:0; left:0; width:100%; background:#222; color:white; padding:15px; text-align:center; z-index:5000; display:none;">🍪 Cookie tecnici. <button onclick="acceptCookies()" style="margin-left:15px; background:var(--accent); border:none; padding:5px 15px; color:white; cursor:pointer;">OK</button></div>
+<div id="cookieBanner" style="position:fixed; bottom:0; left:0; width:100%; background:#1b4332; color:white; padding:15px; text-align:center; z-index:5000; display:none;">🍪 Cookie tecnici. <button onclick="acceptCookies()" style="margin-left:15px; background:#52b788; border:none; padding:5px 15px; color:white; cursor:pointer;">OK</button></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
@@ -344,13 +366,14 @@
         window.scrollTo(0,0);
         if(page==='match') { loadSwipeDeck(); loadMyMatches(); }
         if(page==='chat') loadChat();
-        if(page==='bacheca') loadBoard(); // CARICA LA BACHECA
+        if(page==='bacheca') loadBoard(); 
         if(page==='home') loadLeaderboard();
     }
     function toggleSidebar(forceClose=false) { const sb = document.getElementById('sidebar'); const ov = document.getElementById('sidebarOverlay'); if(forceClose || sb.classList.contains('open')) { sb.classList.remove('open'); ov.style.display='none'; } else { sb.classList.add('open'); ov.style.display='block'; } }
 
-    // --- NUOVA FUNZIONE: BACHECA DEGLI SCLERI ---
-    const COLORS = ['#ffeaa7', '#81ecec', '#55efc4', '#fab1a0', '#ff7675'];
+    // --- BACHECA DEGLI SCLERI (COLORI VERDI/GIALLI) ---
+    // Ho rimosso i rosa/rossi. Solo colori "Nature".
+    const COLORS = ['#ffeaa7', '#81ecec', '#55efc4', '#74c69d', '#d8f3dc'];
     
     function loadBoard() {
         const board = document.getElementById('scleroBoard');
@@ -359,13 +382,13 @@
             if(!s.exists()) { board.innerHTML = "<p>Nessun post-it ancora!</p>"; return; }
             s.forEach(c => {
                 const note = c.val();
-                const rotate = (Math.random() * 6) - 3; // Rotazione casuale
+                const rotate = (Math.random() * 6) - 3; 
                 board.innerHTML = `
                     <div class="post-it" style="background:${note.color}; transform:rotate(${rotate}deg);">
                         <div class="pin"></div>
                         <div style="overflow-y:auto; flex:1;">${note.text}</div>
                         <b>- ${note.nick}</b>
-                    </div>` + board.innerHTML; // Nuovi in alto
+                    </div>` + board.innerHTML; 
             });
         });
     }
@@ -373,30 +396,21 @@
     function postSclero() {
         const txt = document.getElementById('scleroInput').value;
         if(!txt) return alert("Scrivi qualcosa!");
-        
         let nick = "Anonima";
         if(auth.currentUser) nick = document.getElementById('sidebarNick').innerText;
-        
         const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-        
-        db.ref('bacheca').push({
-            text: txt,
-            nick: nick,
-            color: randomColor,
-            date: Date.now()
-        });
-        
+        db.ref('bacheca').push({ text: txt, nick: nick, color: randomColor, date: Date.now() });
         document.getElementById('scleroInput').value = "";
         showToast("Appeso! 📌", "success");
     }
 
     // DATI BOT
     const FAKE_USERS = [
-        { uid:'bot1', nick:'TutorYim_Vamp', age:23, ship:'TutorYim', story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', otherShips: 'NetJJ', avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' },
-        { uid:'bot2', nick:'ZeeNuNew_Prince', age:25, ship:'ZeeNuNew', story:'Aspettando The Next Prince con ansia. 👑', otherShips: 'MaxNat', avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' },
-        { uid:'bot3', nick:'PondPhuwin_Fish', age:21, ship:'PondPhuwin', story:'Pesce arancione per sempre. We Are ci ha salvati. 🟠', otherShips: 'ForceBook', avatar:'https://ui-avatars.com/api/?name=Pond+Phuwin&background=ff9f43' },
-        { uid:'bot4', nick:'JimmySea_Sun', age:24, ship:'JimmySea', story:'Last Twilight best series. MhokDay nel cuore. 🌻', otherShips: 'EarthMix', avatar:'https://ui-avatars.com/api/?name=Jimmy+Sea&background=feca57' },
-        { uid:'bot5', nick:'OhmLeng_Kidnap', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', otherShips: 'PerthSanta', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=badc58' }
+        { uid:'bot1', nick:'TutorYim_Vamp', age:23, ship:'TutorYim', story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', otherShips: 'NetJJ', avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=2d6a4f&color=fff' },
+        { uid:'bot2', nick:'ZeeNuNew_Prince', age:25, ship:'ZeeNuNew', story:'Aspettando The Next Prince con ansia. 👑', otherShips: 'MaxNat', avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=40916c&color=fff' },
+        { uid:'bot3', nick:'PondPhuwin_Fish', age:21, ship:'PondPhuwin', story:'Pesce arancione per sempre. We Are ci ha salvati. 🟠', otherShips: 'ForceBook', avatar:'https://ui-avatars.com/api/?name=Pond+Phuwin&background=52b788&color=fff' },
+        { uid:'bot4', nick:'JimmySea_Sun', age:24, ship:'JimmySea', story:'Last Twilight best series. MhokDay nel cuore. 🌻', otherShips: 'EarthMix', avatar:'https://ui-avatars.com/api/?name=Jimmy+Sea&background=74c69d&color=fff' },
+        { uid:'bot5', nick:'OhmLeng_Kidnap', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', otherShips: 'PerthSanta', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=95d5b2&color=fff' }
     ];
     const BOT_REPLIES = ["Ciao! Anche io amo questa ship!", "Hai visto l'ultimo episodio?", "Sono bellissimi insieme 😍", "Che carina la tua foto!", "Possiamo essere amiche?"];
 
@@ -426,7 +440,7 @@
         if (!currentDeck.length) { c.innerHTML = `<div style="text-align:center; padding:40px;"><h3>Nessun profilo 😢</h3><button class="btn-main" onclick="document.getElementById('shipFilter').value=''; reloadDeck()">Mostra Tutti</button></div>`; return; }
         if(deckIndex >= currentDeck.length) { c.innerHTML = `<div style="text-align:center; padding:40px;"><h3>🎉 Finito!</h3><button class="btn-main" onclick="loadSwipeDeck()">Ricomincia</button></div>`; return; }
         const u = currentDeck[deckIndex];
-        c.innerHTML = `<div class="swipe-card" id="activeCard"><div class="swipe-img-container"><img src="${u.avatar}" class="swipe-img"></div><div class="swipe-info"><h3 class="swipe-name">${u.nick}</h3><span style="color:var(--accent);font-weight:bold;">${u.ship}</span><p>${u.story||''}</p></div></div><div class="swipe-controls"><button class="btn-swipe nope" onclick="swipe('left')">✕</button><button class="btn-swipe love" onclick="swipe('right','${u.uid}')">💚</button></div>`;
+        c.innerHTML = `<div class="swipe-card" id="activeCard"><div class="swipe-img-container"><img src="${u.avatar}" class="swipe-img"></div><div class="swipe-info"><h3 class="swipe-name">${u.nick}</h3><span style="color:var(--primary);font-weight:bold;">${u.ship}</span><p>${u.story||''}</p></div></div><div class="swipe-controls"><button class="btn-swipe nope" onclick="swipe('left')">✕</button><button class="btn-swipe love" onclick="swipe('right','${u.uid}')">💚</button></div>`;
     }
     function swipe(dir, uid) {
         if(dir === 'right' && !auth.currentUser) { showToast("Accedi per fare Match!", "error"); toggleSidebar(false); return; }
@@ -588,22 +602,15 @@
         const d = currentQuizData[qI]; 
         document.getElementById('qTitle').innerText=`Domanda ${qI+1}`; 
         document.getElementById('qText').innerHTML=d.e?`<span style="font-size:2rem;">${d.e}</span>`:d.q; 
-        
-        // RANDOMIZZAZIONE OPZIONI
         let options = d.a.map((ans, idx) => ({ text: ans, correct: (idx === d.c) }));
         options.sort(() => Math.random() - 0.5);
-        
         document.getElementById('qOpts').innerHTML=options.map(opt=>`<div class="quiz-btn" onclick="chk(${opt.correct},this)">${opt.text}</div>`).join(''); 
     }
     
     function chk(isCorrect, e) { 
         document.querySelectorAll('.quiz-btn').forEach(b=>b.onclick=null); 
         if(isCorrect){ e.classList.add('correct'); pts++; } 
-        else { 
-            e.classList.add('wrong'); 
-            let rightAns = currentQuizData[qI].a[currentQuizData[qI].c];
-            wrongAnswers.push(`D${qI+1}: Era "${rightAns}"`); 
-        } 
+        else { e.classList.add('wrong'); let rightAns = currentQuizData[qI].a[currentQuizData[qI].c]; wrongAnswers.push(`D${qI+1}: Era "${rightAns}"`); } 
         setTimeout(()=>{qI++;showQ();},1000); 
     }
     function stopQuiz() { document.getElementById('quizMenu').style.display='block'; document.getElementById('quizActive').style.display='none'; }
