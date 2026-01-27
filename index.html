@@ -13,7 +13,7 @@
         body { margin: 0; background: var(--soft); color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
 
         /* HEADER & NAV */
-        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; z-index: 1001; }
         nav { background: white; border-bottom: 1px solid #ddd; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; }
         .nav-links { display: flex; align-items: center; gap: 15px; }
         .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; padding: 10px; transition: 0.3s; }
@@ -24,13 +24,13 @@
         .sidebar.open { left: 0; }
         
         /* CONTENUTO */
-        .container { max-width: 900px; margin: 20px auto; padding: 0 20px; flex: 1; width: 100%; }
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
         .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .page { display: none; animation: fadeIn 0.5s; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TINDER STYLE (FIXED) */
+        /* TINDER STYLE */
         .tinder-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; position: relative; }
         .swipe-card { 
             width: 100%; max-width: 350px; background: white; border-radius: 20px; overflow: hidden; 
@@ -48,9 +48,11 @@
         .btn-swipe.love { background: var(--accent); color: white; border: 2px solid var(--accent); }
         .btn-swipe:hover { transform: scale(1.15); }
 
-        /* PROFILO FULL */
-        .profile-cover { height: 120px; background: linear-gradient(45deg, var(--primary), var(--accent)); border-radius: 12px 12px 0 0; margin: -20px -20px 50px -20px; }
-        .profile-avatar-big { width: 120px; height: 120px; border-radius: 50%; border: 5px solid white; position: absolute; left: 50%; top: 60px; transform: translateX(-50%); object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        /* PROFILO FULL (CORRETTO) */
+        .profile-card { text-align: center; padding: 0; overflow: hidden; }
+        .profile-cover { height: 150px; background: linear-gradient(45deg, var(--primary), var(--accent)); }
+        .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: -70px; position: relative; z-index: 2; }
+        .profile-content { padding: 20px 30px 40px 30px; }
 
         /* INPUT & BUTTONS */
         input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; outline: none; transition: 0.3s; }
@@ -147,10 +149,10 @@
     </section>
 
     <section id="userProfilePage" class="page">
-        <div class="card" style="text-align:center; padding:0; overflow:hidden;">
+        <div class="card profile-card">
             <div class="profile-cover"></div>
             <img id="pubAvatar" src="" class="profile-avatar-big">
-            <div style="padding: 60px 20px 30px 20px;">
+            <div class="profile-content">
                 <h2 id="pubNick" style="margin:0;">Nome</h2>
                 <p id="pubShip" style="color:var(--accent); font-weight:bold; margin-top:5px;">Ship</p>
                 <div style="margin: 20px 0; font-size:1.1rem;">Età: <b id="pubAge">-</b> • Punti: <b id="pubScore">0</b></div>
@@ -173,7 +175,7 @@
         </div>
         
         <div id="guestWarning" class="card" style="text-align:center; background:#e0f7fa; display:none;">
-            <small>💡 Stai guardando come ospite. <b>Devi accedere</b> per fare Match con le persone!</small>
+            <small>💡 Stai guardando come ospite. <b>Accedi</b> per fare Swipe e Match!</small>
         </div>
     </section>
 
@@ -283,8 +285,8 @@
     }
     function toggleEdit() { const f=document.getElementById('editForm'); f.style.display = f.style.display==='block'?'none':'block'; }
 
-    // --- DATI FINTI (FAKE PROFILES) PER TESTING ---
-    // Questi verranno caricati SEMPRE, così vedrai qualcosa
+    // --- DATI FINTI (FAKE PROFILES) ---
+    // Questi appariranno SEMPRE
     const FAKE_USERS = [
         { uid:'bot1', nick:'OhmLengLover', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=ffcccb' },
         { uid:'bot2', nick:'SantaBaby', age:19, ship:'PerthSanta', story:'Perfect 10 Liners aspettando te...', avatar:'https://ui-avatars.com/api/?name=Santa&background=e0f7fa' },
@@ -293,7 +295,7 @@
         { uid:'bot5', nick:'BounPremForever', age:25, ship:'BounPrem', story:'Vampire project let’s go! 🧛‍♂️', avatar:'https://ui-avatars.com/api/?name=BP&background=d1c4e9' }
     ];
 
-    // --- TINDER MATCH LOGIC (CORRETTA) ---
+    // --- TINDER MATCH LOGIC (CORRETTA PER CARICARE I BOT) ---
     let currentDeck = [], deckIndex = 0;
     
     function reloadDeck() { deckIndex = 0; loadSwipeDeck(); }
@@ -303,27 +305,31 @@
         const f = document.getElementById('shipFilter').value.toLowerCase();
         c.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">🔍 Cerco profili...</div>';
         
-        // 1. Inizia con i FAKE USERS (così vedi sempre qualcosa)
+        // 1. Inizializza il deck con i BOT
         let deck = [...FAKE_USERS];
 
-        // 2. Carica utenti reali da Firebase
+        // 2. Cerca anche utenti reali nel Database
         db.ref('users').once('value', s => {
             const myUid = auth.currentUser ? auth.currentUser.uid : null;
 
-            s.forEach(u => {
-                const user = u.val(); user.uid = u.key;
-                if(user.uid !== myUid) {
-                    deck.push(user);
-                }
-            });
+            if (s.exists()) {
+                s.forEach(u => {
+                    const user = u.val();
+                    user.uid = u.key;
+                    // Aggiungi solo se non sono io
+                    if (user.uid !== myUid) {
+                        deck.push(user);
+                    }
+                });
+            }
 
-            // 3. Applica Filtro Ship (su tutti)
+            // 3. Applica Filtro (a tutti)
             if(f) {
                 deck = deck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
             }
 
+            // 4. Aggiorna e mischia
             currentDeck = deck;
-            // Mischia il mazzo
             currentDeck.sort(() => Math.random() - 0.5);
             deckIndex = 0;
             renderCard();
@@ -332,10 +338,17 @@
 
     function renderCard() {
         const c = document.getElementById('deckContainer');
+        
+        if (!currentDeck || currentDeck.length === 0) {
+             c.innerHTML = `<div style="text-align:center; padding:40px;"><h3>Nessun profilo trovato 😢</h3><p>Prova a cambiare filtro ship.</p><button class="btn-main" onclick="document.getElementById('shipFilter').value=''; reloadDeck()">🔄 Mostra Tutti</button></div>`;
+             return;
+        }
+
         if(deckIndex >= currentDeck.length) {
-            c.innerHTML = `<div style="text-align:center; padding:40px;"><h3>🎉 Finito!</h3><p>Torna più tardi per nuovi profili.</p><button class="btn-main" onclick="loadSwipeDeck()">🔄 Ricomincia</button></div>`;
+            c.innerHTML = `<div style="text-align:center; padding:40px;"><h3>🎉 Finito!</h3><p>Hai visto tutti i profili disponibili.</p><button class="btn-main" onclick="loadSwipeDeck()">🔄 Ricomincia</button></div>`;
             return;
         }
+
         const u = currentDeck[deckIndex];
         const pic = u.avatar || `https://ui-avatars.com/api/?name=${u.nick}&background=random`;
         const ship = u.ship ? `💖 ${u.ship}` : "";
@@ -356,11 +369,10 @@
     }
 
     function swipe(dir, uid) {
-        // MATCH CHECK: Se vuoi fare swipe a destra (Love) DEVI essere loggato
+        // MATCH CHECK: Devi essere loggato per fare Love (right)
         if(dir === 'right' && !auth.currentUser) {
-            showToast("Devi registrarti per fare Match!", "error");
-            // Apri sidebar per login
-            toggleSidebar(false);
+            showToast("Devi accedere per fare Match!", "error");
+            toggleSidebar(false); // Apre la sidebar per il login
             return;
         }
 
@@ -372,12 +384,13 @@
         
         if(dir==='right') { 
             showToast("Match! 💚", "success"); 
-            // Se è un fake user, non aprire profilo reale (simuliamo)
-            if(uid.startsWith('bot')) setTimeout(()=>{ showToast("Hai matchato con "+currentDeck[deckIndex].nick, "success"); },300);
-            else setTimeout(()=>openUserProfile(uid),300); 
+            if(uid.startsWith('bot')) {
+                 setTimeout(()=>{ showToast("Hai matchato con "+currentDeck[deckIndex].nick, "success"); },300);
+            } else {
+                 setTimeout(()=>openUserProfile(uid),300); 
+            }
         }
         
-        // Passa alla prossima carta
         setTimeout(()=>{ deckIndex++; renderCard(); },300);
     }
 
@@ -388,16 +401,15 @@
             s.forEach(c=>{ 
                 const m=c.val(); 
                 const me = auth.currentUser && m.uid === auth.currentUser.uid;
-                // Se guest, controlla localstorage per evidenziare i propri messaggi
                 const isMyGuest = !auth.currentUser && localStorage.getItem('guestNick') === m.nick;
                 
                 let cssClass = "";
                 if(me) cssClass = "me";
                 else if(isMyGuest) cssClass = "me guest";
-                else if(!m.uid) cssClass = "guest"; // Messaggio di un altro guest
+                else if(!m.uid) cssClass = "guest"; 
                 
-                // Click su nome -> profilo (solo se utente registrato con UID)
                 let nameHtml = m.nick;
+                // Solo se è un utente reale (ha UID) il nome è cliccabile
                 if(m.uid) nameHtml = `<span onclick="openUserProfile('${m.uid}')" style="cursor:pointer; text-decoration:underline;">${m.nick}</span>`;
 
                 b.innerHTML += `<div class="msg ${cssClass}"><b>${nameHtml}:</b> ${m.text}</div>`;
@@ -411,16 +423,13 @@
         if(!txt) return;
 
         let nick, uid;
-
         if(auth.currentUser) {
-            // UTENTE LOGGATO
             nick = document.getElementById('pNick').value || "VIP User";
             uid = auth.currentUser.uid;
         } else {
-            // OSPITE
             nick = document.getElementById('guestNick').value;
             if(!nick) return showToast("Inserisci un nome per chattare!", "error");
-            uid = null; // Nessun ID per ospiti
+            uid = null; 
             localStorage.setItem('guestNick', nick);
         }
 
@@ -457,7 +466,7 @@
         if(u){
             document.getElementById('authArea').style.display='none';
             document.getElementById('userArea').style.display='block';
-            document.getElementById('guestNick').style.display='none'; // Nascondi input guest
+            document.getElementById('guestNick').style.display='none'; 
             document.getElementById('guestWarning').style.display='none'; // NASCONDI AVVISO SE LOGGATO
             
             db.ref('users/'+u.uid).on('value', s=>{
@@ -470,7 +479,7 @@
         } else {
             document.getElementById('authArea').style.display='block';
             document.getElementById('userArea').style.display='none';
-            document.getElementById('guestNick').style.display='block'; // Mostra input guest
+            document.getElementById('guestNick').style.display='block'; 
             document.getElementById('guestWarning').style.display='block'; // MOSTRA AVVISO SE OSPITE
         }
     });
