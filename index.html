@@ -5,41 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLack World | Community</title>
     <link rel="icon" href="https://emojicdn.elk.sh/🌈">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- STILE BASE --- */
+        /* --- STILE BASE & GRAFICA NUOVA --- */
         :root { 
-            --primary: #1b4332; 
-            --accent: #2d6a4f; 
-            --soft: #f0f7f4; 
+            --primary: #d63031; /* Rosso più vivace */
+            --accent: #fd79a8;  /* Rosa */
+            --soft: #fff0f5;    /* Sfondo rosa chiarissimo */
             --white: #ffffff; 
-            --text: #333; 
-            --admin: #e74c3c; 
+            --text: #2d3436; 
         }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { margin: 0; background: var(--soft); color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* SFONDO A POIS (DOTS) */
+        body { 
+            margin: 0; 
+            color: var(--text); 
+            overflow-x: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            background-color: #fff0f5;
+            background-image: radial-gradient(#fd79a8 1px, transparent 1px), radial-gradient(#fd79a8 1px, #fff0f5 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
 
         /* HEADER & NAV */
-        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; z-index: 1001; }
-        nav { background: white; border-bottom: 1px solid #ddd; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; }
-        .nav-links { display: flex; align-items: center; gap: 15px; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; padding: 10px; transition: 0.3s; }
-        .nav-links a.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
+        header { background: linear-gradient(135deg, #d63031, #e17055); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(214, 48, 49, 0.3); position: relative; z-index: 1001; }
+        nav { background: rgba(255,255,255,0.95); border-bottom: 1px solid #eee; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; backdrop-filter: blur(5px); }
+        .nav-links { display: flex; align-items: center; gap: 10px; overflow-x: auto; padding: 0 10px; }
+        .nav-links a { text-decoration: none; color: #555; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; padding: 8px 12px; transition: 0.3s; white-space: nowrap; border-radius: 20px; }
+        .nav-links a.active { background: var(--accent); color: white; }
 
         /* SIDEBAR */
-        .sidebar { position: fixed; left: -100%; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 20px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; }
+        .sidebar { position: fixed; left: -100%; top: 0; width: 300px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 20px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; }
         .sidebar.open { left: 0; }
         #sidebarOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1500; cursor:pointer; }
         
         /* CONTENUTO */
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
-        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; position: relative; z-index: 1; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #fff; }
         .page { display: none; animation: fadeIn 0.5s; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* BACHECA SCLERI (POST-IT) */
+        .board-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px 0; }
+        .post-it { 
+            width: 160px; 
+            height: 160px; 
+            padding: 15px; 
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2); 
+            font-family: 'Indie Flower', cursive; 
+            font-size: 1.1rem;
+            color: #333;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            transition: transform 0.2s;
+            cursor: default;
+            position: relative;
+        }
+        .post-it:hover { transform: scale(1.1) !important; z-index: 10; }
+        .post-it b { display: block; font-size: 0.8rem; text-align: right; color: #555; margin-top: 5px; }
+        /* Pin (chiodino) */
+        .pin { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 15px; height: 15px; background: red; border-radius: 50%; box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+
         /* HOME: FOUNDER CORNER */
-        .founder-box { display: flex; gap: 20px; align-items: center; background: #fff0f5; border: 2px dashed #ffb7b2; padding: 20px; border-radius: 15px; margin-bottom: 30px; }
+        .founder-box { display: flex; gap: 20px; align-items: center; background: #fff; border: 3px dashed #ffb7b2; padding: 20px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(255, 183, 178, 0.4); }
         .founder-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .founder-text h3 { margin: 0 0 5px 0; color: #e91e63; }
         .founder-text p { margin: 0; font-size: 0.9rem; color: #555; font-style: italic; }
@@ -65,7 +99,7 @@
         .match-name { font-size: 0.8rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; margin-top: 5px; cursor: pointer; color: var(--primary); text-decoration: underline; }
 
         /* CHAT */
-        .chat-container { height: 350px; overflow-y: auto; border: 1px solid #eee; padding: 15px; background: #fafafa; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .chat-container { height: 350px; overflow-y: auto; border: 1px solid #eee; padding: 15px; background: #f9f9f9; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .msg { padding: 10px 14px; border-radius: 15px; background: #eee; max-width: 80%; font-size: 0.9rem; word-wrap: break-word; position: relative; }
         .msg.me { align-self: flex-end; background: var(--accent); color: white; }
         .msg.guest { background: #e0f7fa; border: 1px solid #b2ebf2; }
@@ -77,7 +111,7 @@
         .profile-cover { height: 150px; background: linear-gradient(45deg, var(--primary), var(--accent)); }
         .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; margin-top: -75px; position: relative; z-index: 2; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .profile-content { padding: 15px 20px 30px; }
-        .ship-tag { background: #e8f5e9; color: var(--primary); padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin: 5px; }
+        .ship-tag { background: #ffeaa7; color: #d35400; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin: 5px; }
         .other-ship-tag { background: #f3f3f3; color: #555; padding: 4px 8px; border-radius: 15px; font-size: 0.8rem; display: inline-block; margin: 3px; }
         
         /* EDIT PROFILE IN PLACE */
@@ -86,13 +120,14 @@
         .editing .view-data { display: none; }
 
         /* INPUT & BUTTONS */
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; outline: none; transition: 0.3s; }
-        input:focus, textarea:focus { border-color: var(--accent); }
-        .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px; }
-        .btn-social { background: white; border: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 5px; cursor: pointer; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; color: #555; }
+        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; margin-bottom: 10px; outline: none; transition: 0.3s; background: #fdfdfd; }
+        input:focus, textarea:focus { border-color: var(--accent); background: white; }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 5px; transition: 0.2s; }
+        .btn-main:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-social { background: white; border: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 5px; cursor: pointer; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; color: #555; }
 
         /* GAMES & SLOT */
-        .quiz-btn { width: 100%; padding: 15px; border: 1px solid #ddd; background: #fff; text-align: left; margin-bottom: 8px; cursor: pointer; border-radius: 8px; transition:0.2s; }
+        .quiz-btn { width: 100%; padding: 15px; border: 1px solid #ddd; background: #fff; text-align: left; margin-bottom: 8px; cursor: pointer; border-radius: 12px; transition:0.2s; }
         .quiz-btn:hover { background: #f0f0f0; }
         .quiz-btn.correct { background: #d4edda; color: #155724; border-color:#c3e6cb; }
         .quiz-btn.wrong { background: #f8d7da; color: #721c24; border-color:#f5c6cb; }
@@ -101,7 +136,7 @@
         .slot-result { font-size: 1.1rem; margin: 15px 0; min-height: 50px; font-weight: bold; color: #e91e63; }
 
         /* FOOTER & TOAST & MODAL */
-        footer { background: #222; color: #ccc; padding: 30px 20px; text-align: center; font-size: 0.85rem; margin-top: auto; }
+        footer { background: #2d3436; color: #ccc; padding: 30px 20px; text-align: center; font-size: 0.85rem; margin-top: auto; }
         footer a { color: white; text-decoration: underline; cursor: pointer; margin: 0 10px; }
         #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 4000; left: 50%; bottom: 30px; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-size: 0.9rem; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
@@ -113,6 +148,9 @@
         #legalModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:5000; align-items:center; justify-content:center; backdrop-filter: blur(3px); }
         .modal-content { background:white; padding:30px; border-radius: 15px; max-width:500px; width:90%; max-height:80vh; overflow-y:auto; position:relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .close-modal { position:absolute; top:15px; right:20px; font-size:1.5rem; cursor:pointer; color:#777; }
+
+        /* FLOATING CAT STICKER (Decorazione) */
+        .cat-sticker { position: fixed; bottom: 20px; right: 20px; width: 80px; z-index: 3000; pointer-events: none; opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -125,11 +163,13 @@
     </div>
     <div class="nav-links">
         <a onclick="navTo('home', this)" class="active">Home</a>
-        <a onclick="navTo('match', this)">Match 🔥</a>
+        <a onclick="navTo('bacheca', this)">Scleri 📢</a> <a onclick="navTo('match', this)">Match 🔥</a>
         <a onclick="navTo('chat', this)">Chat</a>
         <a onclick="navTo('giochi', this)">Giochi</a>
     </div>
 </nav>
+
+<img src="https://emojicdn.elk.sh/🐱" class="cat-sticker">
 
 <div id="sidebarOverlay" onclick="toggleSidebar(true)"></div>
 <div class="sidebar" id="sidebar">
@@ -170,6 +210,18 @@
         </div>
     </section>
 
+    <section id="bacheca" class="page">
+        <div class="card" style="text-align:center; background:#fffbe7; border: 2px dashed #f1c40f;">
+            <h3 style="color:#d35400;">📢 Bacheca degli Scleri</h3>
+            <p>Lascia un pensiero anonimo (o firmato) sulla tua serie preferita!</p>
+            <textarea id="scleroInput" rows="3" placeholder="Scrivi qui il tuo sclero..." style="background:white;"></textarea>
+            <button class="btn-main" style="background:#f39c12;" onclick="postSclero()">📌 APPENDI POST-IT</button>
+        </div>
+        <div id="scleroBoard" class="board-container">
+            <div style="color:#888;">Caricamento scleri...</div>
+        </div>
+    </section>
+
     <section id="userProfilePage" class="page">
         <div class="card profile-card" id="profileCardContent">
             <div class="profile-cover"></div>
@@ -177,29 +229,20 @@
             <div class="profile-content">
                 <div class="view-data">
                     <h2 id="pubNick" style="margin:0;">Nome</h2>
-                    <div style="margin-top:10px;">
-                        <span class="ship-tag">🏆 Main: <span id="pubShip">...</span></span>
-                    </div>
+                    <div style="margin-top:10px;"><span class="ship-tag">🏆 Main: <span id="pubShip">...</span></span></div>
                     <div style="margin-top:5px;" id="pubOtherShipsContainer"></div>
                     <div style="margin: 20px 0; font-size:1.1rem; color:#666;">Età: <b id="pubAge">-</b></div>
                     <div style="font-style:italic; color:#555; margin:20px 0; padding:10px; background:#f9f9f9; border-radius:8px;">"<span id="pubStory">...</span>"</div>
                     <div style="margin-top:10px;">📱 Social: <b id="pubSocial">-</b></div>
                 </div>
-
                 <div class="edit-input">
-                    <label>Cambia Foto:</label>
-                    <input type="file" id="editFile" accept="image/*">
-                    <input type="text" id="editNick" placeholder="Nome">
-                    <input type="number" id="editAge" placeholder="Età">
-                    <input type="text" id="editShip" placeholder="Ship Main (es. ZeeNuNew)">
-                    <input type="text" id="editOther" placeholder="Altre Ship (es. NetJJ, OhmLeng)">
-                    <input type="text" id="editSocial" placeholder="Social">
-                    <textarea id="editStory" rows="3" placeholder="Bio"></textarea>
+                    <label>Cambia Foto:</label><input type="file" id="editFile" accept="image/*">
+                    <input type="text" id="editNick" placeholder="Nome"><input type="number" id="editAge" placeholder="Età">
+                    <input type="text" id="editShip" placeholder="Ship Main"><input type="text" id="editOther" placeholder="Altre Ship">
+                    <input type="text" id="editSocial" placeholder="Social"><textarea id="editStory" rows="3" placeholder="Bio"></textarea>
                 </div>
-
                 <button id="btnEditProfile" class="btn-main" style="background:#2d3436; margin-top:20px; display:none;" onclick="toggleProfileEdit()">✏️ MODIFICA PROFILO</button>
                 <button id="btnSaveProfile" class="btn-main" style="background:#2d3436; margin-top:20px; display:none;" onclick="saveProfileFromPage()">💾 SALVA</button>
-                
                 <button class="btn-social" style="margin-top:20px;" onclick="navTo('home')">🔙 Torna alla Home</button>
             </div>
         </div>
@@ -211,20 +254,13 @@
             <p style="font-size:0.9rem; color:#666;">Filtra per ship (es. PerthSanta...)</p>
             <input type="text" id="shipFilter" placeholder="🔍 Scrivi ship..." onkeyup="reloadDeck()" style="text-align:center; font-weight:bold; color:var(--primary);">
         </div>
-
-        <div id="deckContainer" class="tinder-container">
-            <div id="loadingDeck" style="text-align:center; color:#888;">Caricamento profili...</div>
-        </div>
-        
+        <div id="deckContainer" class="tinder-container"><div id="loadingDeck" style="text-align:center; color:#888;">Caricamento profili...</div></div>
         <div id="myMatchesContainer" class="card" style="display:none;">
             <h3>I Miei Match 💚</h3>
             <p style="font-size:0.8rem; color:#666;">Clicca FOTO per Profilo | Clicca NOME per Chat</p>
             <div id="matchList" class="match-scroller"></div>
         </div>
-
-        <div id="guestWarning" class="card" style="text-align:center; background:#e0f7fa; display:none;">
-            <small>💡 Accedi per salvare i Match e chattare!</small>
-        </div>
+        <div id="guestWarning" class="card" style="text-align:center; background:#e0f7fa; display:none;"><small>💡 Accedi per salvare i Match e chattare!</small></div>
     </section>
 
     <section id="privateChat" class="page">
@@ -246,12 +282,9 @@
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <h3 style="color:var(--primary); margin:0;">✨ Global Chat</h3>
             </div>
-            
             <div id="chatBox" class="chat-container"></div>
-            
             <div id="chatControls" style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="guestNick" placeholder="Il tuo nome (Obbligatorio per Ospiti)" style="display:none; border:2px solid #00bcd4;">
-                
                 <div style="display:flex; gap:10px;">
                     <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
                     <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
@@ -266,48 +299,24 @@
             <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV (2025)</button>
             <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI (2025)</button>
             <button class="btn-main" style="background:#e67e22;" onclick="startEmojiGame()">🧩 Emoji Challenge: Serie TV</button>
-            
-            <div class="slot-box">
-                <h3 style="color:#e91e63; margin:0;">🎰 La Ruota dell'Amore</h3>
-                <p>Quale ship 2025 ti protegge?</p>
-                <div id="slotResult" class="slot-result">❓</div>
-                <button class="btn-main" style="background:#ffb7b2; color:#c0392b; border:none;" onclick="spinSlot()">GIRA ORA</button>
-            </div>
+            <div class="slot-box"><h3 style="color:#e91e63; margin:0;">🎰 La Ruota dell'Amore</h3><p>Quale ship 2025 ti protegge?</p><div id="slotResult" class="slot-result">❓</div><button class="btn-main" style="background:#ffb7b2; color:#c0392b; border:none;" onclick="spinSlot()">GIRA ORA</button></div>
         </div>
-        
-        <div id="quizActive" class="card" style="display:none;">
-            <button onclick="stopQuiz()" style="float:right; border:none; background:none;">✕</button>
-            <h3 id="qTitle">Domanda</h3>
-            <p id="qText" style="font-size:1.2rem; font-weight:600;">...</p>
-            <div id="qOpts"></div>
-            <p id="qFeed" style="font-weight:bold; text-align:center; margin-top:10px;"></p>
-        </div>
+        <div id="quizActive" class="card" style="display:none;"><button onclick="stopQuiz()" style="float:right; border:none; background:none;">✕</button><h3 id="qTitle">Domanda</h3><p id="qText" style="font-size:1.2rem; font-weight:600;">...</p><div id="qOpts"></div><p id="qFeed" style="font-weight:bold; text-align:center; margin-top:10px;"></p></div>
     </section>
 
 </div>
 
-<footer>
-    <p>© 2024 Black World Community</p>
-    <div><a onclick="openLegal('privacy')">Privacy</a> <a onclick="openLegal('terms')">Termini</a> <a onclick="document.cookie='bw_consent=; Max-Age=0'; location.reload();">Reset</a></div>
-</footer>
-
-<div id="legalModal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="document.getElementById('legalModal').style.display='none'">&times;</span>
-        <h3 id="legalTitle">Titolo</h3><div id="legalContent"></div>
-    </div>
-</div>
+<footer><p>© 2024 Black World Community</p><div><a onclick="openLegal('privacy')">Privacy</a> <a onclick="openLegal('terms')">Termini</a> <a onclick="document.cookie='bw_consent=; Max-Age=0'; location.reload();">Reset</a></div></footer>
+<div id="legalModal"><div class="modal-content"><span class="close-modal" onclick="document.getElementById('legalModal').style.display='none'">&times;</span><h3 id="legalTitle">Titolo</h3><div id="legalContent"></div></div></div>
 <div id="toast">Notifica</div>
-<div id="cookieBanner" style="position:fixed; bottom:0; left:0; width:100%; background:#222; color:white; padding:15px; text-align:center; z-index:5000; display:none;">
-    🍪 Cookie tecnici. <button onclick="acceptCookies()" style="margin-left:15px; background:var(--accent); border:none; padding:5px 15px; color:white; cursor:pointer;">OK</button>
-</div>
+<div id="cookieBanner" style="position:fixed; bottom:0; left:0; width:100%; background:#222; color:white; padding:15px; text-align:center; z-index:5000; display:none;">🍪 Cookie tecnici. <button onclick="acceptCookies()" style="margin-left:15px; background:var(--accent); border:none; padding:5px 15px; color:white; cursor:pointer;">OK</button></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
 <script>
-    // --- TUE CHIAVI REALI ---
+    // --- CHIAVI FIREBASE ---
     const firebaseConfig = {
       apiKey: "AIzaSyAr4cM8wb7kSHpaFDGjlDZcm15t1LyL4Do",
       authDomain: "black-world-91efc.firebaseapp.com",
@@ -318,179 +327,124 @@
       appId: "1:1075556185722:web:a18a5f3d7ef3b4862aedc3",
       measurementId: "G-L1TH722CGE"
     };
-
-    // INIZIALIZZAZIONE (IMPORTANTE: NON MODIFICARE)
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
-
     const ADMIN_EMAILS = ["delisabri@outlook.it", "delisabri2001@gmail.com"];
 
-    // --- UTILS ---
-    function showToast(msg, type='normal') {
-        const x = document.getElementById("toast"); 
-        x.innerText = msg; 
-        x.className = "show " + type;
-        setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000);
-    }
-    
-    // GESTIONE TASTI E NAVIGAZIONE
-    document.addEventListener('keydown', function(event) { 
-        if (event.key === "Escape") {
-            toggleSidebar(true); 
-            if(document.getElementById('privateChat').classList.contains('active')) navTo('match');
-        }
-    });
-
-    window.onpopstate = function(event) {
-        if(event.state && event.state.page) navTo(event.state.page, null, false);
-        else navTo('home', null, false);
-    };
-
-    function openLegal(type) { 
-        document.getElementById('legalModal').style.display = "flex"; 
-        document.getElementById('legalTitle').innerText = type; 
-        document.getElementById('legalContent').innerHTML = "<p>Info legali.</p>"; 
-    }
+    // UTILS
+    function showToast(msg, type='normal') { const x = document.getElementById("toast"); x.innerText = msg; x.className = "show " + type; setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000); }
+    document.addEventListener('keydown', function(event) { if (event.key === "Escape") { toggleSidebar(true); if(document.getElementById('privateChat').classList.contains('active')) navTo('match'); } });
+    window.onpopstate = function(event) { if(event.state && event.state.page) navTo(event.state.page, null, false); else navTo('home', null, false); };
+    function openLegal(type) { document.getElementById('legalModal').style.display = "flex"; document.getElementById('legalTitle').innerText = type; document.getElementById('legalContent').innerHTML = "<p>Info legali.</p>"; }
     if(!localStorage.getItem('cookieConsent')) document.getElementById('cookieBanner').style.display='block';
     function acceptCookies() { localStorage.setItem('cookieConsent','true'); document.getElementById('cookieBanner').style.display='none'; }
 
-    // --- NAVIGAZIONE ---
+    // NAVIGAZIONE
     function navTo(page, el, push=true) {
         if(push) history.pushState({page: page}, "", "#"+page);
-        
         toggleSidebar(true);
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(page).classList.add('active');
         document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
         if(el) el.classList.add('active');
         window.scrollTo(0,0);
-        
         if(page==='match') { loadSwipeDeck(); loadMyMatches(); }
         if(page==='chat') loadChat();
+        if(page==='bacheca') loadBoard(); // CARICA LA BACHECA
         if(page==='home') loadLeaderboard();
     }
+    function toggleSidebar(forceClose=false) { const sb = document.getElementById('sidebar'); const ov = document.getElementById('sidebarOverlay'); if(forceClose || sb.classList.contains('open')) { sb.classList.remove('open'); ov.style.display='none'; } else { sb.classList.add('open'); ov.style.display='block'; } }
+
+    // --- NUOVA FUNZIONE: BACHECA DEGLI SCLERI ---
+    const COLORS = ['#ffeaa7', '#81ecec', '#55efc4', '#fab1a0', '#ff7675'];
     
-    function toggleSidebar(forceClose=false) { 
-        const sb = document.getElementById('sidebar');
-        const ov = document.getElementById('sidebarOverlay');
-        if(forceClose || sb.classList.contains('open')) { sb.classList.remove('open'); ov.style.display='none'; } 
-        else { sb.classList.add('open'); ov.style.display='block'; }
+    function loadBoard() {
+        const board = document.getElementById('scleroBoard');
+        db.ref('bacheca').limitToLast(30).on('value', s => {
+            board.innerHTML = "";
+            if(!s.exists()) { board.innerHTML = "<p>Nessun post-it ancora!</p>"; return; }
+            s.forEach(c => {
+                const note = c.val();
+                const rotate = (Math.random() * 6) - 3; // Rotazione casuale
+                board.innerHTML = `
+                    <div class="post-it" style="background:${note.color}; transform:rotate(${rotate}deg);">
+                        <div class="pin"></div>
+                        <div style="overflow-y:auto; flex:1;">${note.text}</div>
+                        <b>- ${note.nick}</b>
+                    </div>` + board.innerHTML; // Nuovi in alto
+            });
+        });
     }
 
-    // --- LISTA BOT ESTESA (TUTTI QUELLI CHE HAI CHIESTO) ---
-    const FAKE_USERS = [
-        { 
-            uid:'bot1', 
-            nick:'TutorYim_Vamp', 
-            age:23, 
-            ship:'TutorYim', 
-            story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', 
-            otherShips: 'NetJJ', 
-            avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' 
-        },
-        { 
-            uid:'bot2', 
-            nick:'ZeeNuNew_Prince', 
-            age:25, 
-            ship:'ZeeNuNew', 
-            story:'Aspettando The Next Prince con ansia. 👑', 
-            otherShips: 'MaxNat', 
-            avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' 
-        },
-        { 
-            uid:'bot3', 
-            nick:'PondPhuwin_Fish', 
-            age:21, 
-            ship:'PondPhuwin', 
-            story:'Pesce arancione per sempre. We Are ci ha salvati. 🟠', 
-            otherShips: 'ForceBook', 
-            avatar:'https://ui-avatars.com/api/?name=Pond+Phuwin&background=ff9f43' 
-        },
-        { 
-            uid:'bot4', 
-            nick:'JimmySea_Sun', 
-            age:24, 
-            ship:'JimmySea', 
-            story:'Last Twilight best series. MhokDay nel cuore. 🌻', 
-            otherShips: 'EarthMix', 
-            avatar:'https://ui-avatars.com/api/?name=Jimmy+Sea&background=feca57' 
-        },
-        { 
-            uid:'bot5', 
-            nick:'OhmLeng_Kidnap', 
-            age:22, 
-            ship:'OhmLeng', 
-            story:'Kidnap è la serie della vita! 🚓', 
-            otherShips: 'PerthSanta', 
-            avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=badc58' 
-        }
-    ];
-    
-    const BOT_REPLIES = [
-        "Ciao! Anche io amo questa ship!", 
-        "Hai visto l'ultimo episodio?", 
-        "Sono bellissimi insieme 😍", 
-        "Che carina la tua foto!", 
-        "Possiamo essere amiche?"
-    ];
+    function postSclero() {
+        const txt = document.getElementById('scleroInput').value;
+        if(!txt) return alert("Scrivi qualcosa!");
+        
+        let nick = "Anonima";
+        if(auth.currentUser) nick = document.getElementById('sidebarNick').innerText;
+        
+        const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+        
+        db.ref('bacheca').push({
+            text: txt,
+            nick: nick,
+            color: randomColor,
+            date: Date.now()
+        });
+        
+        document.getElementById('scleroInput').value = "";
+        showToast("Appeso! 📌", "success");
+    }
 
-    // --- MATCH LOGIC ---
+    // DATI BOT
+    const FAKE_USERS = [
+        { uid:'bot1', nick:'TutorYim_Vamp', age:23, ship:'TutorYim', story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', otherShips: 'NetJJ', avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' },
+        { uid:'bot2', nick:'ZeeNuNew_Prince', age:25, ship:'ZeeNuNew', story:'Aspettando The Next Prince con ansia. 👑', otherShips: 'MaxNat', avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' },
+        { uid:'bot3', nick:'PondPhuwin_Fish', age:21, ship:'PondPhuwin', story:'Pesce arancione per sempre. We Are ci ha salvati. 🟠', otherShips: 'ForceBook', avatar:'https://ui-avatars.com/api/?name=Pond+Phuwin&background=ff9f43' },
+        { uid:'bot4', nick:'JimmySea_Sun', age:24, ship:'JimmySea', story:'Last Twilight best series. MhokDay nel cuore. 🌻', otherShips: 'EarthMix', avatar:'https://ui-avatars.com/api/?name=Jimmy+Sea&background=feca57' },
+        { uid:'bot5', nick:'OhmLeng_Kidnap', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', otherShips: 'PerthSanta', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=badc58' }
+    ];
+    const BOT_REPLIES = ["Ciao! Anche io amo questa ship!", "Hai visto l'ultimo episodio?", "Sono bellissimi insieme 😍", "Che carina la tua foto!", "Possiamo essere amiche?"];
+
+    // MATCH LOGIC
     let currentDeck = [], deckIndex = 0;
     function reloadDeck() { deckIndex = 0; loadSwipeDeck(); }
     function loadSwipeDeck() {
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
-        
-        currentDeck = [...FAKE_USERS]; // Bot subito
+        currentDeck = [...FAKE_USERS];
         if(f) currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
         currentDeck.sort(() => Math.random() - 0.5);
         deckIndex = 0;
         renderCard();
-
         db.ref('users').once('value').then(s => {
             if (s.exists()) {
                 const myUid = auth.currentUser ? auth.currentUser.uid : null;
                 let realUsers = [];
-                s.forEach(u => {
-                    const user = u.val(); user.uid = u.key;
-                    if (user.uid !== myUid) realUsers.push(user);
-                });
+                s.forEach(u => { const user = u.val(); user.uid = u.key; if (user.uid !== myUid) realUsers.push(user); });
                 if(f) realUsers = realUsers.filter(u => u.ship && u.ship.toLowerCase().includes(f));
-                if(realUsers.length > 0) {
-                    currentDeck = currentDeck.concat(realUsers);
-                    if(deckIndex >= currentDeck.length - realUsers.length) renderCard(); 
-                }
+                if(realUsers.length > 0) { currentDeck = currentDeck.concat(realUsers); if(deckIndex >= currentDeck.length - realUsers.length) renderCard(); }
             }
         });
     }
-
     function renderCard() {
         const c = document.getElementById('deckContainer');
         if (!currentDeck.length) { c.innerHTML = `<div style="text-align:center; padding:40px;"><h3>Nessun profilo 😢</h3><button class="btn-main" onclick="document.getElementById('shipFilter').value=''; reloadDeck()">Mostra Tutti</button></div>`; return; }
         if(deckIndex >= currentDeck.length) { c.innerHTML = `<div style="text-align:center; padding:40px;"><h3>🎉 Finito!</h3><button class="btn-main" onclick="loadSwipeDeck()">Ricomincia</button></div>`; return; }
         const u = currentDeck[deckIndex];
-        c.innerHTML = `
-            <div class="swipe-card" id="activeCard">
-                <div class="swipe-img-container"><img src="${u.avatar}" class="swipe-img"></div>
-                <div class="swipe-info"><h3 class="swipe-name">${u.nick}</h3><span style="color:var(--accent);font-weight:bold;">${u.ship}</span><p>${u.story||''}</p></div>
-            </div>
-            <div class="swipe-controls"><button class="btn-swipe nope" onclick="swipe('left')">✕</button><button class="btn-swipe love" onclick="swipe('right','${u.uid}')">💚</button></div>`;
+        c.innerHTML = `<div class="swipe-card" id="activeCard"><div class="swipe-img-container"><img src="${u.avatar}" class="swipe-img"></div><div class="swipe-info"><h3 class="swipe-name">${u.nick}</h3><span style="color:var(--accent);font-weight:bold;">${u.ship}</span><p>${u.story||''}</p></div></div><div class="swipe-controls"><button class="btn-swipe nope" onclick="swipe('left')">✕</button><button class="btn-swipe love" onclick="swipe('right','${u.uid}')">💚</button></div>`;
     }
     function swipe(dir, uid) {
         if(dir === 'right' && !auth.currentUser) { showToast("Accedi per fare Match!", "error"); toggleSidebar(false); return; }
         const card = document.getElementById('activeCard'); if(!card) return;
         card.style.transform = dir==='left' ? "translateX(-150px) rotate(-20deg)" : "translateX(150px) rotate(20deg)";
         card.style.opacity = "0";
-        if(dir==='right') { 
-            showToast("Match salvato! 💚", "success");
-            if(auth.currentUser) db.ref('users/'+auth.currentUser.uid+'/matches/'+uid).set(true);
-            setTimeout(()=>loadMyMatches(), 1000);
-        }
+        if(dir==='right') { showToast("Match salvato! 💚", "success"); if(auth.currentUser) db.ref('users/'+auth.currentUser.uid+'/matches/'+uid).set(true); setTimeout(()=>loadMyMatches(), 1000); }
         setTimeout(()=>{ deckIndex++; renderCard(); },300);
     }
 
-    // --- LISTA MATCH ---
+    // LISTA MATCH & PROFILI
     function loadMyMatches() {
         if(!auth.currentUser) return;
         const list = document.getElementById('matchList');
@@ -502,42 +456,23 @@
             s.forEach(m => {
                 const partnerUid = m.key;
                 let partner = FAKE_USERS.find(b => b.uid === partnerUid);
-                if(partner) { renderMatchItem(partner); } 
-                else { db.ref('users/'+partnerUid).once('value', uSnap => { const u = uSnap.val(); if(u) { u.uid = partnerUid; renderMatchItem(u); } }); }
+                if(partner) { renderMatchItem(partner); } else { db.ref('users/'+partnerUid).once('value', uSnap => { const u = uSnap.val(); if(u) { u.uid = partnerUid; renderMatchItem(u); } }); }
             });
         });
     }
-    
     function renderMatchItem(u) {
         if(document.getElementById('match-'+u.uid)) return;
-        document.getElementById('matchList').innerHTML += `
-            <div class="match-item" id="match-${u.uid}">
-                <img src="${u.avatar}" class="match-avatar-circle" onclick="openUserProfile('${u.uid}')" title="Vedi Profilo">
-                <span class="match-name" onclick="openPrivateChat('${u.uid}', '${u.nick}')">💬 Chat</span>
-            </div>`;
+        document.getElementById('matchList').innerHTML += `<div class="match-item" id="match-${u.uid}"><img src="${u.avatar}" class="match-avatar-circle" onclick="openUserProfile('${u.uid}')" title="Vedi Profilo"><span class="match-name" onclick="openPrivateChat('${u.uid}', '${u.nick}')">💬 Chat</span></div>`;
     }
-
-    // --- CHAT PRIVATA ---
+    
+    // CHAT PRIVATA
     let currentChatPartnerId = null;
     let currentChatPartnerName = null;
-
-    function openPrivateChat(uid, name) {
-        currentChatPartnerId = uid;
-        currentChatPartnerName = name;
-        navTo('privateChat');
-        document.getElementById('privateChatName').innerText = name;
-        loadPrivateMessages();
-    }
-
+    function openPrivateChat(uid, name) { currentChatPartnerId = uid; currentChatPartnerName = name; navTo('privateChat'); document.getElementById('privateChatName').innerText = name; loadPrivateMessages(); }
     function getChatId() { const ids = [auth.currentUser.uid, currentChatPartnerId]; ids.sort(); return ids.join('_'); }
-
     function loadPrivateMessages() {
-        const box = document.getElementById('privateChatBox');
-        box.innerHTML = "";
-        if(currentChatPartnerId.startsWith('bot')) {
-            box.innerHTML = `<div class="msg guest" style="text-align:center;">Chat privata con ${currentChatPartnerName} (Bot)</div>`;
-            return;
-        }
+        const box = document.getElementById('privateChatBox'); box.innerHTML = "";
+        if(currentChatPartnerId.startsWith('bot')) { box.innerHTML = `<div class="msg guest" style="text-align:center;">Chat privata con ${currentChatPartnerName} (Bot)</div>`; return; }
         const chatId = getChatId();
         db.ref('private_chats/' + chatId).limitToLast(20).on('value', s => {
             box.innerHTML = "";
@@ -545,314 +480,18 @@
             box.scrollTop = box.scrollHeight;
         });
     }
-
     function sendPrivateMsg() {
         const txt = document.getElementById('privateChatInput').value; if(!txt) return;
         const box = document.getElementById('privateChatBox');
         if(currentChatPartnerId.startsWith('bot')) {
-            box.innerHTML += `<div class="msg me"><b>Io:</b> ${txt}</div>`;
-            document.getElementById('privateChatInput').value = "";
-            box.scrollTop = box.scrollHeight;
-            setTimeout(() => {
-                const randomReply = BOT_REPLIES[Math.floor(Math.random() * BOT_REPLIES.length)];
-                box.innerHTML += `<div class="msg"><b>${currentChatPartnerName}:</b> ${randomReply}</div>`;
-                box.scrollTop = box.scrollHeight;
-            }, 1500);
-            return;
+            box.innerHTML += `<div class="msg me"><b>Io:</b> ${txt}</div>`; document.getElementById('privateChatInput').value = ""; box.scrollTop = box.scrollHeight;
+            setTimeout(() => { const randomReply = BOT_REPLIES[Math.floor(Math.random() * BOT_REPLIES.length)]; box.innerHTML += `<div class="msg"><b>${currentChatPartnerName}:</b> ${randomReply}</div>`; box.scrollTop = box.scrollHeight; }, 1500); return;
         }
         db.ref('private_chats/' + getChatId()).push({ text: txt, uid: auth.currentUser.uid, nick: document.getElementById('pNick').value || "Me" });
         document.getElementById('privateChatInput').value = "";
     }
 
-    // --- SLOT MACHINE DATA (ESTESO) ---
-    const SLOT_DATA = [
-        { s: "ZeeNuNew", m: "Mood Principe: The Next Prince ti aspetta." },
-        { s: "TutorYim", m: "Vampire vibes! Attenta al collo." },
-        { s: "NetJJ", m: "Nuova era, nuova chimica esplosiva." },
-        { s: "OhmLeng", m: "Rapimento d'amore in corso (Kidnap)." },
-        { s: "PerthSanta", m: "Perfect 10 Liners: sei da 10 e lode." },
-        { s: "PondPhuwin", m: "Pesce arancione cerca tigre." },
-        { s: "JimmySea", m: "Girasoli e tramonti infiniti." },
-        { s: "ForceBook", m: "Amici d'infanzia o soulmates?" },
-        { s: "JoongDunk", m: "Agenda piena di dolcezza." },
-        { s: "WinnySatang", m: "Musica e caos in We Are." },
-        { s: "EarthMix", m: "Ossan's Love: il caos divertente." },
-        { s: "FirstKhaotung", m: "Sguardi che uccidono." },
-        { s: "GreatInn", m: "Pugile o Dottore? Scegli l'amore." },
-        { s: "JossGawin", m: "Vampiri GMMTV in arrivo." },
-        { s: "JuniorMark", m: "Perfect 10 Liners second couple!" },
-        { s: "BounPrem", m: "Revamp! I vampiri sono tornati." },
-        { s: "MaxNat", m: "Due Mondi, un solo amore." },
-        { s: "KengNamping", m: "Khemjira... mistero e fascino." },
-        { s: "ThomasKong", m: "Generazione 3 alla riscossa." },
-        { s: "FirstOne", m: "Nuovi arrivi, nuove emozioni." },
-        { s: "MileApo", m: "Shine: il concerto della vita." },
-        { s: "BibleJes", m: "4 Minutes: Il tempo stringe." },
-        { s: "JeffBarcode", m: "Wuju Bakery spaziale." },
-        { s: "ManBen", m: "Ossan's Love Thai version." },
-        { s: "PoohPavel", m: "Pit Babe: corri veloce verso l'amore." },
-        { s: "BillyBabe", m: "The Sign: investigatori del cuore." },
-        { s: "FreenBecky", m: "Uranus 2324: amore interstellare." },
-        { s: "LingOrm", m: "Il segreto è svelato." },
-        { s: "MilkLove", m: "23.5 gradi di inclinazione." },
-        { s: "EmiBonnie", m: "GMMTV GL Power." },
-        { s: "NamtanFilm", m: "Pluto: aspettando te." },
-        { s: "YinWar", m: "Jack & Joker: amore criminale." },
-        { s: "OffGun", m: "I re indiscussi sono qui." },
-        { s: "TayNew", m: "Polca power forever." },
-        { s: "DaouOffroad", m: "Century of Love: miracolo." },
-        { s: "MosBank", m: "Serie nuova in arrivo." },
-        { s: "FortPeat", m: "Love in the Air special." },
-        { s: "BossNoeul", m: "Boy Next World." },
-        { s: "SunnyPak", m: "Top Secret Together." },
-        { s: "MeenPing", m: "My Dear Gangster Oppa." },
-        { s: "EstWilliam", m: "Thame-Po heartthrob." },
-        { s: "NeoMark", m: "Only Friends chaos." },
-        { s: "SingtoKrist", m: "Il ritorno delle leggende." },
-        { s: "DrakePod", m: "Wandee Goodday support." },
-        { s: "AouBoom", m: "Perfect 10 Liners cast." },
-        { s: "MarcPoon", m: "We Are cast member." },
-        { s: "PepperLookjun", m: "GMMTV couples." },
-        { s: "PerthChimon", m: "Dangerous Romance memories." },
-        { s: "GeminiFourth", m: "My Love Mix-Up! Gomma da cancellare." },
-        { s: "MewTul", m: "Ocean Eyes (forse)." }
-    ];
-
-    function spinSlot() {
-        const res = document.getElementById('slotResult');
-        res.innerHTML = "🎲 ...";
-        setTimeout(() => {
-            const pick = SLOT_DATA[Math.floor(Math.random() * SLOT_DATA.length)];
-            res.innerHTML = `<span style="color:#2d3436;">${pick.s}</span><br><small>${pick.m}</small>`;
-        }, 800);
-    }
-
-    // --- EMOJI LEVELS (ESTESO) ---
-    const EMOJI_LEVELS = [
-        { q: "Indovina la Serie (Classica):", e: "⚽🏃‍♂️🍤", a: ["Love by Chance", "TharnType", "2Moons"], c: 0 },
-        { q: "Indovina la Serie (Classica):", e: "🦷🥼🐟", a: ["Bad Buddy", "Fish Upon the Sky", "Star In My Mind"], c: 1 },
-        { q: "Indovina la Serie:", e: "🎤🎹💍", a: ["Cutie Pie", "Why R U", "Bed Friend"], c: 0 },
-        { q: "Indovina la Serie (Nuova):", e: "👹🗡️🌲", a: ["Khemjira", "The Sign", "Pit Babe"], c: 0 },
-        { q: "Indovina la Serie (Nuova):", e: "👑🤺🏰", a: ["The Next Prince", "KinnPorsche", "Love in the Air"], c: 0 },
-        { q: "Indovina la Serie:", e: "🌻🌅🩺", a: ["Last Twilight", "Vice Versa", "Moonlight Chicken"], c: 0 },
-        { q: "Indovina la Serie:", e: "🧛‍♂️📚👻", a: ["Battle of the Writers", "Century of Love", "My Stand-In"], c: 0 },
-        { q: "Indovina la Serie (Nuova):", e: "🚓⛓️🏠", a: ["Kidnap", "The Trainee", "High School Frenemy"], c: 0 },
-        { q: "Indovina la Serie:", e: "🥪👫🥊", a: ["Me and Thee", "Wandee Goodday", "Only Boo"], c: 0 },
-        { q: "Indovina la Serie:", e: "👽🔁🎨", a: ["Vice Versa", "The Eclipse", "Triage"], c: 0 }
-    ];
-    
-    function startEmojiGame() { startQuizInternal(EMOJI_LEVELS, "Emoji Challenge"); }
-    
-    // --- DB QUIZ (ESTESO) ---
-    const DB_QUIZ = {
-        gmmtv: [
-            {q: "Partner di Ohm in Kidnap?", a: ["Nanon", "Leng", "Perth"], c: 1},
-            {q: "Serie con PerthSanta?", a: ["Perfect 10 Liners", "Khemjira", "We Are"], c: 0},
-            {q: "My Love Mix Up protagonisti?", a: ["GeminiFourth", "EarthMix", "PondPhuwin"], c: 0},
-            {q: "BounPrem sono in GMMTV?", a: ["No", "Si", "Forse"], c: 1},
-            {q: "Partner di Inn Sarin?", a: ["Great", "Drake", "Pod"], c: 0},
-            {q: "Chi canta in Only Boo?", a: ["Keen", "Sea", "Aou"], c: 0},
-            {q: "Serie con JossGawin?", a: ["My Golden Blood", "The Player", "Not Me"], c: 0},
-            {q: "Partner di Satang?", a: ["Winny", "Mark", "Ford"], c: 0},
-            {q: "Chi è Moo in Only Boo?", a: ["Keen", "Sea", "Aungpao"], c: 0},
-            {q: "Coppia in Ossan's Love?", a: ["EarthMix", "TayNew", "OffGun"], c: 0}
-        ],
-        domundi: [
-            {q: "Nuovo partner di Net?", a: ["JJ", "Yim", "Tutor"], c: 0},
-            {q: "Serie ZeeNuNew period?", a: ["The Next Prince", "Cutie Pie 2", "Zomvivor"], c: 0},
-            {q: "Partner di Keng?", a: ["Namping", "First", "Latte"], c: 0},
-            {q: "Serie MaxNat 2024?", a: ["Two Worlds", "Bed Friend", "Middleman"], c: 0},
-            {q: "Battle of Writers protagonisti?", a: ["NetJames", "TutorYim", "JimmyTommy"], c: 1},
-            {q: "Partner di Thomas?", a: ["Kong", "First", "Gems"], c: 0},
-            {q: "Gen 3 nome?", a: ["DMD Gen 3", "DMD Friendship", "New Gen"], c: 1},
-            {q: "Chi canta le OST?", a: ["Zee", "NuNew", "Nat"], c: 1},
-            {q: "Serie FirstOne?", a: ["Love Upon a Time", "Punk Spy", "Zomvivor"], c: 0},
-            {q: "Partner di Mark?", a: ["Ohm", "Gems", "Park"], c: 0}
-        ]
-    };
-
-    let qI=0, pts=0, type=null, currentQuizData=null, wrongAnswers=[];
-    
-    function startQuiz(t) { 
-        if(!auth.currentUser) return showToast("Login necessario"); 
-        type=t; 
-        startQuizInternal(DB_QUIZ[type], "Quiz Time");
-    }
-
-    function startQuizInternal(data, title) {
-        currentQuizData = data;
-        qI=0; pts=0; wrongAnswers=[];
-        document.getElementById('quizMenu').style.display='none'; 
-        document.getElementById('quizActive').style.display='block'; 
-        showQ();
-    }
-
-    function showQ() {
-        if(qI>=currentQuizData.length) { 
-            let msg = `Punti: ${pts}/${currentQuizData.length}`;
-            if(wrongAnswers.length > 0) {
-                msg += "\n\n❌ Errori:\n" + wrongAnswers.join("\n");
-            }
-            alert(msg);
-            if(type) db.ref('users/'+auth.currentUser.uid+'/score').transaction(s=>(s||0)+pts); 
-            stopQuiz(); return; 
-        }
-        const d = currentQuizData[qI]; 
-        const displayText = d.e ? `<span style="font-size:2rem;">${d.e}</span>` : d.q;
-        
-        document.getElementById('qTitle').innerText=`Domanda ${qI+1}`; 
-        document.getElementById('qText').innerHTML=displayText; 
-        document.getElementById('qFeed').innerText=""; 
-        
-        // --- RANDOMIZZAZIONE RISPOSTE (CODICE NUOVO) ---
-        // 1. Mappa le risposte mantenendo l'info se è corretta o no
-        let options = d.a.map((ans, index) => { 
-            return { text: ans, isCorrect: (index === d.c) }; 
-        });
-        
-        // 2. Mescola l'array delle opzioni
-        options.sort(() => Math.random() - 0.5);
-
-        // 3. Stampa a video
-        document.getElementById('qOpts').innerHTML = options.map(opt => 
-            `<div class="quiz-btn" onclick="chk(${opt.isCorrect}, this)">${opt.text}</div>`
-        ).join('');
-    }
-    
-    function chk(isCorrect, e) { 
-        document.querySelectorAll('.quiz-btn').forEach(b=>b.onclick=null); 
-        if(isCorrect){ 
-            e.classList.add('correct'); 
-            pts++; 
-        } else { 
-            e.classList.add('wrong'); 
-            // Cerca la risposta giusta nell'array originale per mostrarla nel report
-            let correctTxt = currentQuizData[qI].a[currentQuizData[qI].c];
-            wrongAnswers.push(`D${qI+1}: Era "${correctTxt}"`);
-        } 
-        setTimeout(()=>{qI++;showQ();},1000); 
-    }
-    
-    function stopQuiz() {
-        document.getElementById('quizMenu').style.display='block'; 
-        document.getElementById('quizActive').style.display='none';
-    }
-
-    // --- PROFILO EDIT MODE (IN-PLACE) ---
-    function toggleProfileEdit() {
-        const card = document.getElementById('profileCardContent');
-        if(card.classList.contains('editing')) {
-            card.classList.remove('editing'); 
-        } else {
-            document.getElementById('editNick').value = document.getElementById('pubNick').innerText;
-            document.getElementById('editAge').value = document.getElementById('pubAge').innerText !== '-' ? document.getElementById('pubAge').innerText : '';
-            document.getElementById('editStory').value = document.getElementById('pubStory').innerText !== '...' ? document.getElementById('pubStory').innerText : '';
-            card.classList.add('editing');
-        }
-    }
-
-    function saveProfileFromPage() {
-        const u=auth.currentUser; if(!u) return;
-        const f=document.getElementById('editFile').files[0];
-        const d={ 
-            nick:document.getElementById('editNick').value, 
-            age:document.getElementById('editAge').value, 
-            ship:document.getElementById('editShip').value, 
-            otherShips:document.getElementById('editOther').value, 
-            social:document.getElementById('editSocial').value, 
-            story:document.getElementById('editStory').value, 
-            uid:u.uid 
-        };
-        
-        if(f) {
-            const r=new FileReader(); 
-            r.onload=e=>{ d.avatar=e.target.result; db.ref('users/'+u.uid).update(d).then(()=>{ toggleProfileEdit(); openUserProfile(u.uid); showToast("Salvato!"); }); }; 
-            r.readAsDataURL(f);
-        } else { 
-            db.ref('users/'+u.uid).update(d).then(()=>{ toggleProfileEdit(); openUserProfile(u.uid); showToast("Salvato!"); }); 
-        }
-    }
-
-    // AUTH (MODIFICATO PER MOSTRARE EDIT BUTTON E NICK SIDEBAR)
-    auth.onAuthStateChanged(u=>{
-        if(u){
-            document.getElementById('authArea').style.display='none';
-            document.getElementById('userArea').style.display='block';
-            document.getElementById('guestNick').style.display='none'; 
-            if(ADMIN_EMAILS.includes(u.email)) document.getElementById('adminBadge').style.display='inline';
-            
-            db.ref('users/'+u.uid).on('value', s=>{
-                const d=s.val()||{};
-                // AGGIORNAMENTO AUTOMATICO NOME SIDEBAR
-                document.getElementById('sidebarNick').innerText = d.nick || u.email.split('@')[0];
-            });
-
-            loadMyMatches(); 
-        } else {
-            document.getElementById('authArea').style.display='block';
-            document.getElementById('userArea').style.display='none';
-            document.getElementById('guestNick').style.display='block'; 
-        }
-    });
-
-    // UNICA FUNZIONE PER APRIRE PROFILI
-    function openUserProfile(uid) {
-        navTo('userProfilePage'); // Va alla pagina profilo
-
-        // CASO BOT
-        if(uid.startsWith('bot')) {
-            const b = FAKE_USERS.find(x=>x.uid===uid);
-            if(b) {
-                document.getElementById('pubNick').innerText=b.nick; 
-                document.getElementById('pubShip').innerText=b.ship;
-                document.getElementById('pubOtherShipsContainer').innerHTML = b.otherShips ? `<span class="other-ship-tag">${b.otherShips}</span>` : "";
-                document.getElementById('pubAge').innerText=b.age; 
-                document.getElementById('pubStory').innerText=b.story;
-                document.getElementById('pubAvatar').src=b.avatar;
-            }
-            // Nascondi tasti edit per i bot
-            document.getElementById('btnEditProfile').style.display = 'none';
-            document.getElementById('btnSaveProfile').style.display = 'none';
-            return;
-        }
-
-        // CASO UTENTE REALE
-        db.ref('users/'+uid).once('value',s=>{
-            const u=s.val();
-            document.getElementById('pubNick').innerText=u.nick; 
-            document.getElementById('pubShip').innerText=u.ship;
-            
-            const otherContainer = document.getElementById('pubOtherShipsContainer');
-            otherContainer.innerHTML = "";
-            if(u.otherShips) {
-                u.otherShips.split(',').forEach(ship => {
-                    if(ship.trim()) otherContainer.innerHTML += `<span class="other-ship-tag">${ship.trim()}</span>`;
-                });
-            }
-
-            document.getElementById('pubAge').innerText=u.age; 
-            document.getElementById('pubStory').innerText=u.story;
-            document.getElementById('pubSocial').innerText=u.social || "Privato";
-            document.getElementById('pubAvatar').src=u.avatar;
-
-            // CHECK: È IL MIO PROFILO?
-            if(auth.currentUser && auth.currentUser.uid === uid) {
-                document.getElementById('btnEditProfile').style.display = 'block';
-                document.getElementById('btnSaveProfile').style.display = 'block';
-            } else {
-                document.getElementById('btnEditProfile').style.display = 'none';
-                document.getElementById('btnSaveProfile').style.display = 'none';
-            }
-        });
-    }
-
-    // --- HELPER PER APRIRE IL MIO PROFILO ---
-    function openMyProfile() { 
-        if(auth.currentUser) openUserProfile(auth.currentUser.uid); 
-        else showToast("Devi accedere prima!", "error");
-    }
-
-    // --- CHAT GLOBALE (CON ADMIN DELETE) ---
+    // CHAT GLOBALE
     function loadChat() {
         db.ref('chat').limitToLast(20).on('value', s=>{
             const b = document.getElementById('chatBox'); b.innerHTML="";
@@ -873,77 +512,108 @@
     
     function sendMsg() {
         const txt = document.getElementById('chatInput').value; 
-        if(!txt) return; // Non inviare vuoto
-        
+        if(!txt) return; 
         let nick, uid, isAdmin=false;
-        
         if(auth.currentUser) { 
-            // Utente Loggato
             nick = document.getElementById('sidebarNick').innerText || "User";
             uid = auth.currentUser.uid; 
             if(ADMIN_EMAILS.includes(auth.currentUser.email)) isAdmin=true; 
         } else { 
-            // Ospite
             nick = document.getElementById('guestNick').value; 
-            if(!nick) {
-                alert("Devi inserire un nome per scrivere in chat!"); 
-                return; 
-            }
+            if(!nick) { alert("Devi inserire un nome per scrivere in chat!"); return; }
             uid = null; 
             localStorage.setItem('guestNick', nick); 
         }
-        
         db.ref('chat').push({ text:txt, uid:uid, nick:nick, isAdmin:isAdmin });
         document.getElementById('chatInput').value = "";
     }
     
     function loadLeaderboard(){ db.ref('users').orderByChild('score').limitToLast(5).on('value',s=>{ const t=document.getElementById('leaderboard'); t.innerHTML=""; let a=[]; s.forEach(c=>a.push({k:c.key,n:c.val().nick,s:c.val().score||0})); a.sort((x,y)=>y.s-x.s).forEach((p,i)=>t.innerHTML+=`<tr><td>#${i+1} <b onclick="openUserProfile('${p.k}')" style="cursor:pointer">${p.n}</b></td><td style="text-align:right;">${p.s}</td></tr>`); }); }
     
-    // --- FUNZIONI AUTH (RIMESSE PER FIX LOGIN) ---
-    function emailAuth(type) {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('pass').value;
-        
-        if (!email || !pass) {
-            alert("Per favore, inserisci email e password.");
-            return;
-        }
-
-        if (type === 'login') {
-            auth.signInWithEmailAndPassword(email, pass)
-                .then(() => {
-                    showToast("Bentornata!", "success");
-                })
-                .catch((error) => {
-                    console.error("Errore Login:", error);
-                    alert("Errore Login: " + error.message);
-                });
+    // --- FUNZIONI AUTH ---
+    function emailAuth(t){ const e=document.getElementById('email').value, p=document.getElementById('pass').value; if(!e||!p) return alert("Inserisci email e password"); (t==='login'?auth.signInWithEmailAndPassword(e,p):auth.createUserWithEmailAndPassword(e,p)).then(()=>showToast("Successo!","success")).catch(e=>alert(e.message)); }
+    function socialLogin(){ auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(()=>showToast("Login Google OK","success")).catch(e=>alert(e.message)); }
+    function logout(){ auth.signOut().then(()=>location.reload()); }
+    
+    auth.onAuthStateChanged(u=>{
+        if(u){
+            document.getElementById('authArea').style.display='none'; document.getElementById('userArea').style.display='block'; document.getElementById('guestNick').style.display='none'; 
+            if(ADMIN_EMAILS.includes(u.email)) document.getElementById('adminBadge').style.display='inline';
+            db.ref('users/'+u.uid).on('value', s=>{ 
+                const d=s.val()||{}; 
+                document.getElementById('sidebarNick').innerText = d.nick || u.email.split('@')[0]; 
+                document.getElementById('editNick').value=d.nick||""; 
+            });
+            loadMyMatches(); 
         } else {
-            auth.createUserWithEmailAndPassword(email, pass)
-                .then(() => {
-                    showToast("Registrazione completata!", "success");
-                })
-                .catch((error) => {
-                    console.error("Errore Registrazione:", error);
-                    alert("Errore Registrazione: " + error.message);
-                });
+            document.getElementById('authArea').style.display='block'; document.getElementById('userArea').style.display='none'; document.getElementById('guestNick').style.display='block'; 
         }
-    }
-    
-    function socialLogin() {
-        var provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider).then(() => {
-            showToast("Accesso Google riuscito!", "success");
-        }).catch((error) => {
-            alert("Errore Google: " + error.message);
+    });
+
+    function openUserProfile(uid) {
+        navTo('userProfilePage');
+        if(uid.startsWith('bot')) {
+            const b = FAKE_USERS.find(x=>x.uid===uid);
+            if(b) { document.getElementById('pubNick').innerText=b.nick; document.getElementById('pubShip').innerText=b.ship; document.getElementById('pubOtherShipsContainer').innerHTML = b.otherShips ? `<span class="other-ship-tag">${b.otherShips}</span>` : ""; document.getElementById('pubAge').innerText=b.age; document.getElementById('pubStory').innerText=b.story; document.getElementById('pubAvatar').src=b.avatar; }
+            document.getElementById('btnEditProfile').style.display = 'none'; document.getElementById('btnSaveProfile').style.display = 'none'; return;
+        }
+        db.ref('users/'+uid).once('value',s=>{
+            const u=s.val();
+            document.getElementById('pubNick').innerText=u.nick; document.getElementById('pubShip').innerText=u.ship;
+            const otherContainer = document.getElementById('pubOtherShipsContainer'); otherContainer.innerHTML = "";
+            if(u.otherShips) { u.otherShips.split(',').forEach(ship => { if(ship.trim()) otherContainer.innerHTML += `<span class="other-ship-tag">${ship.trim()}</span>`; }); }
+            document.getElementById('pubAge').innerText=u.age; document.getElementById('pubStory').innerText=u.story; document.getElementById('pubSocial').innerText=u.social || "Privato"; document.getElementById('pubAvatar').src=u.avatar;
+            if(auth.currentUser && auth.currentUser.uid === uid) { document.getElementById('btnEditProfile').style.display = 'block'; document.getElementById('btnSaveProfile').style.display = 'block'; } else { document.getElementById('btnEditProfile').style.display = 'none'; document.getElementById('btnSaveProfile').style.display = 'none'; }
         });
     }
     
-    function logout() {
-        auth.signOut().then(() => {
-            window.location.reload();
-        });
+    function toggleProfileEdit() { const c = document.getElementById('profileCardContent'); if(c.classList.contains('editing')){c.classList.remove('editing');}else{ document.getElementById('editNick').value = document.getElementById('pubNick').innerText; document.getElementById('editAge').value = document.getElementById('pubAge').innerText !== '-' ? document.getElementById('pubAge').innerText : ''; document.getElementById('editStory').value = document.getElementById('pubStory').innerText !== '...' ? document.getElementById('pubStory').innerText : ''; c.classList.add('editing'); } }
+    function saveProfileFromPage() {
+        const u=auth.currentUser; if(!u) return;
+        const f=document.getElementById('editFile').files[0];
+        const d={ nick:document.getElementById('editNick').value, age:document.getElementById('editAge').value, ship:document.getElementById('editShip').value, otherShips:document.getElementById('editOther').value, social:document.getElementById('editSocial').value, story:document.getElementById('editStory').value, uid:u.uid };
+        if(f) { const r=new FileReader(); r.onload=e=>{ d.avatar=e.target.result; db.ref('users/'+u.uid).update(d).then(()=>{ toggleProfileEdit(); openUserProfile(u.uid); showToast("Salvato!"); }); }; r.readAsDataURL(f); } else { db.ref('users/'+u.uid).update(d).then(()=>{ toggleProfileEdit(); openUserProfile(u.uid); showToast("Salvato!"); }); }
     }
+
+    // GAMES (SLOT & EMOJI & QUIZ)
+    const EMOJI_LEVELS = [ { q: "Indovina:", e: "⚽🏃‍♂️🍤", a: ["Love by Chance", "TharnType", "2Moons"], c: 0 }, { q: "Indovina:", e: "🦷🥼🐟", a: ["Bad Buddy", "Fish Upon the Sky", "Star In My Mind"], c: 1 }, { q: "Indovina:", e: "🎤🎹💍", a: ["Cutie Pie", "Why R U", "Bed Friend"], c: 0 }, { q: "Indovina:", e: "👹🗡️🌲", a: ["Khemjira", "The Sign", "Pit Babe"], c: 0 }, { q: "Indovina:", e: "👑🤺🏰", a: ["The Next Prince", "KinnPorsche", "Love in the Air"], c: 0 } ];
+    function startEmojiGame() { startQuizInternal(EMOJI_LEVELS, "Emoji"); }
+    const SLOT_DATA = [ { s: "ZeeNuNew", m: "The Next Prince ti aspetta." }, { s: "TutorYim", m: "Vampire vibes!" }, { s: "NetJJ", m: "Chimica esplosiva." }, { s: "OhmLeng", m: "Kidnap!" }, { s: "PerthSanta", m: "Perfect 10 Liners." }, { s: "PondPhuwin", m: "We Are." }, { s: "JimmySea", m: "Last Twilight." } ];
+    function spinSlot() { const res = document.getElementById('slotResult'); res.innerHTML = "🎲 ..."; setTimeout(() => { const p = SLOT_DATA[Math.floor(Math.random() * SLOT_DATA.length)]; res.innerHTML = `<span style="color:#2d3436;">${p.s}</span><br><small>${p.m}</small>`; }, 800); }
+    // QUIZ RANDOMIZZATO
+    const DB_QUIZ = { gmmtv: [{q: "Partner Ohm in Kidnap?", a: ["Nanon", "Leng", "Perth"], c: 1}], domundi: [{q: "Nuovo partner Net?", a: ["JJ", "Yim", "Tutor"], c: 0}] };
+    let currentQuizData=null, qI=0, pts=0, type=null, wrongAnswers=[];
+    function startQuiz(t) { if(!auth.currentUser) return showToast("Login necessario"); type=t; startQuizInternal(DB_QUIZ[type], "Quiz"); }
+    function startQuizInternal(d, t) { currentQuizData = d; qI=0; pts=0; wrongAnswers=[]; document.getElementById('quizMenu').style.display='none'; document.getElementById('quizActive').style.display='block'; showQ(); }
+    
+    function showQ() { 
+        if(qI>=currentQuizData.length) { 
+            alert(`Punti: ${pts}/${currentQuizData.length}\n${wrongAnswers.join("\n")}`); 
+            if(type) db.ref('users/'+auth.currentUser.uid+'/score').transaction(s=>(s||0)+pts); 
+            stopQuiz(); return; 
+        } 
+        const d = currentQuizData[qI]; 
+        document.getElementById('qTitle').innerText=`Domanda ${qI+1}`; 
+        document.getElementById('qText').innerHTML=d.e?`<span style="font-size:2rem;">${d.e}</span>`:d.q; 
+        
+        // RANDOMIZZAZIONE OPZIONI
+        let options = d.a.map((ans, idx) => ({ text: ans, correct: (idx === d.c) }));
+        options.sort(() => Math.random() - 0.5);
+        
+        document.getElementById('qOpts').innerHTML=options.map(opt=>`<div class="quiz-btn" onclick="chk(${opt.correct},this)">${opt.text}</div>`).join(''); 
+    }
+    
+    function chk(isCorrect, e) { 
+        document.querySelectorAll('.quiz-btn').forEach(b=>b.onclick=null); 
+        if(isCorrect){ e.classList.add('correct'); pts++; } 
+        else { 
+            e.classList.add('wrong'); 
+            let rightAns = currentQuizData[qI].a[currentQuizData[qI].c];
+            wrongAnswers.push(`D${qI+1}: Era "${rightAns}"`); 
+        } 
+        setTimeout(()=>{qI++;showQ();},1000); 
+    }
+    function stopQuiz() { document.getElementById('quizMenu').style.display='block'; document.getElementById('quizActive').style.display='none'; }
 </script>
 </body>
 </html>
