@@ -13,7 +13,7 @@
         body { margin: 0; background: var(--soft); color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
 
         /* HEADER & NAV */
-        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; z-index: 1001; }
         nav { background: white; border-bottom: 1px solid #ddd; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; }
         .nav-links { display: flex; align-items: center; gap: 15px; }
         .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; padding: 10px; transition: 0.3s; }
@@ -22,26 +22,23 @@
         /* SIDEBAR */
         .sidebar { position: fixed; left: -100%; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 20px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; }
         .sidebar.open { left: 0; }
-        /* Overlay scuro per chiudere cliccando fuori */
         #sidebarOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1500; }
         
         /* CONTENUTO */
-        .container { max-width: 900px; margin: 20px auto; padding: 0 20px; flex: 1; width: 100%; }
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
         .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .page { display: none; animation: fadeIn 0.5s; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TINDER STYLE (MIGLIORATO) */
-        .tinder-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; position: relative; }
-        
+        /* TINDER STYLE */
+        .tinder-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 550px; position: relative; }
         .swipe-card { 
             width: 100%; max-width: 350px; background: white; border-radius: 20px; overflow: hidden; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; 
-            transition: transform 0.4s ease-out, opacity 0.4s ease-out; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2); position: relative; 
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out; 
             display: flex; flex-direction: column; border: 1px solid #eee;
         }
-        
         .swipe-img-container { width: 100%; height: 400px; position: relative; background: #eee; }
         .swipe-img { width: 100%; height: 100%; object-fit: cover; }
         .swipe-info { padding: 20px; text-align: left; }
@@ -56,8 +53,8 @@
         /* PROFILO FULL */
         .profile-card { text-align: center; padding: 0; overflow: hidden; }
         .profile-cover { height: 150px; background: linear-gradient(45deg, var(--primary), var(--accent)); }
-        .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; position: relative; margin-top: -70px; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 2; }
-        .profile-content { padding: 20px 30px 40px 30px; }
+        .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; margin-top: -75px; position: relative; z-index: 2; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .profile-content { padding: 15px 20px 30px; }
 
         /* INPUT & BUTTONS */
         input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; outline: none; transition: 0.3s; }
@@ -177,7 +174,7 @@
         </div>
 
         <div id="deckContainer" class="tinder-container">
-            <div id="loadingDeck" style="text-align:center; color:#888;">Caricamento profili...</div>
+            <div id="loadingDeck" style="text-align:center; color:#888;">Preparazione carte...</div>
         </div>
         
         <div id="guestWarning" class="card" style="text-align:center; background:#e0f7fa; display:none;">
@@ -319,6 +316,7 @@
     function toggleEdit() { const f=document.getElementById('editForm'); f.style.display = f.style.display==='block'?'none':'block'; }
 
     // --- DATI FINTI (FAKE PROFILES) ---
+    // Questi appariranno SEMPRE
     const FAKE_USERS = [
         { uid:'bot1', nick:'OhmLengLover', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=ffcccb' },
         { uid:'bot2', nick:'SantaBaby', age:19, ship:'PerthSanta', story:'Perfect 10 Liners aspettando te...', avatar:'https://ui-avatars.com/api/?name=Santa&background=e0f7fa' },
@@ -327,7 +325,7 @@
         { uid:'bot5', nick:'BounPremForever', age:25, ship:'BounPrem', story:'Vampire project let’s go! 🧛‍♂️', avatar:'https://ui-avatars.com/api/?name=BP&background=d1c4e9' }
     ];
 
-    // --- TINDER MATCH LOGIC (CORRETTA) ---
+    // --- TINDER MATCH LOGIC (GARANTITA) ---
     let currentDeck = [], deckIndex = 0;
     
     function reloadDeck() { deckIndex = 0; loadSwipeDeck(); }
@@ -335,39 +333,50 @@
     function loadSwipeDeck() {
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
-        c.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">🔍 Cerco profili...</div>';
         
-        // 1. CARICA I FAKE USERS IMMEDIATAMENTE
-        let deck = [...FAKE_USERS];
+        // 1. CARICHIAMO SUBITO I BOT, COSÌ NON RESTA VUOTO
+        currentDeck = [...FAKE_USERS]; 
+        
+        // Filtra subito i bot
+        if(f) {
+            currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
+        }
+        
+        // Mischia subito
+        currentDeck.sort(() => Math.random() - 0.5);
+        deckIndex = 0;
+        
+        // Mostra subito i bot (senza aspettare Firebase)
+        renderCard();
 
-        // 2. CERCA DI CARICARE ALTRI DAL DB (Ma se fallisce, mostra almeno i fake)
+        // 2. ORA CHIEDIAMO A FIREBASE (BACKGROUND)
         db.ref('users').once('value').then(s => {
             const myUid = auth.currentUser ? auth.currentUser.uid : null;
+            let realUsers = [];
+
             if (s.exists()) {
                 s.forEach(u => {
                     const user = u.val();
                     user.uid = u.key;
                     if (user.uid !== myUid) {
-                        deck.push(user);
+                        realUsers.push(user);
                     }
                 });
             }
-            renderDeckFinal(deck, f);
-        }).catch(err => {
-            // Se errore DB, mostra comunque i fake
-            console.log("Errore DB o vuoto, mostro Bot", err);
-            renderDeckFinal(deck, f);
-        });
-    }
 
-    function renderDeckFinal(deck, filter) {
-        if(filter) {
-            deck = deck.filter(u => u.ship && u.ship.toLowerCase().includes(filter));
-        }
-        currentDeck = deck;
-        currentDeck.sort(() => Math.random() - 0.5); // Mischia
-        deckIndex = 0;
-        renderCard();
+            // Aggiungi utenti reali al mazzo
+            if(realUsers.length > 0) {
+                // Filtra utenti reali
+                if(f) realUsers = realUsers.filter(u => u.ship && u.ship.toLowerCase().includes(f));
+                
+                // Unisci al mazzo esistente
+                currentDeck = currentDeck.concat(realUsers);
+                // Ridisegna solo se eravamo alla fine o all'inizio
+                if(deckIndex === 0 || deckIndex >= currentDeck.length) {
+                    renderCard();
+                }
+            }
+        });
     }
 
     function renderCard() {
@@ -473,6 +482,22 @@
     // --- PROFILI & AUTH ---
     function openUserProfile(uid) {
         navTo('userProfilePage');
+        // Se è un bot, carica dati finti
+        if(uid.startsWith('bot')) {
+            const bot = FAKE_USERS.find(b => b.uid === uid);
+            if(bot) {
+                document.getElementById('pubNick').innerText=bot.nick;
+                document.getElementById('pubShip').innerText=bot.ship;
+                document.getElementById('pubAge').innerText=bot.age;
+                document.getElementById('pubScore').innerText="1000";
+                document.getElementById('pubStory').innerText=bot.story;
+                document.getElementById('pubSocial').innerText="@"+bot.nick;
+                document.getElementById('pubAvatar').src=bot.avatar;
+            }
+            return;
+        }
+
+        // Se utente reale
         db.ref('users/'+uid).once('value',s=>{
             const u=s.val();
             if(!u) return showToast("Utente non trovato","error");
