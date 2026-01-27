@@ -129,7 +129,7 @@
     <div style="text-align:right; cursor:pointer; font-size: 1.2rem; color:#888;" onclick="toggleSidebar(true)">✕ CHIUDI (ESC)</div>
     <div id="authArea">
         <h3>Accedi</h3>
-        <p>Entra per fare Match e personalizzare il profilo!</p>
+        <p>Entra per personalizzare il profilo e usare i Match!</p>
         <button class="btn-social" onclick="socialLogin()"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="18"> Google</button>
         <hr style="margin: 20px 0;">
         <input type="email" id="email" placeholder="Email">
@@ -322,7 +322,6 @@
     document.addEventListener('keydown', function(event) { 
         if (event.key === "Escape") {
             toggleSidebar(true); 
-            // Chiudi chat privata se aperta
             if(document.getElementById('privateChat').classList.contains('active')) navTo('match');
         }
     });
@@ -377,7 +376,7 @@
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
         
-        currentDeck = [...FAKE_USERS];
+        currentDeck = [...FAKE_USERS]; // Bot subito
         if(f) currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
         currentDeck.sort(() => Math.random() - 0.5);
         deckIndex = 0;
@@ -562,7 +561,7 @@
         }, 800);
     }
 
-    // --- EMOJI GAME ---
+    // EMOJI CHALLENGE: SERIE TV (OLD & NEW)
     const EMOJI_LEVELS = [
         { q: "Indovina la Serie (Classica):", e: "⚽🏃‍♂️🍤", a: ["Love by Chance", "TharnType", "2Moons"], c: 0 },
         { q: "Indovina la Serie (Classica):", e: "🦷🥼🐟", a: ["Bad Buddy", "Fish Upon the Sky", "Star In My Mind"], c: 1 },
@@ -647,7 +646,6 @@
         if(s===c){ e.classList.add('correct'); pts++; }
         else { 
             e.classList.add('wrong'); 
-            // Salva errore per report finale
             let correctTxt = currentQuizData[qI].a[c];
             wrongAnswers.push(`D${qI+1}: Era "${correctTxt}"`);
         } 
@@ -665,7 +663,6 @@
         if(card.classList.contains('editing')) {
             card.classList.remove('editing'); // Chiudi senza salvare
         } else {
-            // Pre-popola input
             document.getElementById('editNick').value = document.getElementById('pubNick').innerText;
             document.getElementById('editAge').value = document.getElementById('pubAge').innerText !== '-' ? document.getElementById('pubAge').innerText : '';
             document.getElementById('editStory').value = document.getElementById('pubStory').innerText !== '...' ? document.getElementById('pubStory').innerText : '';
@@ -702,6 +699,13 @@
             document.getElementById('userArea').style.display='block';
             document.getElementById('guestNick').style.display='none'; 
             if(ADMIN_EMAILS.includes(u.email)) document.getElementById('adminBadge').style.display='inline';
+            
+            // Fix per il sidebar nickname
+            db.ref('users/'+u.uid).on('value', s=>{
+                const d=s.val()||{};
+                document.getElementById('sidebarNick').innerText = d.nick || u.email.split('@')[0];
+            });
+
             loadMyMatches(); 
         } else {
             document.getElementById('authArea').style.display='block';
@@ -714,7 +718,6 @@
     const originalOpenUserProfile = openUserProfile;
     openUserProfile = function(uid) {
         originalOpenUserProfile(uid);
-        // Se è il mio profilo, mostra tasti Edit
         if(auth.currentUser && auth.currentUser.uid === uid) {
             document.getElementById('btnEditProfile').style.display = 'block';
             document.getElementById('btnSaveProfile').style.display = 'block';
