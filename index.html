@@ -13,7 +13,7 @@
         body { margin: 0; background: var(--soft); color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
 
         /* HEADER & NAV */
-        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; z-index: 1001; }
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         nav { background: white; border-bottom: 1px solid #ddd; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; }
         .nav-links { display: flex; align-items: center; gap: 15px; }
         .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; padding: 10px; transition: 0.3s; }
@@ -22,21 +22,26 @@
         /* SIDEBAR */
         .sidebar { position: fixed; left: -100%; top: 0; width: 350px; height: 100%; background: white; z-index: 2000; transition: 0.4s; padding: 20px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; }
         .sidebar.open { left: 0; }
+        /* Overlay scuro per chiudere cliccando fuori */
+        #sidebarOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1500; }
         
         /* CONTENUTO */
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
+        .container { max-width: 900px; margin: 20px auto; padding: 0 20px; flex: 1; width: 100%; }
         .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .page { display: none; animation: fadeIn 0.5s; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TINDER STYLE */
+        /* TINDER STYLE (MIGLIORATO) */
         .tinder-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; position: relative; }
+        
         .swipe-card { 
             width: 100%; max-width: 350px; background: white; border-radius: 20px; overflow: hidden; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; transition: transform 0.3s ease, opacity 0.3s ease; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; 
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out; 
             display: flex; flex-direction: column; border: 1px solid #eee;
         }
+        
         .swipe-img-container { width: 100%; height: 400px; position: relative; background: #eee; }
         .swipe-img { width: 100%; height: 100%; object-fit: cover; }
         .swipe-info { padding: 20px; text-align: left; }
@@ -48,10 +53,10 @@
         .btn-swipe.love { background: var(--accent); color: white; border: 2px solid var(--accent); }
         .btn-swipe:hover { transform: scale(1.15); }
 
-        /* PROFILO FULL (CORRETTO) */
+        /* PROFILO FULL */
         .profile-card { text-align: center; padding: 0; overflow: hidden; }
         .profile-cover { height: 150px; background: linear-gradient(45deg, var(--primary), var(--accent)); }
-        .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: -70px; position: relative; z-index: 2; }
+        .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; position: relative; margin-top: -70px; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 2; }
         .profile-content { padding: 20px 30px 40px 30px; }
 
         /* INPUT & BUTTONS */
@@ -103,8 +108,9 @@
     </div>
 </nav>
 
+<div id="sidebarOverlay" onclick="toggleSidebar(true)"></div>
 <div class="sidebar" id="sidebar">
-    <div style="text-align:right; cursor:pointer; font-size: 1.2rem; color:#888;" onclick="toggleSidebar()">✕ CHIUDI</div>
+    <div style="text-align:right; cursor:pointer; font-size: 1.2rem; color:#888;" onclick="toggleSidebar(true)">✕ CHIUDI (ESC)</div>
     <div id="authArea">
         <h3>Accedi</h3>
         <p>Entra per fare Match e personalizzare il profilo!</p>
@@ -166,7 +172,7 @@
     <section id="match" class="page">
         <div class="card" style="text-align:center; padding:15px;">
             <h3 style="margin:0 0 10px 0;">💘 Match Profiles</h3>
-            <p style="font-size:0.9rem; color:#666;">Filtra per ship (es. PerthSanta, OhmLength...)</p>
+            <p style="font-size:0.9rem; color:#666;">Filtra per ship (es. PerthSanta, OhmLeng...)</p>
             <input type="text" id="shipFilter" placeholder="🔍 Scrivi ship per filtrare..." onkeyup="reloadDeck()" style="text-align:center; font-weight:bold; color:var(--primary);">
         </div>
 
@@ -190,7 +196,7 @@
                 <input type="text" id="guestNick" placeholder="Il tuo nome..." style="display:none; border:2px solid #00bcd4;">
                 
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="chatInput" placeholder="Scrivi messaggio..." style="margin:0;">
+                    <input type="text" id="chatInput" placeholder="Scrivi messaggio... (Premi INVIO)" style="margin:0;" onkeypress="handleChatKey(event)">
                     <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
                 </div>
             </div>
@@ -254,11 +260,24 @@
     const auth = firebase.auth();
     const db = firebase.database();
 
-    // --- UTILS ---
+    // --- UTILS & KEYBOARD LISTENERS ---
     function showToast(msg, type='normal') {
         const x = document.getElementById("toast"); x.innerText = msg; x.className = "show " + type;
         setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000);
     }
+    
+    // GESTIONE TASTO INVIO IN CHAT
+    function handleChatKey(e) {
+        if(e.key === 'Enter') sendMsg();
+    }
+
+    // GESTIONE TASTO ESC PER CHIUDERE SIDEBAR
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            toggleSidebar(true); // Forza chiusura
+        }
+    });
+
     function openLegal(type) {
         document.getElementById('legalModal').style.display = "flex";
         document.getElementById('legalTitle').innerText = type==='privacy'?"Privacy":"Termini";
@@ -279,14 +298,27 @@
         if(page==='chat') loadChat();
         if(page==='home') loadLeaderboard();
     }
+    
     function toggleSidebar(forceClose=false) { 
         const sb = document.getElementById('sidebar');
-        if(forceClose) sb.classList.remove('open'); else sb.classList.toggle('open');
+        const ov = document.getElementById('sidebarOverlay');
+        if(forceClose) {
+            sb.classList.remove('open');
+            ov.style.display = 'none';
+        } else {
+            if(sb.classList.contains('open')) {
+                sb.classList.remove('open');
+                ov.style.display = 'none';
+            } else {
+                sb.classList.add('open');
+                ov.style.display = 'block';
+            }
+        }
     }
+    
     function toggleEdit() { const f=document.getElementById('editForm'); f.style.display = f.style.display==='block'?'none':'block'; }
 
     // --- DATI FINTI (FAKE PROFILES) ---
-    // Questi appariranno SEMPRE
     const FAKE_USERS = [
         { uid:'bot1', nick:'OhmLengLover', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=ffcccb' },
         { uid:'bot2', nick:'SantaBaby', age:19, ship:'PerthSanta', story:'Perfect 10 Liners aspettando te...', avatar:'https://ui-avatars.com/api/?name=Santa&background=e0f7fa' },
@@ -295,7 +327,7 @@
         { uid:'bot5', nick:'BounPremForever', age:25, ship:'BounPrem', story:'Vampire project let’s go! 🧛‍♂️', avatar:'https://ui-avatars.com/api/?name=BP&background=d1c4e9' }
     ];
 
-    // --- TINDER MATCH LOGIC (CORRETTA PER CARICARE I BOT) ---
+    // --- TINDER MATCH LOGIC (CORRETTA) ---
     let currentDeck = [], deckIndex = 0;
     
     function reloadDeck() { deckIndex = 0; loadSwipeDeck(); }
@@ -305,35 +337,37 @@
         const f = document.getElementById('shipFilter').value.toLowerCase();
         c.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">🔍 Cerco profili...</div>';
         
-        // 1. Inizializza il deck con i BOT
+        // 1. CARICA I FAKE USERS IMMEDIATAMENTE
         let deck = [...FAKE_USERS];
 
-        // 2. Cerca anche utenti reali nel Database
-        db.ref('users').once('value', s => {
+        // 2. CERCA DI CARICARE ALTRI DAL DB (Ma se fallisce, mostra almeno i fake)
+        db.ref('users').once('value').then(s => {
             const myUid = auth.currentUser ? auth.currentUser.uid : null;
-
             if (s.exists()) {
                 s.forEach(u => {
                     const user = u.val();
                     user.uid = u.key;
-                    // Aggiungi solo se non sono io
                     if (user.uid !== myUid) {
                         deck.push(user);
                     }
                 });
             }
-
-            // 3. Applica Filtro (a tutti)
-            if(f) {
-                deck = deck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
-            }
-
-            // 4. Aggiorna e mischia
-            currentDeck = deck;
-            currentDeck.sort(() => Math.random() - 0.5);
-            deckIndex = 0;
-            renderCard();
+            renderDeckFinal(deck, f);
+        }).catch(err => {
+            // Se errore DB, mostra comunque i fake
+            console.log("Errore DB o vuoto, mostro Bot", err);
+            renderDeckFinal(deck, f);
         });
+    }
+
+    function renderDeckFinal(deck, filter) {
+        if(filter) {
+            deck = deck.filter(u => u.ship && u.ship.toLowerCase().includes(filter));
+        }
+        currentDeck = deck;
+        currentDeck.sort(() => Math.random() - 0.5); // Mischia
+        deckIndex = 0;
+        renderCard();
     }
 
     function renderCard() {
@@ -394,7 +428,7 @@
         setTimeout(()=>{ deckIndex++; renderCard(); },300);
     }
 
-    // --- CHAT GLOBALE OPEN ---
+    // --- CHAT GLOBALE OPEN (Tutti possono scrivere) ---
     function loadChat() {
         db.ref('chat').limitToLast(20).on('value', s=>{
             const b = document.getElementById('chatBox'); b.innerHTML="";
@@ -409,7 +443,6 @@
                 else if(!m.uid) cssClass = "guest"; 
                 
                 let nameHtml = m.nick;
-                // Solo se è un utente reale (ha UID) il nome è cliccabile
                 if(m.uid) nameHtml = `<span onclick="openUserProfile('${m.uid}')" style="cursor:pointer; text-decoration:underline;">${m.nick}</span>`;
 
                 b.innerHTML += `<div class="msg ${cssClass}"><b>${nameHtml}:</b> ${m.text}</div>`;
