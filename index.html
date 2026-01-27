@@ -234,16 +234,16 @@
         </div>
     </section>
 
-    <section id="chat" class="page">
-        <div class="card" style="border: 2px solid var(--primary);">
-            <h3 style="color:var(--primary);">✨ Global Chat</h3>
-            <div id="chatBox" class="chat-container"></div>
-            <div id="chatControls" style="display:flex; flex-direction:column; gap:10px;">
-                <input type="text" id="guestNick" placeholder="Il tuo nome..." style="display:none; border:2px solid #00bcd4;">
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
-                   <button class="btn-main" style="width:80px; margin:0; background:#e91e63;" onclick="sendMsg()">Invia</button>
+   <section id="Chat" class="page">
+        <div class="card" style="border: 2px solid #e91e63;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="color:#e91e63; margin:0;">💬 Chat con <span id="ChatName">Utente</span></h3>
+                <button onclick="navTo('match')" style="background:none; border:none; cursor:pointer;">❌ Chiudi</button>
             </div>
+            <div id="ChatBox" class="chat-container"></div>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="ChatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
+                <button class="btn-main" style="width:80px; margin:0; background:#e91e63;" onclick="sendMsg()">Invia</button>
             </div>
         </div>
     </section>
@@ -870,4 +870,5 @@
 </script>
 </body>
 </html>
+
 
