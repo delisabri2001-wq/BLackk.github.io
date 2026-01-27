@@ -362,7 +362,7 @@
         else { sb.classList.add('open'); ov.style.display='block'; }
     }
 
-    // --- DATI FINTI & BOT REPLIES ---
+    // --- DATI FINTI & BOT REPLIES (LE TUE SCELTE) ---
     const FAKE_USERS = [
         { uid:'bot1', nick:'TutorYim_Vamp', age:23, ship:'TutorYim', story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', otherShips: 'NetJJ', avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' },
         { uid:'bot2', nick:'ZeeNuNew_Prince', age:25, ship:'ZeeNuNew', story:'Aspettando The Next Prince con ansia. 👑', otherShips: 'MaxNat', avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' },
@@ -379,7 +379,7 @@
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
         
-        currentDeck = [...FAKE_USERS];
+        currentDeck = [...FAKE_USERS]; // Bot subito
         if(f) currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
         currentDeck.sort(() => Math.random() - 0.5);
         deckIndex = 0;
@@ -692,7 +692,7 @@
         }
     }
 
-    // AUTH (MODIFICATO PER NICKNAME E EDIT BUTTON)
+    // AUTH (MODIFICATO PER MOSTRARE EDIT BUTTON E NICK SIDEBAR)
     auth.onAuthStateChanged(u=>{
         if(u){
             document.getElementById('authArea').style.display='none';
@@ -714,11 +714,11 @@
         }
     });
 
-    // Modifica openUserProfile per mostrare tasti edit SE è il mio profilo
-    const originalOpenUserProfile = openUserProfile;
-    openUserProfile = function(uid) {
-        // Chiama la funzione originale per popolare i dati
-        navTo('userProfilePage');
+    // UNICA FUNZIONE PER APRIRE PROFILI
+    function openUserProfile(uid) {
+        navTo('userProfilePage'); // Va alla pagina profilo
+
+        // CASO BOT
         if(uid.startsWith('bot')) {
             const b = FAKE_USERS.find(x=>x.uid===uid);
             if(b) {
@@ -734,6 +734,8 @@
             document.getElementById('btnSaveProfile').style.display = 'none';
             return;
         }
+
+        // CASO UTENTE REALE
         db.ref('users/'+uid).once('value',s=>{
             const u=s.val();
             document.getElementById('pubNick').innerText=u.nick; 
@@ -763,7 +765,13 @@
         });
     }
 
-    // --- CHAT GLOBALE ---
+    // --- HELPER PER APRIRE IL MIO PROFILO ---
+    function openMyProfile() { 
+        if(auth.currentUser) openUserProfile(auth.currentUser.uid); 
+        else showToast("Devi accedere prima!", "error");
+    }
+
+    // --- CHAT GLOBALE (CON ADMIN DELETE) ---
     function loadChat() {
         db.ref('chat').limitToLast(20).on('value', s=>{
             const b = document.getElementById('chatBox'); b.innerHTML="";
