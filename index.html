@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLack World | Community</title>
-    <link rel="icon" href="https://emojicdn.elk.sh/🌈">
+    <link rel="icon" href="https://emojicdn.elk.sh/🌿">
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- STILE BASE & GRAFICA NUOVA --- */
+        /* --- STILE BASE (TEMA VERDE) --- */
         :root { 
-            --primary: #d63031; /* Rosso più vivace */
-            --accent: #fd79a8;  /* Rosa */
-            --soft: #fff0f5;    /* Sfondo rosa chiarissimo */
+            --primary: #1b4332; /* Verde Scuro Foresta */
+            --accent: #2d6a4f;  /* Verde Smeraldo */
+            --soft: #e8f5e9;    /* Verde Menta Chiarissimo */
             --white: #ffffff; 
-            --text: #2d3436; 
+            --text: #1e272e; 
+            --admin: #c0392b; 
         }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         
-        /* SFONDO A POIS (DOTS) */
+        /* SFONDO A POIS VERDI */
         body { 
             margin: 0; 
             color: var(--text); 
@@ -25,17 +26,17 @@
             display: flex; 
             flex-direction: column; 
             min-height: 100vh;
-            background-color: #fff0f5;
-            background-image: radial-gradient(#fd79a8 1px, transparent 1px), radial-gradient(#fd79a8 1px, #fff0f5 1px);
+            background-color: var(--soft);
+            background-image: radial-gradient(#a8e6cf 1px, transparent 1px), radial-gradient(#a8e6cf 1px, var(--soft) 1px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
         }
 
         /* HEADER & NAV */
-        header { background: linear-gradient(135deg, #d63031, #e17055); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(214, 48, 49, 0.3); position: relative; z-index: 1001; }
-        nav { background: rgba(255,255,255,0.95); border-bottom: 1px solid #eee; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; backdrop-filter: blur(5px); }
+        header { background: linear-gradient(135deg, #1b4332, #40916c); color: white; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(27, 67, 50, 0.3); position: relative; z-index: 1001; }
+        nav { background: rgba(255,255,255,0.95); border-bottom: 1px solid #daeec9; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; height: 60px; backdrop-filter: blur(5px); }
         .nav-links { display: flex; align-items: center; gap: 10px; overflow-x: auto; padding: 0 10px; }
-        .nav-links a { text-decoration: none; color: #555; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; padding: 8px 12px; transition: 0.3s; white-space: nowrap; border-radius: 20px; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; padding: 8px 12px; transition: 0.3s; white-space: nowrap; border-radius: 20px; }
         .nav-links a.active { background: var(--accent); color: white; }
 
         /* SIDEBAR */
@@ -45,7 +46,7 @@
         
         /* CONTENUTO */
         .container { max-width: 900px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; position: relative; z-index: 1; }
-        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #fff; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 25px; border: 1px solid #f0f0f0; }
         .page { display: none; animation: fadeIn 0.5s; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -53,29 +54,20 @@
         /* BACHECA SCLERI (POST-IT) */
         .board-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px 0; }
         .post-it { 
-            width: 160px; 
-            height: 160px; 
-            padding: 15px; 
+            width: 160px; height: 160px; padding: 15px; 
             box-shadow: 3px 3px 10px rgba(0,0,0,0.2); 
-            font-family: 'Indie Flower', cursive; 
-            font-size: 1.1rem;
-            color: #333;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
-            transition: transform 0.2s;
-            cursor: default;
-            position: relative;
+            font-family: 'Indie Flower', cursive; font-size: 1.1rem; color: #333;
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.2s; cursor: default; position: relative;
         }
         .post-it:hover { transform: scale(1.1) !important; z-index: 10; }
         .post-it b { display: block; font-size: 0.8rem; text-align: right; color: #555; margin-top: 5px; }
-        /* Pin (chiodino) */
-        .pin { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 15px; height: 15px; background: red; border-radius: 50%; box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .pin { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 15px; height: 15px; background: #e74c3c; border-radius: 50%; box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
 
         /* HOME: FOUNDER CORNER */
-        .founder-box { display: flex; gap: 20px; align-items: center; background: #fff; border: 3px dashed #ffb7b2; padding: 20px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(255, 183, 178, 0.4); }
+        .founder-box { display: flex; gap: 20px; align-items: center; background: #f0f9f4; border: 2px dashed #55efc4; padding: 20px; border-radius: 20px; margin-bottom: 30px; }
         .founder-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .founder-text h3 { margin: 0 0 5px 0; color: #e91e63; }
+        .founder-text h3 { margin: 0 0 5px 0; color: var(--primary); }
         .founder-text p { margin: 0; font-size: 0.9rem; color: #555; font-style: italic; }
 
         /* TINDER STYLE */
@@ -99,7 +91,7 @@
         .match-name { font-size: 0.8rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; margin-top: 5px; cursor: pointer; color: var(--primary); text-decoration: underline; }
 
         /* CHAT */
-        .chat-container { height: 350px; overflow-y: auto; border: 1px solid #eee; padding: 15px; background: #f9f9f9; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .chat-container { height: 350px; overflow-y: auto; border: 1px solid #eee; padding: 15px; background: #fafafa; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .msg { padding: 10px 14px; border-radius: 15px; background: #eee; max-width: 80%; font-size: 0.9rem; word-wrap: break-word; position: relative; }
         .msg.me { align-self: flex-end; background: var(--accent); color: white; }
         .msg.guest { background: #e0f7fa; border: 1px solid #b2ebf2; }
@@ -111,7 +103,7 @@
         .profile-cover { height: 150px; background: linear-gradient(45deg, var(--primary), var(--accent)); }
         .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; margin-top: -75px; position: relative; z-index: 2; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .profile-content { padding: 15px 20px 30px; }
-        .ship-tag { background: #ffeaa7; color: #d35400; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin: 5px; }
+        .ship-tag { background: #dff9fb; color: var(--primary); padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin: 5px; }
         .other-ship-tag { background: #f3f3f3; color: #555; padding: 4px 8px; border-radius: 15px; font-size: 0.8rem; display: inline-block; margin: 3px; }
         
         /* EDIT PROFILE IN PLACE */
@@ -120,7 +112,7 @@
         .editing .view-data { display: none; }
 
         /* INPUT & BUTTONS */
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; margin-bottom: 10px; outline: none; transition: 0.3s; background: #fdfdfd; }
+        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; margin-bottom: 10px; outline: none; transition: 0.3s; background: #fcfcfc; }
         input:focus, textarea:focus { border-color: var(--accent); background: white; }
         .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 5px; transition: 0.2s; }
         .btn-main:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
@@ -132,11 +124,11 @@
         .quiz-btn.correct { background: #d4edda; color: #155724; border-color:#c3e6cb; }
         .quiz-btn.wrong { background: #f8d7da; color: #721c24; border-color:#f5c6cb; }
         
-        .slot-box { background: #fff0f5; color: #333; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #ffb7b2; margin-top: 20px; box-shadow: 0 5px 15px rgba(255, 183, 178, 0.4); }
-        .slot-result { font-size: 1.1rem; margin: 15px 0; min-height: 50px; font-weight: bold; color: #e91e63; }
+        .slot-box { background: #f0fff4; color: #333; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #55efc4; margin-top: 20px; box-shadow: 0 5px 15px rgba(85, 239, 196, 0.2); }
+        .slot-result { font-size: 1.1rem; margin: 15px 0; min-height: 50px; font-weight: bold; color: var(--primary); }
 
         /* FOOTER & TOAST & MODAL */
-        footer { background: #2d3436; color: #ccc; padding: 30px 20px; text-align: center; font-size: 0.85rem; margin-top: auto; }
+        footer { background: #1e272e; color: #ccc; padding: 30px 20px; text-align: center; font-size: 0.85rem; margin-top: auto; }
         footer a { color: white; text-decoration: underline; cursor: pointer; margin: 0 10px; }
         #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 4000; left: 50%; bottom: 30px; transform: translateX(-50%); box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-size: 0.9rem; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
@@ -149,13 +141,13 @@
         .modal-content { background:white; padding:30px; border-radius: 15px; max-width:500px; width:90%; max-height:80vh; overflow-y:auto; position:relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .close-modal { position:absolute; top:15px; right:20px; font-size:1.5rem; cursor:pointer; color:#777; }
 
-        /* FLOATING CAT STICKER (Decorazione) */
+        /* FLOATING DECORATION (Foglia/Natura) */
         .cat-sticker { position: fixed; bottom: 20px; right: 20px; width: 80px; z-index: 3000; pointer-events: none; opacity: 0.9; }
     </style>
 </head>
 <body>
 
-<header><h1>BLACK WORLD 🌈</h1></header>
+<header><h1>BLACK WORLD 🌿</h1></header>
 
 <nav>
     <div style="position: absolute; left: 20px; top: 18px; cursor: pointer; font-weight: bold; color: var(--primary);" onclick="toggleSidebar()">
@@ -163,7 +155,8 @@
     </div>
     <div class="nav-links">
         <a onclick="navTo('home', this)" class="active">Home</a>
-        <a onclick="navTo('bacheca', this)">Scleri 📢</a> <a onclick="navTo('match', this)">Match 🔥</a>
+        <a onclick="navTo('bacheca', this)">Scleri 📢</a>
+        <a onclick="navTo('match', this)">Match 🔥</a>
         <a onclick="navTo('chat', this)">Chat</a>
         <a onclick="navTo('giochi', this)">Giochi</a>
     </div>
@@ -196,10 +189,10 @@
     
     <section id="home" class="page active">
         <div class="founder-box">
-            <img src="https://ui-avatars.com/api/?name=Founder&background=ffb7b2&color=fff" class="founder-img">
+            <img src="https://ui-avatars.com/api/?name=Founder&background=2d6a4f&color=fff" class="founder-img">
             <div class="founder-text">
-                <h3>L'Angolo della Founder 🌸</h3>
-                <p>"Ciao! Benvenuta nel mio mondo. Ho creato questo blog perché volevo uno spazio sicuro per noi fangirl italiane dove sclerare su GMMTV e Domundi senza giudizi. Qui puoi trovare amiche che capiscono la tua ossessione per i BL! Divertiti e fai tanti match! 💖"</p>
+                <h3>L'Angolo della Founder 🌿</h3>
+                <p>"Ciao! Benvenuta nel mio mondo. Ho creato questo blog perché volevo uno spazio sicuro per noi fangirl italiane dove sclerare su GMMTV e Domundi senza giudizi. Qui puoi trovare amiche che capiscono la tua ossessione per i BL! Divertiti e fai tanti match! 💚"</p>
             </div>
         </div>
 
@@ -211,11 +204,11 @@
     </section>
 
     <section id="bacheca" class="page">
-        <div class="card" style="text-align:center; background:#fffbe7; border: 2px dashed #f1c40f;">
-            <h3 style="color:#d35400;">📢 Bacheca degli Scleri</h3>
+        <div class="card" style="text-align:center; background:#f0fff4; border: 2px dashed #2ecc71;">
+            <h3 style="color:#27ae60;">📢 Bacheca degli Scleri</h3>
             <p>Lascia un pensiero anonimo (o firmato) sulla tua serie preferita!</p>
             <textarea id="scleroInput" rows="3" placeholder="Scrivi qui il tuo sclero..." style="background:white;"></textarea>
-            <button class="btn-main" style="background:#f39c12;" onclick="postSclero()">📌 APPENDI POST-IT</button>
+            <button class="btn-main" style="background:#27ae60;" onclick="postSclero()">📌 APPENDI POST-IT</button>
         </div>
         <div id="scleroBoard" class="board-container">
             <div style="color:#888;">Caricamento scleri...</div>
@@ -264,15 +257,15 @@
     </section>
 
     <section id="privateChat" class="page">
-        <div class="card" style="border: 2px solid #e91e63;">
+        <div class="card" style="border: 2px solid var(--primary);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h3 style="color:#e91e63; margin:0;">💬 Chat con <span id="privateChatName">Utente</span></h3>
+                <h3 style="color:var(--primary); margin:0;">💬 Chat con <span id="privateChatName">Utente</span></h3>
                 <button onclick="navTo('match')" style="background:none; border:none; cursor:pointer;">❌ Chiudi</button>
             </div>
             <div id="privateChatBox" class="chat-container"></div>
             <div style="display:flex; gap:10px;">
                 <input type="text" id="privateChatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendPrivateMsg()">
-                <button class="btn-main" style="width:80px; margin:0; background:#e91e63;" onclick="sendPrivateMsg()">Invia</button>
+                <button class="btn-main" style="width:80px; margin:0;" onclick="sendPrivateMsg()">Invia</button>
             </div>
         </div>
     </section>
@@ -299,7 +292,7 @@
             <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV (2025)</button>
             <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI (2025)</button>
             <button class="btn-main" style="background:#e67e22;" onclick="startEmojiGame()">🧩 Emoji Challenge: Serie TV</button>
-            <div class="slot-box"><h3 style="color:#e91e63; margin:0;">🎰 La Ruota dell'Amore</h3><p>Quale ship 2025 ti protegge?</p><div id="slotResult" class="slot-result">❓</div><button class="btn-main" style="background:#ffb7b2; color:#c0392b; border:none;" onclick="spinSlot()">GIRA ORA</button></div>
+            <div class="slot-box"><h3 style="color:#e91e63; margin:0;">🎰 La Ruota dell'Amore</h3><p>Quale ship 2025 ti protegge?</p><div id="slotResult" class="slot-result">❓</div><button class="btn-main" style="background:#81ecec; color:#000; border:none;" onclick="spinSlot()">GIRA ORA</button></div>
         </div>
         <div id="quizActive" class="card" style="display:none;"><button onclick="stopQuiz()" style="float:right; border:none; background:none;">✕</button><h3 id="qTitle">Domanda</h3><p id="qText" style="font-size:1.2rem; font-weight:600;">...</p><div id="qOpts"></div><p id="qFeed" style="font-weight:bold; text-align:center; margin-top:10px;"></p></div>
     </section>
