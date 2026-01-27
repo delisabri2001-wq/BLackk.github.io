@@ -245,9 +245,9 @@
             <div id="chatControls" style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="guestNick" placeholder="Il tuo nome..." style="display:none; border:2px solid #00bcd4;">
                 
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
-                    <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
+                    <div style="display:flex; gap:10px;">
+    <input type="text" id="globalChatInput" placeholder="Scrivi in Globale..." onkeydown="if(event.key==='Enter') sendGlobalMsg()">
+    <button class="btn-main" style="width:80px; margin:0;" onclick="sendGlobalMsg()">Invia</button>
                 </div>
             </div>
         </div>
@@ -876,6 +876,7 @@
 </script>
 </body>
 </html>
+
 
 
 
