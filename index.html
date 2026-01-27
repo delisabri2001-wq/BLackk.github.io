@@ -307,7 +307,6 @@
       measurementId: "G-L1TH722CGE"
     };
 
-    // INIZIALIZZAZIONE (IMPORTANTE: NON MODIFICARE)
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
@@ -693,7 +692,7 @@
         }
     }
 
-    // AUTH (MODIFICATO PER NICKNAME E EDIT BUTTON)
+    // AUTH (MODIFICATO PER MOSTRARE EDIT BUTTON E NICK SIDEBAR)
     auth.onAuthStateChanged(u=>{
         if(u){
             document.getElementById('authArea').style.display='none';
@@ -772,7 +771,7 @@
         else showToast("Devi accedere prima!", "error");
     }
 
-    // --- CHAT GLOBALE (CON ADMIN DELETE) ---
+    // --- CHAT GLOBALE ---
     function loadChat() {
         db.ref('chat').limitToLast(20).on('value', s=>{
             const b = document.getElementById('chatBox'); b.innerHTML="";
@@ -799,6 +798,52 @@
         document.getElementById('chatInput').value = "";
     }
     function loadLeaderboard(){ db.ref('users').orderByChild('score').limitToLast(5).on('value',s=>{ const t=document.getElementById('leaderboard'); t.innerHTML=""; let a=[]; s.forEach(c=>a.push({k:c.key,n:c.val().nick,s:c.val().score||0})); a.sort((x,y)=>y.s-x.s).forEach((p,i)=>t.innerHTML+=`<tr><td>#${i+1} <b onclick="openUserProfile('${p.k}')" style="cursor:pointer">${p.n}</b></td><td style="text-align:right;">${p.s}</td></tr>`); }); }
+    
+    // --- FUNZIONI AUTH (RIMESSE PER FIX LOGIN) ---
+    function emailAuth(type) {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('pass').value;
+        
+        if (!email || !pass) {
+            alert("Per favore, inserisci email e password.");
+            return;
+        }
+
+        if (type === 'login') {
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => {
+                    showToast("Bentornata!", "success");
+                })
+                .catch((error) => {
+                    console.error("Errore Login:", error);
+                    alert("Errore Login: " + error.message);
+                });
+        } else {
+            auth.createUserWithEmailAndPassword(email, pass)
+                .then(() => {
+                    showToast("Registrazione completata!", "success");
+                })
+                .catch((error) => {
+                    console.error("Errore Registrazione:", error);
+                    alert("Errore Registrazione: " + error.message);
+                });
+        }
+    }
+    
+    function socialLogin() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider).then(() => {
+            showToast("Accesso Google riuscito!", "success");
+        }).catch((error) => {
+            alert("Errore Google: " + error.message);
+        });
+    }
+    
+    function logout() {
+        auth.signOut().then(() => {
+            window.location.reload();
+        });
+    }
 </script>
 </body>
 </html>
