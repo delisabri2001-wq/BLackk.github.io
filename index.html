@@ -228,7 +228,7 @@
             </div>
             <div id="privateChatBox" class="chat-container"></div>
             <div style="display:flex; gap:10px;">
-                <input type="text" id="privateChatInput" placeholder="Scrivi... (Enter)">
+                <input type="text" id="privateChatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendPrivateMsg()">
                 <button class="btn-main" style="width:80px; margin:0; background:#e91e63;" onclick="sendPrivateMsg()">Invia</button>
             </div>
         </div>
@@ -241,7 +241,7 @@
             <div id="chatControls" style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="guestNick" placeholder="Il tuo nome..." style="display:none; border:2px solid #00bcd4;">
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)">
+                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
                     <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
                 </div>
             </div>
@@ -320,25 +320,7 @@
         setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000);
     }
     
-    // ASCOLTATORI EVENTI TASTIERA (NUOVO METODO PIÙ ROBUSTO)
-    document.addEventListener("DOMContentLoaded", () => {
-        // Global Chat Enter
-        document.getElementById("chatInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault(); // Evita invio form
-                sendMsg();
-            }
-        });
-
-        // Private Chat Enter
-        document.getElementById("privateChatInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendPrivateMsg();
-            }
-        });
-    });
-
+    // GESTIONE TASTI E NAVIGAZIONE
     document.addEventListener('keydown', function(event) { 
         if (event.key === "Escape") {
             toggleSidebar(true); 
