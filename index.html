@@ -295,7 +295,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
 <script>
-    // --- CONFIGURAZIONE FIREBASE REALE ---
+    // --- TUE CHIAVI REALI ---
     const firebaseConfig = {
       apiKey: "AIzaSyAr4cM8wb7kSHpaFDGjlDZcm15t1LyL4Do",
       authDomain: "black-world-91efc.firebaseapp.com",
@@ -307,6 +307,7 @@
       measurementId: "G-L1TH722CGE"
     };
 
+    // INIZIALIZZAZIONE (IMPORTANTE: NON MODIFICARE)
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
@@ -692,7 +693,7 @@
         }
     }
 
-    // AUTH (MODIFICATO PER MOSTRARE EDIT BUTTON E NICK SIDEBAR)
+    // AUTH (MODIFICATO PER NICKNAME E EDIT BUTTON)
     auth.onAuthStateChanged(u=>{
         if(u){
             document.getElementById('authArea').style.display='none';
