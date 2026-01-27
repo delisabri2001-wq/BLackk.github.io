@@ -30,18 +30,23 @@
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TINDER STYLE */
-        .tinder-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; }
-        .swipe-card { width: 100%; max-width: 350px; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; transition: 0.3s; display: flex; flex-direction: column; }
-        .swipe-img-container { width: 100%; height: 350px; position: relative; }
+        /* TINDER STYLE (FIXED) */
+        .tinder-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; position: relative; }
+        .swipe-card { 
+            width: 100%; max-width: 350px; background: white; border-radius: 20px; overflow: hidden; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; transition: transform 0.3s ease, opacity 0.3s ease; 
+            display: flex; flex-direction: column; border: 1px solid #eee;
+        }
+        .swipe-img-container { width: 100%; height: 400px; position: relative; background: #eee; }
         .swipe-img { width: 100%; height: 100%; object-fit: cover; }
         .swipe-info { padding: 20px; text-align: left; }
-        .swipe-name { font-size: 1.5rem; font-weight: bold; margin: 0; }
-        .swipe-controls { display: flex; gap: 20px; justify-content: center; margin-top: 20px; }
-        .btn-swipe { width: 60px; height: 60px; border-radius: 50%; border: none; font-size: 1.5rem; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; }
+        .swipe-name { font-size: 1.6rem; font-weight: bold; margin: 0; color: #222; }
+        
+        .swipe-controls { display: flex; gap: 30px; justify-content: center; margin-top: 25px; }
+        .btn-swipe { width: 70px; height: 70px; border-radius: 50%; border: none; font-size: 2rem; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; }
         .btn-swipe.nope { background: white; color: #ff4757; border: 2px solid #ff4757; }
         .btn-swipe.love { background: var(--accent); color: white; border: 2px solid var(--accent); }
-        .btn-swipe:hover { transform: scale(1.1); }
+        .btn-swipe:hover { transform: scale(1.15); }
 
         /* PROFILO FULL */
         .profile-cover { height: 120px; background: linear-gradient(45deg, var(--primary), var(--accent)); border-radius: 12px 12px 0 0; margin: -20px -20px 50px -20px; }
@@ -160,15 +165,15 @@
         <div class="card" style="text-align:center; padding:15px;">
             <h3 style="margin:0 0 10px 0;">💘 Match Profiles</h3>
             <p style="font-size:0.9rem; color:#666;">Filtra per ship (es. PerthSanta, OhmLength...)</p>
-            <input type="text" id="shipFilter" placeholder="🔍 Scrivi ship..." onkeyup="reloadDeck()" style="text-align:center; font-weight:bold; color:var(--primary);">
+            <input type="text" id="shipFilter" placeholder="🔍 Scrivi ship per filtrare..." onkeyup="reloadDeck()" style="text-align:center; font-weight:bold; color:var(--primary);">
         </div>
 
         <div id="deckContainer" class="tinder-container">
             <div id="loadingDeck" style="text-align:center; color:#888;">Caricamento profili...</div>
         </div>
         
-        <div class="card" style="text-align:center; background:#e0f7fa;">
-            <small>💡 I profili sono visibili a tutti, ma solo chi è registrato può fare Swipe!</small>
+        <div id="guestWarning" class="card" style="text-align:center; background:#e0f7fa; display:none;">
+            <small>💡 Stai guardando come ospite. <b>Devi accedere</b> per fare Match con le persone!</small>
         </div>
     </section>
 
@@ -279,6 +284,7 @@
     function toggleEdit() { const f=document.getElementById('editForm'); f.style.display = f.style.display==='block'?'none':'block'; }
 
     // --- DATI FINTI (FAKE PROFILES) PER TESTING ---
+    // Questi verranno caricati SEMPRE, così vedrai qualcosa
     const FAKE_USERS = [
         { uid:'bot1', nick:'OhmLengLover', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=ffcccb' },
         { uid:'bot2', nick:'SantaBaby', age:19, ship:'PerthSanta', story:'Perfect 10 Liners aspettando te...', avatar:'https://ui-avatars.com/api/?name=Santa&background=e0f7fa' },
@@ -287,8 +293,9 @@
         { uid:'bot5', nick:'BounPremForever', age:25, ship:'BounPrem', story:'Vampire project let’s go! 🧛‍♂️', avatar:'https://ui-avatars.com/api/?name=BP&background=d1c4e9' }
     ];
 
-    // --- TINDER MATCH LOGIC ---
+    // --- TINDER MATCH LOGIC (CORRETTA) ---
     let currentDeck = [], deckIndex = 0;
+    
     function reloadDeck() { deckIndex = 0; loadSwipeDeck(); }
     
     function loadSwipeDeck() {
@@ -296,25 +303,27 @@
         const f = document.getElementById('shipFilter').value.toLowerCase();
         c.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">🔍 Cerco profili...</div>';
         
-        // 1. Carica utenti reali
+        // 1. Inizia con i FAKE USERS (così vedi sempre qualcosa)
+        let deck = [...FAKE_USERS];
+
+        // 2. Carica utenti reali da Firebase
         db.ref('users').once('value', s => {
-            currentDeck = [];
             const myUid = auth.currentUser ? auth.currentUser.uid : null;
 
-            // Aggiungi utenti reali
             s.forEach(u => {
                 const user = u.val(); user.uid = u.key;
                 if(user.uid !== myUid) {
-                    if(!f || (user.ship && user.ship.toLowerCase().includes(f))) currentDeck.push(user);
+                    deck.push(user);
                 }
             });
 
-            // 2. Aggiungi i Fake Users (se matchano il filtro)
-            FAKE_USERS.forEach(fake => {
-                 if(!f || fake.ship.toLowerCase().includes(f)) currentDeck.push(fake);
-            });
+            // 3. Applica Filtro Ship (su tutti)
+            if(f) {
+                deck = deck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
+            }
 
-            // Mischia
+            currentDeck = deck;
+            // Mischia il mazzo
             currentDeck.sort(() => Math.random() - 0.5);
             deckIndex = 0;
             renderCard();
@@ -335,7 +344,7 @@
             <div class="swipe-card" id="activeCard">
                 <div class="swipe-img-container"><img src="${pic}" class="swipe-img"></div>
                 <div class="swipe-info">
-                    <h3 class="swipe-name">${u.nick}</h3>
+                    <h3 class="swipe-name">${u.nick} <small style="font-size:1rem; font-weight:normal;">(${u.age||'?'})</small></h3>
                     <span style="color:var(--accent); font-weight:bold;">${ship}</span>
                     <p style="font-style:italic; color:#666;">${u.story || "..."}</p>
                 </div>
@@ -356,7 +365,9 @@
         }
 
         const card = document.getElementById('activeCard');
-        card.style.transform = dir==='left' ? "translateX(-100px) rotate(-10deg)" : "translateX(100px) rotate(10deg)";
+        if(!card) return;
+
+        card.style.transform = dir==='left' ? "translateX(-150px) rotate(-20deg)" : "translateX(150px) rotate(20deg)";
         card.style.opacity = "0";
         
         if(dir==='right') { 
@@ -447,6 +458,7 @@
             document.getElementById('authArea').style.display='none';
             document.getElementById('userArea').style.display='block';
             document.getElementById('guestNick').style.display='none'; // Nascondi input guest
+            document.getElementById('guestWarning').style.display='none'; // NASCONDI AVVISO SE LOGGATO
             
             db.ref('users/'+u.uid).on('value', s=>{
                 const d=s.val()||{};
@@ -459,6 +471,7 @@
             document.getElementById('authArea').style.display='block';
             document.getElementById('userArea').style.display='none';
             document.getElementById('guestNick').style.display='block'; // Mostra input guest
+            document.getElementById('guestWarning').style.display='block'; // MOSTRA AVVISO SE OSPITE
         }
     });
 
