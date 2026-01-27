@@ -307,7 +307,7 @@
       measurementId: "G-L1TH722CGE"
     };
 
-    // INIZIALIZZAZIONE (IMPORTANTE: NON MODIFICARE)
+    // INIZIALIZZAZIONE
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
@@ -636,15 +636,21 @@
         document.getElementById('qTitle').innerText=`Domanda ${qI+1}`; 
         document.getElementById('qText').innerHTML=displayText; 
         document.getElementById('qFeed').innerText=""; 
-        document.getElementById('qOpts').innerHTML=d.a.map((a,i)=>`<div class="quiz-btn" onclick="chk(${i},${d.c},this)">${a}</div>`).join('');
+        
+        // --- RANDOMIZZAZIONE RISPOSTE (NUOVO) ---
+        let options = d.a.map((ans, index) => { return { text: ans, isCorrect: (index === d.c) }; });
+        options.sort(() => Math.random() - 0.5);
+
+        document.getElementById('qOpts').innerHTML=options.map(opt =>`<div class="quiz-btn" onclick="chk(${opt.isCorrect}, this)">${opt.text}</div>`).join('');
     }
     
-    function chk(s,c,e) { 
+    function chk(isCorrect, e) { 
         document.querySelectorAll('.quiz-btn').forEach(b=>b.onclick=null); 
-        if(s===c){ e.classList.add('correct'); pts++; }
+        if(isCorrect){ e.classList.add('correct'); pts++; }
         else { 
             e.classList.add('wrong'); 
-            let correctTxt = currentQuizData[qI].a[c];
+            // Cerca la risposta giusta nell'array originale per mostrarla nel report
+            let correctTxt = currentQuizData[qI].a[currentQuizData[qI].c];
             wrongAnswers.push(`D${qI+1}: Era "${correctTxt}"`);
         } 
         setTimeout(()=>{qI++;showQ();},1000); 
