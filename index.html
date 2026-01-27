@@ -800,9 +800,18 @@
     }
     function deleteMsg(key) { if(confirm("Eliminare?")) db.ref('chat/'+key).remove(); }
     
-    function sendMsg() {
-        const txt = document.getElementById('chatInput').value; 
-        if(!txt) return; // Non inviare vuoto
+// Incolla questa funzione nel blocco <script>
+function sendGlobalMsg() {
+    var input = document.getElementById('globalChatInput');
+    var message = input.value.trim();
+
+    if (message !== "") {
+        // QUI inserisci la tua stringa Firebase. Esempio:
+        // database.ref('messages').push({ text: message });
+        
+        input.value = ""; // Questo svuota il campo dopo l'invio
+    }
+}
         
         let nick, uid, isAdmin=false;
         
@@ -876,6 +885,7 @@
 </script>
 </body>
 </html>
+
 
 
 
