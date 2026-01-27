@@ -64,6 +64,8 @@
         .profile-cover { height: 150px; background: linear-gradient(45deg, var(--primary), var(--accent)); }
         .profile-avatar-big { width: 140px; height: 140px; border-radius: 50%; border: 5px solid white; margin-top: -75px; position: relative; z-index: 2; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .profile-content { padding: 15px 20px 30px; }
+        .ship-tag { background: #e8f5e9; color: var(--primary); padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin: 5px; }
+        .other-ship-tag { background: #f3f3f3; color: #555; padding: 4px 8px; border-radius: 15px; font-size: 0.8rem; display: inline-block; margin: 3px; }
 
         /* INPUT & BUTTONS */
         input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; outline: none; transition: 0.3s; }
@@ -71,14 +73,14 @@
         .btn-main { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px; }
         .btn-social { background: white; border: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 5px; cursor: pointer; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; color: #555; }
 
-        /* GAMES & SLOT */
+        /* GAMES & SLOT (NUOVO STILE) */
         .quiz-btn { width: 100%; padding: 15px; border: 1px solid #ddd; background: #fff; text-align: left; margin-bottom: 8px; cursor: pointer; border-radius: 8px; transition:0.2s; }
         .quiz-btn:hover { background: #f0f0f0; }
         .quiz-btn.correct { background: #d4edda; color: #155724; border-color:#c3e6cb; }
         .quiz-btn.wrong { background: #f8d7da; color: #721c24; border-color:#f5c6cb; }
         
-        .slot-box { background: #222; color: white; padding: 20px; border-radius: 12px; text-align: center; border: 4px solid gold; margin-top: 20px; }
-        .slot-result { font-size: 1.5rem; margin: 15px 0; min-height: 50px; font-weight: bold; color: gold; }
+        .slot-box { background: #fff0f5; color: #333; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #ffb7b2; margin-top: 20px; box-shadow: 0 5px 15px rgba(255, 183, 178, 0.4); }
+        .slot-result { font-size: 1.5rem; margin: 15px 0; min-height: 50px; font-weight: bold; color: #e91e63; }
 
         /* FOOTER & TOAST & MODAL */
         footer { background: #222; color: #ccc; padding: 30px 20px; text-align: center; font-size: 0.85rem; margin-top: auto; }
@@ -116,7 +118,7 @@
     <div style="text-align:right; cursor:pointer; font-size: 1.2rem; color:#888;" onclick="toggleSidebar(true)">✕ CHIUDI (ESC)</div>
     <div id="authArea">
         <h3>Accedi</h3>
-        <p>Entra per fare Match e personalizzare il profilo!</p>
+        <p>Entra per personalizzare il profilo e usare i Match!</p>
         <button class="btn-social" onclick="socialLogin()"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="18"> Google</button>
         <hr style="margin: 20px 0;">
         <input type="email" id="email" placeholder="Email">
@@ -133,9 +135,12 @@
             <input type="file" id="fileInput" accept="image/*">
             <input type="text" id="pNick" placeholder="Nickname">
             <input type="number" id="pAge" placeholder="Età">
-            <input type="text" id="pShip" placeholder="La tua Ship">
+            <label style="font-size:0.8rem; font-weight:bold; color:var(--primary); margin-top:5px;">🏆 Ship Preferita (The One)</label>
+            <input type="text" id="pShip" placeholder="Es. ZeeNuNew">
+            <label style="font-size:0.8rem; font-weight:bold; margin-top:5px;">💖 Altre Ship (Bias Wreckers)</label>
+            <input type="text" id="pOtherShips" placeholder="Es. TutorYim, NetJJ, OhmLeng...">
             <input type="text" id="pSocial" placeholder="Social (es. IG @nome)">
-            <textarea id="pStory" rows="3" placeholder="Bio..."></textarea>
+            <textarea id="pStory" rows="3" placeholder="Scrivi la tua bio..."></textarea>
             <button class="btn-main" id="btnSave" onclick="saveProfile()">💾 SALVA</button>
         </div>
         <hr style="margin:20px 0;">
@@ -163,11 +168,18 @@
             <img id="pubAvatar" src="" class="profile-avatar-big">
             <div class="profile-content">
                 <h2 id="pubNick" style="margin:0;">Nome</h2>
-                <p id="pubShip" style="color:var(--accent); font-weight:bold; margin-top:5px;">Ship</p>
-                <div style="margin: 20px 0; font-size:1.1rem;">Età: <b id="pubAge">-</b> • Punti: <b id="pubScore">0</b></div>
-                <div style="font-style:italic; color:#555; margin:20px 0;">"<span id="pubStory">...</span>"</div>
-                <div style="background:#f9f9f9; padding:15px; border-radius:8px;">📱 Social: <b id="pubSocial">-</b></div>
-                <button class="btn-social" style="margin-top:20px;" onclick="navTo('match')">🔙 Torna ai Match</button>
+                
+                <div style="margin-top:10px;">
+                    <span class="ship-tag">🏆 Main: <span id="pubShip">...</span></span>
+                </div>
+                <div style="margin-top:5px;" id="pubOtherShipsContainer">
+                    </div>
+
+                <div style="margin: 20px 0; font-size:1.1rem; color:#666;">Età: <b id="pubAge">-</b></div>
+                <div style="font-style:italic; color:#555; margin:20px 0; padding:10px; background:#f9f9f9; border-radius:8px;">"<span id="pubStory">...</span>"</div>
+                <div style="margin-top:10px;">📱 Social: <b id="pubSocial">-</b></div>
+                
+                <button class="btn-social" style="margin-top:20px;" onclick="navTo('home')">🔙 Torna alla Home</button>
             </div>
         </div>
     </section>
@@ -227,13 +239,13 @@
             <h3>🎮 Sala Giochi</h3>
             <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV (2025)</button>
             <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI (2025)</button>
-            <button class="btn-main" style="background:#e67e22;" onclick="startEmojiGame()">🧩 Emoji Challenge (Ships)</button>
-            <hr>
+            <button class="btn-main" style="background:#e67e22;" onclick="startEmojiGame()">🧩 Emoji Challenge: Serie TV</button>
+            
             <div class="slot-box">
-                <h3 style="color:gold; margin:0;">🎰 Daily Soulmate</h3>
-                <p>Chi è la tua ship del destino oggi?</p>
+                <h3 style="color:#e91e63; margin:0;">🎰 La Ruota dell'Amore</h3>
+                <p>Quale ship ti protegge oggi?</p>
                 <div id="slotResult" class="slot-result">❓</div>
-                <button class="btn-main" style="background:gold; color:black;" onclick="spinSlot()">GIRA LA RUOTA</button>
+                <button class="btn-main" style="background:#ffb7b2; color:#c0392b; border:none;" onclick="spinSlot()">GIRA ORA</button>
             </div>
         </div>
         
@@ -320,15 +332,15 @@
     }
     function toggleEdit() { const f=document.getElementById('editForm'); f.style.display = f.style.display==='block'?'none':'block'; }
 
-    // --- DATI FINTI & BOT REPLIES (AGGIORNATI) ---
+    // --- DATI FINTI & BOT REPLIES ---
     const FAKE_USERS = [
-        { uid:'bot1', nick:'TutorYim_Lover', age:23, ship:'TutorYim', story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' },
-        { uid:'bot2', nick:'ZeeNuNew_Prince', age:25, ship:'ZeeNuNew', story:'Aspettando The Next Prince con ansia. 👑', avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' },
-        { uid:'bot3', nick:'PondPhuwin_Orange', age:21, ship:'PondPhuwin', story:'Pesce arancione per sempre. We Are ci ha salvati. 🟠', avatar:'https://ui-avatars.com/api/?name=Pond+Phuwin&background=ff9f43' },
-        { uid:'bot4', nick:'JimmySea_Sunflower', age:24, ship:'JimmySea', story:'Last Twilight best series. MhokDay nel cuore. 🌻', avatar:'https://ui-avatars.com/api/?name=Jimmy+Sea&background=feca57' },
-        { uid:'bot5', nick:'OhmLeng_Kidnap', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=badc58' }
+        { uid:'bot1', nick:'OhmLengLover', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', other:'PerthSanta', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=ffcccb' },
+        { uid:'bot2', nick:'SantaBaby', age:19, ship:'PerthSanta', story:'Perfect 10 Liners aspettando te...', other:'WinnySatang', avatar:'https://ui-avatars.com/api/?name=Santa&background=e0f7fa' },
+        { uid:'bot3', nick:'GeminiFourth', age:20, ship:'GeminiFourth', story:'My Love Mix-Up best series ever.', other:'PondPhuwin', avatar:'https://ui-avatars.com/api/?name=GF&background=fff9c4' },
+        { uid:'bot4', nick:'NetJJ_Fan', age:24, ship:'NetJJ', story:'Supporto Net e JJ in ogni progetto! 💚', other:'TutorYim', avatar:'https://ui-avatars.com/api/?name=Net+JJ&background=c8e6c9' },
+        { uid:'bot5', nick:'BounPrem', age:25, ship:'BounPrem', story:'Vampire project let’s go! 🧛‍♂️', other:'OhmFluke', avatar:'https://ui-avatars.com/api/?name=BP&background=d1c4e9' }
     ];
-    const BOT_REPLIES = ["Ciao! Amo la tua ship!", "Hai visto l'ultimo episodio?", "Sono bellissimi insieme 😍", "Sono d'accordo con te!", "Possiamo essere amiche?"];
+    const BOT_REPLIES = ["Ciao! Amo la tua ship!", "Hai visto l'ultimo episodio?", "Ohm è bellissimo 😍", "Sono d'accordo con te!", "Che carina la tua foto!", "Possiamo essere amiche?"];
 
     // --- MATCH LOGIC ---
     let currentDeck = [], deckIndex = 0;
@@ -337,12 +349,14 @@
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
         
-        currentDeck = [...FAKE_USERS]; // Bot subito
+        // CARICA BOT SUBITO
+        currentDeck = [...FAKE_USERS];
         if(f) currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
         currentDeck.sort(() => Math.random() - 0.5);
         deckIndex = 0;
-        renderCard();
+        renderCard(); // Mostra i bot
 
+        // CARICA REALI POI
         db.ref('users').once('value').then(s => {
             if (s.exists()) {
                 const myUid = auth.currentUser ? auth.currentUser.uid : null;
@@ -351,6 +365,7 @@
                     const user = u.val(); user.uid = u.key;
                     if (user.uid !== myUid) realUsers.push(user);
                 });
+                
                 if(f) realUsers = realUsers.filter(u => u.ship && u.ship.toLowerCase().includes(f));
                 if(realUsers.length > 0) {
                     currentDeck = currentDeck.concat(realUsers);
@@ -368,7 +383,7 @@
         c.innerHTML = `
             <div class="swipe-card" id="activeCard">
                 <div class="swipe-img-container"><img src="${u.avatar}" class="swipe-img"></div>
-                <div class="swipe-info"><h3 class="swipe-name">${u.nick}</h3><span style="color:var(--accent);font-weight:bold;">${u.ship}</span><p>${u.story||''}</p></div>
+                <div class="swipe-info"><h3 class="swipe-name">${u.nick}</h3><span style="color:var(--accent);font-weight:bold;">${u.ship}</span></div>
             </div>
             <div class="swipe-controls"><button class="btn-swipe nope" onclick="swipe('left')">✕</button><button class="btn-swipe love" onclick="swipe('right','${u.uid}')">💚</button></div>`;
     }
@@ -385,7 +400,7 @@
         setTimeout(()=>{ deckIndex++; renderCard(); },300);
     }
 
-    // --- LISTA MATCH (FOTO=PROFILO, NOME=CHAT) ---
+    // --- LISTA MATCH & CHAT PRIVATA ---
     function loadMyMatches() {
         if(!auth.currentUser) return;
         const list = document.getElementById('matchList');
@@ -461,26 +476,32 @@
 
     // --- GAMES LOGIC: SLOT & EMOJI ---
     const SLOT_DATA = [
-        { name: "TutorYim", msg: "Battle of the Writers vibes! 🧛‍♂️ Attenta ai vampiri!", emoji: "🧛‍♂️" },
-        { name: "ZeeNuNew", msg: "Mood regale: The Next Prince! 👑 Sei una principessa oggi.", emoji: "👑" },
-        { name: "PondPhuwin", msg: "Pesce Arancione e Tigre! 🐯 Amore da proteggere.", emoji: "🐠" },
-        { name: "JimmySea", msg: "Last Twilight... prepara i girasoli! 🌻 Amore puro.", emoji: "🌻" }
+        { name: "TutorYim", msg: "Che mistero! Oggi sei affascinante come in Battle of the Writers. 🧛‍♂️", emoji: "🧛‍♂️" },
+        { name: "ZeeNuNew", msg: "Eleganza pura! The Next Prince ti sta aspettando. 👑", emoji: "👑" },
+        { name: "PondPhuwin", msg: "We Are vibes! Amicizia e amore si mescolano. 🟠", emoji: "🐠" },
+        { name: "JimmySea", msg: "Dolcezza infinita! Una giornata da Last Twilight. 🌻", emoji: "🌻" }
     ];
 
     function spinSlot() {
         const res = document.getElementById('slotResult');
-        res.innerHTML = "🎲 Girando...";
+        res.innerHTML = "🎲 ...";
         setTimeout(() => {
             const pick = SLOT_DATA[Math.floor(Math.random() * SLOT_DATA.length)];
             res.innerHTML = `${pick.emoji} <b>${pick.name}</b><br><small>${pick.msg}</small>`;
-        }, 1000);
+        }, 800);
     }
 
+    // EMOJI CHALLENGE: SERIE TV (OLD & NEW)
     const EMOJI_LEVELS = [
-        { e: "🌻🌅🩺", a: ["JimmySea", "OhmNanon", "OffGun"], c: 0 },
-        { e: "⚔️🧛‍♂️📚", a: ["TutorYim", "NetJames", "BounPrem"], c: 0 },
-        { e: "👑🎤💍", a: ["ZeeNuNew", "MaxNat", "JoongDunk"], c: 0 },
-        { e: "🟠🐯🔫", a: ["PondPhuwin", "ForceBook", "EarthMix"], c: 0 }
+        { q: "Indovina la Serie (Classica):", e: "⚽🏃‍♂️🍤", a: ["Love by Chance", "TharnType", "2Moons"], c: 0 },
+        { q: "Indovina la Serie (Classica):", e: "🦷🥼🐟", a: ["Bad Buddy", "Fish Upon the Sky", "Star In My Mind"], c: 1 },
+        { q: "Indovina la Serie:", e: "🎤🎹💍", a: ["Cutie Pie", "Why R U", "Bed Friend"], c: 0 },
+        { q: "Indovina la Serie (Nuova):", e: "👹🗡️🌲", a: ["Khemjira", "The Sign", "Pit Babe"], c: 0 },
+        { q: "Indovina la Serie (Nuova):", e: "👑🤺🏰", a: ["The Next Prince", "KinnPorsche", "Love in the Air"], c: 0 },
+        { q: "Indovina la Serie:", e: "🌻🌅🩺", a: ["Last Twilight", "Vice Versa", "Moonlight Chicken"], c: 0 },
+        { q: "Indovina la Serie:", e: "🧛‍♂️📚👻", a: ["Battle of the Writers", "Century of Love", "My Stand-In"], c: 0 },
+        { q: "Indovina la Serie (Nuova):", e: "🚓⛓️🏠", a: ["Kidnap", "The Trainee", "High School Frenemy"], c: 0 },
+        { q: "Indovina la Serie:", e: "🥪👫🥊", a: ["Me and Thee (The Rebound)", "Wandee Goodday", "Only Boo"], c: 0 }
     ];
     
     function startEmojiGame() { startQuizInternal(EMOJI_LEVELS, "Emoji Challenge"); }
@@ -531,16 +552,18 @@
 
     function showQ() {
         if(qI>=currentQuizData.length) { 
-            showToast("Finito! Punti: "+pts, "success"); 
-            db.ref('users/'+auth.currentUser.uid+'/score').transaction(s=>(s||0)+pts); 
+            showToast("Finito! Hai completato il gioco!", "success"); 
+            // Salviamo il punteggio solo se è un Quiz normale, non i giochi emoji/slot
+            if(type) db.ref('users/'+auth.currentUser.uid+'/score').transaction(s=>(s||0)+pts); 
             stopQuiz(); return; 
         }
         const d = currentQuizData[qI]; 
         // Supporto per Emoji o Testo
-        const questionText = d.q ? d.q : `Indovina la Ship: ${d.e}`;
+        const questionText = d.q ? d.q : "Indovina la Serie:";
+        const displayText = d.e ? `<span style="font-size:2rem;">${d.e}</span>` : d.q;
         
         document.getElementById('qTitle').innerText=`Domanda ${qI+1}`; 
-        document.getElementById('qText').innerText=questionText; 
+        document.getElementById('qText').innerHTML=displayText; 
         document.getElementById('qFeed').innerText=""; 
         document.getElementById('qOpts').innerHTML=d.a.map((a,i)=>`<div class="quiz-btn" onclick="chk(${i},${d.c},this)">${a}</div>`).join('');
     }
@@ -556,21 +579,39 @@
         document.getElementById('quizActive').style.display='none';
     }
 
-    // --- PROFILI ---
+    // --- PROFILI (AGGIORNATI CON CAMPI EXTRA) ---
     function openUserProfile(uid) {
         navTo('userProfilePage');
         if(uid.startsWith('bot')) {
             const b = FAKE_USERS.find(x=>x.uid===uid);
             if(b) {
-                document.getElementById('pubNick').innerText=b.nick; document.getElementById('pubShip').innerText=b.ship;
-                document.getElementById('pubAge').innerText=b.age; document.getElementById('pubAvatar').src=b.avatar;
+                document.getElementById('pubNick').innerText=b.nick; 
+                document.getElementById('pubShip').innerText=b.ship;
+                document.getElementById('pubOtherShipsContainer').innerHTML = b.other ? `<span class="other-ship-tag">${b.other}</span>` : "";
+                document.getElementById('pubAge').innerText=b.age; 
+                document.getElementById('pubStory').innerText=b.story;
+                document.getElementById('pubAvatar').src=b.avatar;
             }
             return;
         }
         db.ref('users/'+uid).once('value',s=>{
             const u=s.val();
-            document.getElementById('pubNick').innerText=u.nick; document.getElementById('pubShip').innerText=u.ship;
-            document.getElementById('pubAge').innerText=u.age; document.getElementById('pubAvatar').src=u.avatar;
+            document.getElementById('pubNick').innerText=u.nick; 
+            document.getElementById('pubShip').innerText=u.ship;
+            
+            // Gestione Altre Ship
+            const otherContainer = document.getElementById('pubOtherShipsContainer');
+            otherContainer.innerHTML = "";
+            if(u.otherShips) {
+                u.otherShips.split(',').forEach(ship => {
+                    if(ship.trim()) otherContainer.innerHTML += `<span class="other-ship-tag">${ship.trim()}</span>`;
+                });
+            }
+
+            document.getElementById('pubAge').innerText=u.age; 
+            document.getElementById('pubStory').innerText=u.story;
+            document.getElementById('pubSocial').innerText=u.social || "Privato";
+            document.getElementById('pubAvatar').src=u.avatar;
         });
     }
     function openMyProfile() { if(auth.currentUser) openUserProfile(auth.currentUser.uid); }
@@ -588,14 +629,16 @@
             document.getElementById('authArea').style.display='none';
             document.getElementById('userArea').style.display='block';
             document.getElementById('guestNick').style.display='none'; 
-            
             if(ADMIN_EMAILS.includes(u.email)) document.getElementById('adminBadge').style.display='inline';
 
             db.ref('users/'+u.uid).on('value', s=>{
                 const d=s.val()||{};
                 document.getElementById('sidebarNick').innerText=d.nick||"User";
-                document.getElementById('pNick').value=d.nick||""; document.getElementById('pAge').value=d.age||"";
-                document.getElementById('pShip').value=d.ship||""; document.getElementById('pSocial').value=d.social||"";
+                document.getElementById('pNick').value=d.nick||""; 
+                document.getElementById('pAge').value=d.age||"";
+                document.getElementById('pShip').value=d.ship||""; 
+                document.getElementById('pOtherShips').value=d.otherShips||""; // Nuovo campo
+                document.getElementById('pSocial').value=d.social||"";
                 document.getElementById('pStory').value=d.story||"";
             });
             loadMyMatches(); 
@@ -610,7 +653,15 @@
         const u=auth.currentUser; if(!u) return;
         const btn=document.getElementById('btnSave'); btn.innerText="⏳"; btn.disabled=true;
         const f=document.getElementById('fileInput').files[0];
-        const d={ nick:document.getElementById('pNick').value, age:document.getElementById('pAge').value, ship:document.getElementById('pShip').value, social:document.getElementById('pSocial').value, story:document.getElementById('pStory').value, uid:u.uid };
+        const d={ 
+            nick:document.getElementById('pNick').value, 
+            age:document.getElementById('pAge').value, 
+            ship:document.getElementById('pShip').value, 
+            otherShips:document.getElementById('pOtherShips').value, // Nuovo campo
+            social:document.getElementById('pSocial').value, 
+            story:document.getElementById('pStory').value, 
+            uid:u.uid 
+        };
         if(f) {
             if(f.size>700000){showToast("Foto grande! Max 700KB","error"); btn.innerText="SALVA"; btn.disabled=false; return;}
             const r=new FileReader(); r.onload=e=>{ d.avatar=e.target.result; db.ref('users/'+u.uid).update(d).then(()=>{showToast("Salvato!","success"); toggleEdit(); btn.innerText="SALVA"; btn.disabled=false;}); }; r.readAsDataURL(f);
