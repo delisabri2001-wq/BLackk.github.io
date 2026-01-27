@@ -228,7 +228,7 @@
             </div>
             <div id="privateChatBox" class="chat-container"></div>
             <div style="display:flex; gap:10px;">
-                <input type="text" id="privateChatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendPrivateMsg()">
+                <input type="text" id="privateChatInput" placeholder="Scrivi... (Enter)">
                 <button class="btn-main" style="width:80px; margin:0; background:#e91e63;" onclick="sendPrivateMsg()">Invia</button>
             </div>
         </div>
@@ -241,7 +241,7 @@
             <div id="chatControls" style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="guestNick" placeholder="Il tuo nome..." style="display:none; border:2px solid #00bcd4;">
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
+                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)">
                     <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
                 </div>
             </div>
@@ -307,7 +307,6 @@
       measurementId: "G-L1TH722CGE"
     };
 
-    // INIZIALIZZAZIONE
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
@@ -320,7 +319,34 @@
         setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000);
     }
     
-    // GESTIONE TASTI E NAVIGAZIONE
+    // --- GESTIONE TASTI E NAVIGAZIONE (SOLUZIONE DEFINITIVA) ---
+    
+    // Questo blocco assicura che il tasto INVIO funzioni SEMPRE
+    // indipendentemente dal browser, su entrambe le chat.
+    window.onload = function() {
+        // Chat Globale
+        const chatInput = document.getElementById("chatInput");
+        if(chatInput) {
+            chatInput.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Evita strani comportamenti
+                    sendMsg();
+                }
+            });
+        }
+
+        // Chat Privata
+        const privInput = document.getElementById("privateChatInput");
+        if(privInput) {
+            privInput.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendPrivateMsg();
+                }
+            });
+        }
+    };
+
     document.addEventListener('keydown', function(event) { 
         if (event.key === "Escape") {
             toggleSidebar(true); 
@@ -360,7 +386,7 @@
         else { sb.classList.add('open'); ov.style.display='block'; }
     }
 
-    // --- DATI FINTI & BOT REPLIES ---
+    // --- DATI FINTI & BOT REPLIES (LE TUE SCELTE) ---
     const FAKE_USERS = [
         { uid:'bot1', nick:'TutorYim_Vamp', age:23, ship:'TutorYim', story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', otherShips: 'NetJJ', avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' },
         { uid:'bot2', nick:'ZeeNuNew_Prince', age:25, ship:'ZeeNuNew', story:'Aspettando The Next Prince con ansia. 👑', otherShips: 'MaxNat', avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' },
@@ -377,7 +403,7 @@
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
         
-        currentDeck = [...FAKE_USERS]; // Bot subito
+        currentDeck = [...FAKE_USERS];
         if(f) currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
         currentDeck.sort(() => Math.random() - 0.5);
         deckIndex = 0;
