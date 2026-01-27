@@ -8,7 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         /* --- STILE BASE --- */
-        :root { --primary: #1b4332; --accent: #2d6a4f; --soft: #f0f7f4; --white: #ffffff; --text: #333; --admin: #e74c3c; }
+        :root { 
+            --primary: #1b4332; 
+            --accent: #2d6a4f; 
+            --soft: #f0f7f4; 
+            --white: #ffffff; 
+            --text: #333; 
+            --admin: #e74c3c; 
+        }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { margin: 0; background: var(--soft); color: var(--text); overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
 
@@ -158,7 +165,7 @@
 
         <div class="card" style="text-align:center; padding:40px;">
             <h2 style="color:var(--primary);">Benvenuta in BLack World 🌿</h2>
-            <p style="font-size:1.1rem;">La community per fangirl.</p>
+            <p style="font-size:1.1rem;">La community per fangirl aggiornata al 2025.</p>
             <button class="btn-main" style="max-width:300px;" onclick="navTo('match')">🔥 TROVA LA TUA SHIP FRIEND</button>
         </div>
     </section>
@@ -234,7 +241,7 @@
         </div>
     </section>
 
-   <section id="chat" class="page">
+    <section id="chat" class="page">
         <div class="card" style="border: 2px solid var(--primary);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <h3 style="color:var(--primary); margin:0;">✨ Global Chat</h3>
@@ -243,27 +250,26 @@
             <div id="chatBox" class="chat-container"></div>
             
             <div id="chatControls" style="display:flex; flex-direction:column; gap:10px;">
-                <input type="text" id="guestNick" placeholder="Il tuo nome..." style="display:none; border:2px solid #00bcd4;">
+                <input type="text" id="guestNick" placeholder="Il tuo nome (Obbligatorio per Ospiti)" style="display:none; border:2px solid #00bcd4;">
                 
-                    <div style="display:flex; gap:10px;">
-    <input type="text" id="globalChatInput" placeholder="Scrivi in Globale..." onkeydown="if(event.key==='Enter') sendGlobalMsg()">
-    <button class="btn-main" style="width:80px; margin:0;" onclick="sendGlobalMsg()">Invia</button>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
+                    <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
                 </div>
             </div>
         </div>
     </section>
 
-    
     <section id="giochi" class="page">
         <div id="quizMenu" class="card">
             <h3>🎮 Sala Giochi</h3>
-            <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV</button>
-            <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI</button>
+            <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV (2025)</button>
+            <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI (2025)</button>
             <button class="btn-main" style="background:#e67e22;" onclick="startEmojiGame()">🧩 Emoji Challenge: Serie TV</button>
             
             <div class="slot-box">
                 <h3 style="color:#e91e63; margin:0;">🎰 La Ruota dell'Amore</h3>
-                <p>Quale ship ti protegge oggi?</p>
+                <p>Quale ship 2025 ti protegge?</p>
                 <div id="slotResult" class="slot-result">❓</div>
                 <button class="btn-main" style="background:#ffb7b2; color:#c0392b; border:none;" onclick="spinSlot()">GIRA ORA</button>
             </div>
@@ -313,7 +319,7 @@
       measurementId: "G-L1TH722CGE"
     };
 
-    // INIZIALIZZAZIONE
+    // INIZIALIZZAZIONE (IMPORTANTE: NON MODIFICARE)
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
@@ -322,7 +328,9 @@
 
     // --- UTILS ---
     function showToast(msg, type='normal') {
-        const x = document.getElementById("toast"); x.innerText = msg; x.className = "show " + type;
+        const x = document.getElementById("toast"); 
+        x.innerText = msg; 
+        x.className = "show " + type;
         setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000);
     }
     
@@ -339,7 +347,11 @@
         else navTo('home', null, false);
     };
 
-    function openLegal(type) { document.getElementById('legalModal').style.display = "flex"; document.getElementById('legalTitle').innerText = type; document.getElementById('legalContent').innerHTML = "<p>Info legali.</p>"; }
+    function openLegal(type) { 
+        document.getElementById('legalModal').style.display = "flex"; 
+        document.getElementById('legalTitle').innerText = type; 
+        document.getElementById('legalContent').innerHTML = "<p>Info legali.</p>"; 
+    }
     if(!localStorage.getItem('cookieConsent')) document.getElementById('cookieBanner').style.display='block';
     function acceptCookies() { localStorage.setItem('cookieConsent','true'); document.getElementById('cookieBanner').style.display='none'; }
 
@@ -366,15 +378,62 @@
         else { sb.classList.add('open'); ov.style.display='block'; }
     }
 
-    // --- DATI FINTI & BOT REPLIES (LE TUE SCELTE) ---
+    // --- LISTA BOT ESTESA (TUTTI QUELLI CHE HAI CHIESTO) ---
     const FAKE_USERS = [
-        { uid:'bot1', nick:'TutorYim_Vamp', age:23, ship:'TutorYim', story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', otherShips: 'NetJJ', avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' },
-        { uid:'bot2', nick:'ZeeNuNew_Prince', age:25, ship:'ZeeNuNew', story:'Aspettando The Next Prince con ansia. 👑', otherShips: 'MaxNat', avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' },
-        { uid:'bot3', nick:'PondPhuwin_Fish', age:21, ship:'PondPhuwin', story:'Pesce arancione per sempre. We Are ci ha salvati. 🟠', otherShips: 'ForceBook', avatar:'https://ui-avatars.com/api/?name=Pond+Phuwin&background=ff9f43' },
-        { uid:'bot4', nick:'JimmySea_Sun', age:24, ship:'JimmySea', story:'Last Twilight best series. MhokDay nel cuore. 🌻', otherShips: 'EarthMix', avatar:'https://ui-avatars.com/api/?name=Jimmy+Sea&background=feca57' },
-        { uid:'bot5', nick:'OhmLeng_Kidnap', age:22, ship:'OhmLeng', story:'Kidnap è la serie della vita! 🚓', otherShips: 'PerthSanta', avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=badc58' }
+        { 
+            uid:'bot1', 
+            nick:'TutorYim_Vamp', 
+            age:23, 
+            ship:'TutorYim', 
+            story:'Battle of the Writers mi ha distrutto. Vampiri top! 🧛‍♂️', 
+            otherShips: 'NetJJ', 
+            avatar:'https://ui-avatars.com/api/?name=Tutor+Yim&background=333&color=fff' 
+        },
+        { 
+            uid:'bot2', 
+            nick:'ZeeNuNew_Prince', 
+            age:25, 
+            ship:'ZeeNuNew', 
+            story:'Aspettando The Next Prince con ansia. 👑', 
+            otherShips: 'MaxNat', 
+            avatar:'https://ui-avatars.com/api/?name=Zee+NuNew&background=ffcccb' 
+        },
+        { 
+            uid:'bot3', 
+            nick:'PondPhuwin_Fish', 
+            age:21, 
+            ship:'PondPhuwin', 
+            story:'Pesce arancione per sempre. We Are ci ha salvati. 🟠', 
+            otherShips: 'ForceBook', 
+            avatar:'https://ui-avatars.com/api/?name=Pond+Phuwin&background=ff9f43' 
+        },
+        { 
+            uid:'bot4', 
+            nick:'JimmySea_Sun', 
+            age:24, 
+            ship:'JimmySea', 
+            story:'Last Twilight best series. MhokDay nel cuore. 🌻', 
+            otherShips: 'EarthMix', 
+            avatar:'https://ui-avatars.com/api/?name=Jimmy+Sea&background=feca57' 
+        },
+        { 
+            uid:'bot5', 
+            nick:'OhmLeng_Kidnap', 
+            age:22, 
+            ship:'OhmLeng', 
+            story:'Kidnap è la serie della vita! 🚓', 
+            otherShips: 'PerthSanta', 
+            avatar:'https://ui-avatars.com/api/?name=Ohm+Leng&background=badc58' 
+        }
     ];
-    const BOT_REPLIES = ["Ciao! Anche io amo questa ship!", "Hai visto l'ultimo episodio?", "Sono bellissimi insieme 😍", "Che carina la tua foto!", "Possiamo essere amiche?"];
+    
+    const BOT_REPLIES = [
+        "Ciao! Anche io amo questa ship!", 
+        "Hai visto l'ultimo episodio?", 
+        "Sono bellissimi insieme 😍", 
+        "Che carina la tua foto!", 
+        "Possiamo essere amiche?"
+    ];
 
     // --- MATCH LOGIC ---
     let currentDeck = [], deckIndex = 0;
@@ -505,7 +564,7 @@
         document.getElementById('privateChatInput').value = "";
     }
 
-    // --- GAMES ---
+    // --- SLOT MACHINE DATA (ESTESO) ---
     const SLOT_DATA = [
         { s: "ZeeNuNew", m: "Mood Principe: The Next Prince ti aspetta." },
         { s: "TutorYim", m: "Vampire vibes! Attenta al collo." },
@@ -568,6 +627,7 @@
         }, 800);
     }
 
+    // --- EMOJI LEVELS (ESTESO) ---
     const EMOJI_LEVELS = [
         { q: "Indovina la Serie (Classica):", e: "⚽🏃‍♂️🍤", a: ["Love by Chance", "TharnType", "2Moons"], c: 0 },
         { q: "Indovina la Serie (Classica):", e: "🦷🥼🐟", a: ["Bad Buddy", "Fish Upon the Sky", "Star In My Mind"], c: 1 },
@@ -583,6 +643,7 @@
     
     function startEmojiGame() { startQuizInternal(EMOJI_LEVELS, "Emoji Challenge"); }
     
+    // --- DB QUIZ (ESTESO) ---
     const DB_QUIZ = {
         gmmtv: [
             {q: "Partner di Ohm in Kidnap?", a: ["Nanon", "Leng", "Perth"], c: 1},
@@ -643,17 +704,27 @@
         document.getElementById('qText').innerHTML=displayText; 
         document.getElementById('qFeed').innerText=""; 
         
-        // --- RANDOMIZZAZIONE RISPOSTE (NUOVO) ---
-        let options = d.a.map((ans, index) => { return { text: ans, isCorrect: (index === d.c) }; });
+        // --- RANDOMIZZAZIONE RISPOSTE (CODICE NUOVO) ---
+        // 1. Mappa le risposte mantenendo l'info se è corretta o no
+        let options = d.a.map((ans, index) => { 
+            return { text: ans, isCorrect: (index === d.c) }; 
+        });
+        
+        // 2. Mescola l'array delle opzioni
         options.sort(() => Math.random() - 0.5);
 
-        document.getElementById('qOpts').innerHTML=options.map(opt =>`<div class="quiz-btn" onclick="chk(${opt.isCorrect}, this)">${opt.text}</div>`).join('');
+        // 3. Stampa a video
+        document.getElementById('qOpts').innerHTML = options.map(opt => 
+            `<div class="quiz-btn" onclick="chk(${opt.isCorrect}, this)">${opt.text}</div>`
+        ).join('');
     }
     
     function chk(isCorrect, e) { 
         document.querySelectorAll('.quiz-btn').forEach(b=>b.onclick=null); 
-        if(isCorrect){ e.classList.add('correct'); pts++; }
-        else { 
+        if(isCorrect){ 
+            e.classList.add('correct'); 
+            pts++; 
+        } else { 
             e.classList.add('wrong'); 
             // Cerca la risposta giusta nell'array originale per mostrarla nel report
             let correctTxt = currentQuizData[qI].a[currentQuizData[qI].c];
@@ -800,31 +871,22 @@
     }
     function deleteMsg(key) { if(confirm("Eliminare?")) db.ref('chat/'+key).remove(); }
     
-// Incolla questa funzione nel blocco <script>
-function sendGlobalMsg() {
-    var input = document.getElementById('globalChatInput');
-    var message = input.value.trim();
-
-    if (message !== "") {
-        // QUI inserisci la tua stringa Firebase. Esempio:
-        // database.ref('messages').push({ text: message });
-        
-        input.value = ""; // Questo svuota il campo dopo l'invio
-    }
-}
+    function sendMsg() {
+        const txt = document.getElementById('chatInput').value; 
+        if(!txt) return; // Non inviare vuoto
         
         let nick, uid, isAdmin=false;
         
         if(auth.currentUser) { 
             // Utente Loggato
-            nick = document.getElementById('pNick').value || "VIP User"; 
+            nick = document.getElementById('sidebarNick').innerText || "User";
             uid = auth.currentUser.uid; 
             if(ADMIN_EMAILS.includes(auth.currentUser.email)) isAdmin=true; 
         } else { 
             // Ospite
             nick = document.getElementById('guestNick').value; 
             if(!nick) {
-                alert("Devi inserire un nome per scrivere in chat!"); // ALERT ESPLICITO
+                alert("Devi inserire un nome per scrivere in chat!"); 
                 return; 
             }
             uid = null; 
@@ -885,9 +947,3 @@ function sendGlobalMsg() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
