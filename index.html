@@ -158,7 +158,7 @@
 
         <div class="card" style="text-align:center; padding:40px;">
             <h2 style="color:var(--primary);">Benvenuta in BLack World 🌿</h2>
-            <p style="font-size:1.1rem;">La community per fangirl aggiornata al 2025.</p>
+            <p style="font-size:1.1rem;">La community per fangirl.</p>
             <button class="btn-main" style="max-width:300px;" onclick="navTo('match')">🔥 TROVA LA TUA SHIP FRIEND</button>
         </div>
     </section>
@@ -242,8 +242,8 @@
                 <input type="text" id="guestNick" placeholder="Il tuo nome..." style="display:none; border:2px solid #00bcd4;">
                 <div style="display:flex; gap:10px;">
                     <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
-                    <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
-                </div>
+                   <button class="btn-main" style="width:80px; margin:0; background:#e91e63;" onclick="sendMsg()">Invia</button>
+            </div>
             </div>
         </div>
     </section>
@@ -251,13 +251,13 @@
     <section id="giochi" class="page">
         <div id="quizMenu" class="card">
             <h3>🎮 Sala Giochi</h3>
-            <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV (2025)</button>
-            <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI (2025)</button>
+            <button class="btn-main" onclick="startQuiz('gmmtv')">🏢 Quiz GMMTV</button>
+            <button class="btn-main" style="background:#2980b9;" onclick="startQuiz('domundi')">🐉 Quiz DOMUNDI</button>
             <button class="btn-main" style="background:#e67e22;" onclick="startEmojiGame()">🧩 Emoji Challenge: Serie TV</button>
             
             <div class="slot-box">
                 <h3 style="color:#e91e63; margin:0;">🎰 La Ruota dell'Amore</h3>
-                <p>Quale ship 2025 ti protegge?</p>
+                <p>Quale ship ti protegge oggi?</p>
                 <div id="slotResult" class="slot-result">❓</div>
                 <button class="btn-main" style="background:#ffb7b2; color:#c0392b; border:none;" onclick="spinSlot()">GIRA ORA</button>
             </div>
@@ -870,3 +870,4 @@
 </script>
 </body>
 </html>
+
