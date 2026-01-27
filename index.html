@@ -273,7 +273,7 @@
         setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000);
     }
     
-    // GESTIONE TASTI
+    // GESTIONE TASTI (INVIO E ESC)
     function handleChatKey(e) { if(e.key === 'Enter') sendMsg(); }
     function handlePrivateChatKey(e) { if(e.key === 'Enter') sendPrivateMsg(); }
     document.addEventListener('keydown', function(event) { if (event.key === "Escape") toggleSidebar(true); });
@@ -316,29 +316,39 @@
     // --- MATCH LOGIC ---
     let currentDeck = [], deckIndex = 0;
     function reloadDeck() { deckIndex = 0; loadSwipeDeck(); }
+    
     function loadSwipeDeck() {
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
-        c.innerHTML = '<div style="text-align:center; color:#888; margin-top:50px;">🔍 Caricamento...</div>';
         
-        currentDeck = [...FAKE_USERS]; // Carica Bot
+        // 1. CARICAMENTO IMMEDIATO DEI BOT
+        currentDeck = [...FAKE_USERS];
         if(f) currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
         
-        // Carica Reali
+        // Mischia e Mostra Subito
+        currentDeck.sort(() => Math.random() - 0.5);
+        deckIndex = 0;
+        renderCard();
+
+        // 2. CERCA UTENTI REALI (Senza bloccare la UI)
         db.ref('users').once('value').then(s => {
             if (s.exists()) {
                 const myUid = auth.currentUser ? auth.currentUser.uid : null;
+                let realUsers = [];
                 s.forEach(u => {
                     const user = u.val(); user.uid = u.key;
-                    if (user.uid !== myUid) {
-                        if(!f || (user.ship && user.ship.toLowerCase().includes(f))) currentDeck.push(user);
-                    }
+                    if (user.uid !== myUid) realUsers.push(user);
                 });
+                
+                if(f) realUsers = realUsers.filter(u => u.ship && u.ship.toLowerCase().includes(f));
+                if(realUsers.length > 0) {
+                    currentDeck = currentDeck.concat(realUsers);
+                    if(deckIndex >= currentDeck.length - realUsers.length) renderCard(); 
+                }
             }
-            currentDeck.sort(() => Math.random() - 0.5);
-            deckIndex = 0; renderCard();
         });
     }
+
     function renderCard() {
         const c = document.getElementById('deckContainer');
         if (!currentDeck.length) { c.innerHTML = `<div style="text-align:center; padding:40px;"><h3>Nessun profilo 😢</h3><button class="btn-main" onclick="document.getElementById('shipFilter').value=''; reloadDeck()">Mostra Tutti</button></div>`; return; }
@@ -358,9 +368,8 @@
         card.style.opacity = "0";
         if(dir==='right') { 
             showToast("Match salvato! 💚", "success");
-            // Salva Match nel DB
             if(auth.currentUser) db.ref('users/'+auth.currentUser.uid+'/matches/'+uid).set(true);
-            setTimeout(()=>loadMyMatches(), 1000); // Aggiorna lista
+            setTimeout(()=>loadMyMatches(), 1000);
         }
         setTimeout(()=>{ deckIndex++; renderCard(); },300);
     }
@@ -370,35 +379,22 @@
         if(!auth.currentUser) return;
         const list = document.getElementById('matchList');
         const container = document.getElementById('myMatchesContainer');
-        
         db.ref('users/'+auth.currentUser.uid+'/matches').on('value', s => {
             if(!s.exists()) { container.style.display = 'none'; return; }
             container.style.display = 'block';
             list.innerHTML = "";
-            
             s.forEach(m => {
                 const partnerUid = m.key;
-                // Cerca tra i bot
                 let partner = FAKE_USERS.find(b => b.uid === partnerUid);
-                
-                if(partner) {
-                    renderMatchItem(partner);
-                } else {
-                    // Cerca tra utenti reali
-                    db.ref('users/'+partnerUid).once('value', uSnap => {
-                        const u = uSnap.val();
-                        if(u) { u.uid = partnerUid; renderMatchItem(u); }
-                    });
-                }
+                if(partner) { renderMatchItem(partner); } 
+                else { db.ref('users/'+partnerUid).once('value', uSnap => { const u = uSnap.val(); if(u) { u.uid = partnerUid; renderMatchItem(u); } }); }
             });
         });
     }
     
     function renderMatchItem(u) {
         const list = document.getElementById('matchList');
-        // Evita duplicati
         if(document.getElementById('match-'+u.uid)) return;
-        
         list.innerHTML += `
             <div class="match-item" id="match-${u.uid}" onclick="openPrivateChat('${u.uid}', '${u.nick}')">
                 <img src="${u.avatar}" class="match-avatar-circle">
@@ -412,31 +408,25 @@
     function openPrivateChat(uid, name) {
         currentChatPartnerId = uid;
         currentChatPartnerName = name;
-        
-        // Mostra sezione chat privata
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById('privateChat').classList.add('active');
         document.getElementById('privateChatName').innerText = name;
-        
         loadPrivateMessages();
     }
 
     function getChatId() {
         const ids = [auth.currentUser.uid, currentChatPartnerId];
-        ids.sort(); // Ordina alfabetico per avere ID unico
+        ids.sort(); 
         return ids.join('_');
     }
 
     function loadPrivateMessages() {
         const box = document.getElementById('privateChatBox');
         box.innerHTML = "";
-        
-        // Se è un bot, usiamo un ID locale finto o non carichiamo cronologia
         if(currentChatPartnerId.startsWith('bot')) {
             box.innerHTML = `<div class="msg guest" style="text-align:center;">Chat privata con ${currentChatPartnerName} (Bot)</div>`;
             return;
         }
-
         const chatId = getChatId();
         db.ref('private_chats/' + chatId).limitToLast(20).on('value', s => {
             box.innerHTML = "";
@@ -452,17 +442,11 @@
     function sendPrivateMsg() {
         const txt = document.getElementById('privateChatInput').value;
         if(!txt) return;
-        
         const box = document.getElementById('privateChatBox');
-        
-        // LOGICA BOT
         if(currentChatPartnerId.startsWith('bot')) {
-            // Aggiungi il mio messaggio visivamente
             box.innerHTML += `<div class="msg me"><b>Io:</b> ${txt}</div>`;
             document.getElementById('privateChatInput').value = "";
             box.scrollTop = box.scrollHeight;
-            
-            // Risposta automatica Bot
             setTimeout(() => {
                 const randomReply = BOT_REPLIES[Math.floor(Math.random() * BOT_REPLIES.length)];
                 box.innerHTML += `<div class="msg"><b>${currentChatPartnerName}:</b> ${randomReply}</div>`;
@@ -470,8 +454,6 @@
             }, 1500);
             return;
         }
-
-        // LOGICA REALE
         const chatId = getChatId();
         db.ref('private_chats/' + chatId).push({
             text: txt,
@@ -521,7 +503,7 @@
                 document.getElementById('pShip').value=d.ship||""; document.getElementById('pSocial').value=d.social||"";
                 document.getElementById('pStory').value=d.story||"";
             });
-            loadMyMatches(); // Carica match all'avvio
+            loadMyMatches(); 
         } else {
             document.getElementById('authArea').style.display='block';
             document.getElementById('userArea').style.display='none';
