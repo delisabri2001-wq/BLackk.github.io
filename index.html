@@ -228,7 +228,7 @@
             </div>
             <div id="privateChatBox" class="chat-container"></div>
             <div style="display:flex; gap:10px;">
-                <input type="text" id="privateChatInput" placeholder="Scrivi... (Enter)">
+                <input type="text" id="privateChatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendPrivateMsg()">
                 <button class="btn-main" style="width:80px; margin:0; background:#e91e63;" onclick="sendPrivateMsg()">Invia</button>
             </div>
         </div>
@@ -241,7 +241,7 @@
             <div id="chatControls" style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="guestNick" placeholder="Il tuo nome..." style="display:none; border:2px solid #00bcd4;">
                 <div style="display:flex; gap:10px;">
-                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)">
+                    <input type="text" id="chatInput" placeholder="Scrivi... (Enter)" onkeydown="if(event.key==='Enter') sendMsg()">
                     <button class="btn-main" style="width:80px; margin:0;" onclick="sendMsg()">Invia</button>
                 </div>
             </div>
@@ -307,6 +307,7 @@
       measurementId: "G-L1TH722CGE"
     };
 
+    // INIZIALIZZAZIONE (IMPORTANTE: NON MODIFICARE)
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
@@ -319,34 +320,7 @@
         setTimeout(()=>{ x.className = x.className.replace("show", ""); }, 3000);
     }
     
-    // --- GESTIONE TASTI E NAVIGAZIONE (SOLUZIONE DEFINITIVA) ---
-    
-    // Questo blocco assicura che il tasto INVIO funzioni SEMPRE
-    // indipendentemente dal browser, su entrambe le chat.
-    window.onload = function() {
-        // Chat Globale
-        const chatInput = document.getElementById("chatInput");
-        if(chatInput) {
-            chatInput.addEventListener("keydown", function(event) {
-                if (event.key === "Enter") {
-                    event.preventDefault(); // Evita strani comportamenti
-                    sendMsg();
-                }
-            });
-        }
-
-        // Chat Privata
-        const privInput = document.getElementById("privateChatInput");
-        if(privInput) {
-            privInput.addEventListener("keydown", function(event) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    sendPrivateMsg();
-                }
-            });
-        }
-    };
-
+    // GESTIONE TASTI E NAVIGAZIONE
     document.addEventListener('keydown', function(event) { 
         if (event.key === "Escape") {
             toggleSidebar(true); 
@@ -403,7 +377,7 @@
         const c = document.getElementById('deckContainer');
         const f = document.getElementById('shipFilter').value.toLowerCase();
         
-        currentDeck = [...FAKE_USERS];
+        currentDeck = [...FAKE_USERS]; // Bot subito
         if(f) currentDeck = currentDeck.filter(u => u.ship && u.ship.toLowerCase().includes(f));
         currentDeck.sort(() => Math.random() - 0.5);
         deckIndex = 0;
@@ -813,14 +787,33 @@
         });
     }
     function deleteMsg(key) { if(confirm("Eliminare?")) db.ref('chat/'+key).remove(); }
+    
     function sendMsg() {
-        const txt = document.getElementById('chatInput').value; if(!txt) return;
+        const txt = document.getElementById('chatInput').value; 
+        if(!txt) return; // Non inviare vuoto
+        
         let nick, uid, isAdmin=false;
-        if(auth.currentUser) { nick = document.getElementById('pNick').value || "VIP User"; uid = auth.currentUser.uid; if(ADMIN_EMAILS.includes(auth.currentUser.email)) isAdmin=true; } 
-        else { nick = document.getElementById('guestNick').value; if(!nick) return showToast("Inserisci un nome!", "error"); uid = null; localStorage.setItem('guestNick', nick); }
+        
+        if(auth.currentUser) { 
+            // Utente Loggato
+            nick = document.getElementById('pNick').value || "VIP User"; 
+            uid = auth.currentUser.uid; 
+            if(ADMIN_EMAILS.includes(auth.currentUser.email)) isAdmin=true; 
+        } else { 
+            // Ospite
+            nick = document.getElementById('guestNick').value; 
+            if(!nick) {
+                alert("Devi inserire un nome per scrivere in chat!"); // ALERT ESPLICITO
+                return; 
+            }
+            uid = null; 
+            localStorage.setItem('guestNick', nick); 
+        }
+        
         db.ref('chat').push({ text:txt, uid:uid, nick:nick, isAdmin:isAdmin });
         document.getElementById('chatInput').value = "";
     }
+    
     function loadLeaderboard(){ db.ref('users').orderByChild('score').limitToLast(5).on('value',s=>{ const t=document.getElementById('leaderboard'); t.innerHTML=""; let a=[]; s.forEach(c=>a.push({k:c.key,n:c.val().nick,s:c.val().score||0})); a.sort((x,y)=>y.s-x.s).forEach((p,i)=>t.innerHTML+=`<tr><td>#${i+1} <b onclick="openUserProfile('${p.k}')" style="cursor:pointer">${p.n}</b></td><td style="text-align:right;">${p.s}</td></tr>`); }); }
     
     // --- FUNZIONI AUTH (RIMESSE PER FIX LOGIN) ---
